@@ -17,7 +17,8 @@ save_dir=/root/code/mover/preprocess
 python op_filter_json.py \
 --root ${save_dir}/${video_name}/${video_name}_openpose \
 --dump ${save_dir}/${video_name}/${video_name}_openpose/mv_smplifyx_input_withPARE_PARE3DJointOneConfidence_OP2DJoints_openpose_filter \
---image_dir  ${save_dir}/${video_name}/${video_name}_openpose/images
+--img_dir  ${save_dir}/${video_name}/${video_name}_openpose/images \
+--viz=True
 
 
 
