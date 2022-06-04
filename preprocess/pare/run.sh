@@ -32,7 +32,7 @@ cd /root/code/mover/preprocess/pare/
 #       --draw_keypoints \
 #       --detector maskrcnn
 
-/root/anaconda3/envs/mover2/bin/python demo.py \
+/root/anaconda3/envs/pare-env/bin/python demo.py \
        --cfg ${pare_model}/config.yaml \
        --ckpt ${pare_model}/checkpoint.ckpt \
        --output_folder out_file \
