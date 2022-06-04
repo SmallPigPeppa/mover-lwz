@@ -22,7 +22,7 @@ video_name=Color_flip
 save_dir=/root/code/mover/preprocess
 pare_model=/root/code/mover/preprocess/pare/hrnet_model
 cd /root/code/mover/preprocess/pare/
-/home/hyi/anaconda3/envs/pare_pt1.6_vision0.7/bin/python demo.py \
+/root/anaconda3/envs/mover2/bin/python demo.py \
        --cfg ${pare_model}/config.yaml \
        --ckpt ${pare_model}/checkpoint.ckpt \
        --output_folder $2 \
