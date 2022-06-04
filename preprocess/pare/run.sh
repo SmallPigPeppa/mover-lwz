@@ -20,12 +20,22 @@
 
 video_name=Color_flip
 save_dir=/root/code/mover/preprocess
+video_file=/root/code/mover/preprocess/${video_name}/${video_name}.mp4
+out_file=${save_dir}/${video_name}/pare_results
 pare_model=/root/code/mover/preprocess/pare/hrnet_model
 cd /root/code/mover/preprocess/pare/
+#/root/anaconda3/envs/mover2/bin/python demo.py \
+#       --cfg ${pare_model}/config.yaml \
+#       --ckpt ${pare_model}/checkpoint.ckpt \
+#       --output_folder $2 \
+#       --vid_file $1 \
+#       --draw_keypoints \
+#       --detector maskrcnn
+
 /root/anaconda3/envs/mover2/bin/python demo.py \
        --cfg ${pare_model}/config.yaml \
        --ckpt ${pare_model}/checkpoint.ckpt \
-       --output_folder $2 \
-       --vid_file $1 \
+       --output_folder out_file \
+       --vid_file video_file \
        --draw_keypoints \
        --detector maskrcnn
