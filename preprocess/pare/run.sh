@@ -21,7 +21,6 @@
 video_name=Color_flip
 save_dir=/root/code/mover/preprocess
 pare_model=/root/code/mover/preprocess/pare/hrnet_model
-
 cd /root/code/mover/preprocess/pare/
 /root/anaconda3/envs/mover2/bin/python demo.py \
        --cfg ${pare_model}/config.yaml \
