@@ -40,6 +40,7 @@ def main(args):
 
     if demo_mode == 'video':
         video_file = args.vid_file
+        print(video_file)
 
         # ========= [Optional] download the youtube video ========= #
         if video_file.startswith('https://www.youtube.com'):
