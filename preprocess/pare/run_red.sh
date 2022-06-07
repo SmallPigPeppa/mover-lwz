@@ -37,7 +37,7 @@ cd /home/ubuntu/code/mover/preprocess/pare
        --cfg ${pare_model}/config.yaml \
        --ckpt ${pare_model}/checkpoint.ckpt \
        --output_folder out_file \
-       --vid_file video_file \
+       --vid_file /home/ubuntu/code/mover/preprocess/Color_flip/Color_flip.mp4 \
        --draw_keypoints \
        --detector maskrcnn
 
