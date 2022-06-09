@@ -19,11 +19,12 @@
 
 
 video_name=Color_flip
-save_dir=～/code/mover/preprocess
-video_file=～/code/mover/preprocess/${video_name}/${video_name}.mp4
+project_path=/home/admin
+save_dir=${project_path}/code/mover/preprocess
+video_file=${project_path}/code/mover/preprocess/${video_name}/${video_name}.mp4
 out_file=${save_dir}/${video_name}/pare_results
-pare_model=～/code/mover/preprocess/pare/hrnet_model
-cd ～/code/mover/preprocess/pare/
+pare_model=${project_path}/code/mover/preprocess/pare/hrnet_model
+cd ${project_path}/code/mover/preprocess/pare/
 #/root/anaconda3/envs/mover2/bin/python demo.py \
 #       --cfg ${pare_model}/config.yaml \
 #       --ckpt ${pare_model}/checkpoint.ckpt \
@@ -32,7 +33,7 @@ cd ～/code/mover/preprocess/pare/
 #       --draw_keypoints \
 #       --detector maskrcnn
 
-～/anaconda3/envs/pare-env/bin/python demo.py \
+${project_path}/anaconda3/envs/pare-env/bin/python demo.py \
        --cfg ${pare_model}/config.yaml \
        --ckpt ${pare_model}/checkpoint.ckpt \
        --output_folder out_file \
