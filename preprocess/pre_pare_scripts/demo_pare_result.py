@@ -289,6 +289,8 @@ def main(**args):
     # import scipy.io
     # GLOBAL_CAM_EXT = scipy.io.loadmat(os.path.join(OBJ_DIR, 'r_ex.mat'))['cam_R'] 
     # print('ori: \n', GLOBAL_CAM_EXT)
+    print('************debug**************')
+    print(os.path.join(OBJ_DIR, '001.xml'))
     GLOBAL_CAM_INC, GLOBAL_CAM_EXT = load_camera_from_xml(os.path.join(OBJ_DIR, '001.xml'))
     print('load camera from ', os.path.join(OBJ_DIR, '001.xml'))
 
