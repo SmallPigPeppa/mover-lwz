@@ -1,0 +1,8 @@
+executable = /home/mkocabas/miniconda3/bin/python
+arguments = scripts/figure_generator.py copy $(Process)
+error = condor_logs/save_renders/$(Cluster).$(Process).err
+output = condor_logs/save_renders/$(Cluster).$(Process).out
+log = condor_logs/save_renders/$(Cluster).$(Process).log
+request_memory = 2000
+request_cpus=1
+queue 52

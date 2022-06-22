@@ -1,0 +1,8 @@
+executable = /home/mkocabas/miniconda3/bin/python
+arguments = scripts/figure_generator.py mosaic $(Process)
+error = condor_logs/save_renders/$(Cluster).$(Process).err
+output = condor_logs/save_renders/$(Cluster).$(Process).out
+log = condor_logs/save_renders/$(Cluster).$(Process).log
+request_memory = 64000
+request_cpus=16
+queue 41
