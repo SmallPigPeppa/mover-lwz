@@ -393,7 +393,7 @@ class PARETester:
 
                 if self.args.draw_keypoints:
                     for idx, pt in enumerate(frame_kp):
-                        cv2.circle(img, (pt[0], pt[1]), 4, (0,255,0), -1)
+                        cv2.circle(img, (int(pt[0]), int(pt[1])), 4, (0,255,0), -1)
 
                 if self.args.sideview:
                     side_img = renderer.render(
