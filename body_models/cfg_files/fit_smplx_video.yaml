@@ -147,7 +147,8 @@ debug: False
 ground_plane_support: False
 ground_contact_support: False
 ground_contact_path: None
-body_segments_dir: "/ps/scratch/multi-ioi/data/PROX/quantitative/body_segments"
+#body_segments_dir: "/ps/scratch/multi-ioi/data/PROX/quantitative/body_segments"
+body_segments_dir: "/root/code/prox/quantitative/body_segments"
 
 # ADD LOSS WEIGHT
 gp_support_weights_init: 1e4
