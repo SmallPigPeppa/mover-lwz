@@ -309,6 +309,86 @@ def parse_config(argv=None):
     parser.add_argument('--json_folder', type=str, default='adam',
                         help='The optimizer used')
 
+    # new arg for pre pare
+    parser.add_argument('--cfg', type=str,
+                        help='config file that defines model hyperparams')
+
+    parser.add_argument('--ckpt', type=str,
+                        help='checkpoint path')
+
+    parser.add_argument('--exp', type=str, default='',
+                        help='short description of the experiment')
+
+    parser.add_argument('--mode', default='video', choices=['video', 'folder', 'webcam'],
+                        help='Demo type')
+
+    parser.add_argument('--vid_file', type=str,
+                        help='input video path or youtube link')
+
+    parser.add_argument('--image_folder', type=str,
+                        help='input image folder')
+
+# *********************change**************************
+    parser.add_argument('--output_folder0', type=str, default='logs/demo/demo_results',
+                        help='output folder to write results')
+
+    parser.add_argument('--tracking_method', type=str, default='bbox', choices=['bbox', 'pose'],
+                        help='tracking method to calculate the tracklet of a subject from the input video')
+
+    parser.add_argument('--detector', type=str, default='yolo', choices=['yolo', 'maskrcnn'],
+                        help='object detector to be used for bbox tracking')
+
+    parser.add_argument('--yolo_img_size', type=int, default=416,
+                        help='input image size for yolo detector')
+
+    parser.add_argument('--tracker_batch_size', type=int, default=12,
+                        help='batch size of object detector used for bbox tracking')
+
+    parser.add_argument('--staf_dir', type=str, default='/home/mkocabas/developments/openposetrack',
+                        help='path to directory STAF pose tracking method installed.')
+
+
+#*********************change**************************
+    parser.add_argument('--batch_size0', type=int, default=16,
+                        help='batch size of PARE')
+
+    parser.add_argument('--display', action='store_true',
+                        help='visualize the results of each step during demo')
+
+    parser.add_argument('--smooth', action='store_true',
+                        help='smooth the results to prevent jitter')
+
+    parser.add_argument('--min_cutoff', type=float, default=0.004,
+                        help='one euro filter min cutoff. '
+                             'Decreasing the minimum cutoff frequency decreases slow speed jitter')
+
+    parser.add_argument('--beta', type=float, default=1.0,
+                        help='one euro filter beta. '
+                             'Increasing the speed coefficient(beta) decreases speed lag.')
+
+    # parser.add_argument('--run_smplify', action='store_true',
+    #                     help='run smplify for refining the results, you need pose tracking to enable it')
+
+    parser.add_argument('--no_render', action='store_true',
+                        help='disable final rendering of output video.')
+
+    parser.add_argument('--no_save', action='store_true',
+                        help='disable final save of output results.')
+
+    parser.add_argument('--wireframe', action='store_true',
+                        help='render all meshes as wireframes.')
+
+    parser.add_argument('--sideview', action='store_true',
+                        help='render meshes from alternate viewpoint.')
+
+    parser.add_argument('--draw_keypoints', action='store_true',
+                        help='draw 2d keypoints on rendered image.')
+
+    parser.add_argument('--save_obj', action='store_true',
+                        help='save results as .obj files.')
+
+
+
 
     args = parser.parse_args()
     args_dict = vars(args)
