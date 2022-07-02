@@ -1,31 +1,90 @@
-# -*- coding: utf-8 -*-
-
-# Max-Planck-Gesellschaft zur Förderung der Wissenschaften e.V. (MPG) is
-# holder of all proprietary rights on this computer program.
-# You can only use this computer program if you have closed
-# a license agreement with MPG or you get the right to use the computer
-# program from someone who is authorized to grant you that right.
-# Any use of the computer program without a valid license is prohibited and
-# liable to prosecution.
-#
-# Copyright©2019 Max-Planck-Gesellschaft zur Förderung
-# der Wissenschaften e.V. (MPG). acting on behalf of its Max Planck Institute
-# for Intelligent Systems and the Max Planck Institute for Biological
-# Cybernetics. All rights reserved.
-#
-# Contact: ps-license@tuebingen.mpg.de
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-
+import argparse
 import sys
 import os
-
 import configargparse
 import ast
+def parser_pare():
+    parser = argparse.ArgumentParser()
 
-def parse_config(argv=None):
+    parser.add_argument('--cfg', type=str,
+                        help='config file that defines model hyperparams')
+
+    parser.add_argument('--ckpt', type=str,
+                        help='checkpoint path')
+
+    parser.add_argument('--exp', type=str, default='',
+                        help='short description of the experiment')
+
+    parser.add_argument('--mode', default='video', choices=['video', 'folder', 'webcam'],
+                        help='Demo type')
+
+    parser.add_argument('--vid_file', type=str,
+                        help='input video path or youtube link')
+
+    parser.add_argument('--image_folder', type=str,
+                        help='input image folder')
+
+    parser.add_argument('--output_folder', type=str, default='logs/demo/demo_results',
+                        help='output folder to write results')
+
+    parser.add_argument('--tracking_method', type=str, default='bbox', choices=['bbox', 'pose'],
+                        help='tracking method to calculate the tracklet of a subject from the input video')
+
+    parser.add_argument('--detector', type=str, default='yolo', choices=['yolo', 'maskrcnn'],
+                        help='object detector to be used for bbox tracking')
+
+    parser.add_argument('--yolo_img_size', type=int, default=416,
+                        help='input image size for yolo detector')
+
+    parser.add_argument('--tracker_batch_size', type=int, default=12,
+                        help='batch size of object detector used for bbox tracking')
+
+    parser.add_argument('--staf_dir', type=str, default='/home/mkocabas/developments/openposetrack',
+                        help='path to directory STAF pose tracking method installed.')
+
+    parser.add_argument('--batch_size', type=int, default=16,
+                        help='batch size of PARE')
+
+    parser.add_argument('--display', action='store_true',
+                        help='visualize the results of each step during demo')
+
+    parser.add_argument('--smooth', action='store_true',
+                        help='smooth the results to prevent jitter')
+
+    parser.add_argument('--min_cutoff', type=float, default=0.004,
+                        help='one euro filter min cutoff. '
+                             'Decreasing the minimum cutoff frequency decreases slow speed jitter')
+
+    parser.add_argument('--beta', type=float, default=1.0,
+                        help='one euro filter beta. '
+                             'Increasing the speed coefficient(beta) decreases speed lag.')
+
+    # parser.add_argument('--run_smplify', action='store_true',
+    #                     help='run smplify for refining the results, you need pose tracking to enable it')
+
+    parser.add_argument('--no_render', action='store_true',
+                        help='disable final rendering of output video.')
+
+    parser.add_argument('--no_save', action='store_true',
+                        help='disable final save of output results.')
+
+    parser.add_argument('--wireframe', action='store_true',
+                        help='render all meshes as wireframes.')
+
+    parser.add_argument('--sideview', action='store_true',
+                        help='render meshes from alternate viewpoint.')
+
+    parser.add_argument('--draw_keypoints', action='store_true',
+                        help='draw 2d keypoints on rendered image.')
+
+    parser.add_argument('--save_obj', action='store_true',
+                        help='save results as .obj files.')
+
+    # args = parser.parse_args()
+    return parser
+
+
+def parser_pare_result():
     arg_formatter = configargparse.ArgumentDefaultsHelpFormatter
 
     cfg_parser = configargparse.YAMLConfigFileParser
@@ -40,8 +99,10 @@ def parse_config(argv=None):
                         help='The directory that contains the data.')
     parser.add_argument('--max_persons', type=int, default=3,
                         help='The maximum number of persons to process')
-    parser.add_argument('-c', '--config',
-                        required=True, is_config_file=True,
+    # parser.add_argument('-c', '--config',
+    #                     required=True, is_config_file=True,
+    #                     help='config file path')
+    parser.add_argument('-c', '--config', is_config_file=True,
                         help='config file path')
     parser.add_argument('--loss_type', default='smplify', type=str,
                         help='The type of loss to use')
@@ -63,7 +124,7 @@ def parse_config(argv=None):
                         help='Display plots while running the optimization')
     parser.add_argument('--degrees', type=float, default=[0, 90, 180, 270],
                         help='Degrees of rotation for rendering the final' +
-                        ' result')
+                             ' result')
     parser.add_argument('--use_cuda',
                         type=lambda arg: arg.lower() == 'true',
                         default=True,
@@ -85,7 +146,7 @@ def parse_config(argv=None):
                         help='Where to store the TensorBoard summaries')
     parser.add_argument('--result_folder', type=str, default='results',
                         help='The folder with the pkls of the output' +
-                        ' parameters')
+                             ' parameters')
     parser.add_argument('--mesh_folder', type=str, default='meshes',
                         help='The folder where the output meshes are stored')
     parser.add_argument('--gender_lbl_type', default='none',
@@ -95,22 +156,22 @@ def parse_config(argv=None):
                         default='neutral',
                         choices=['neutral', 'male', 'female'],
                         help='Use gender neutral or gender specific SMPL' +
-                        'model')
+                             'model')
     parser.add_argument('--float_dtype', type=str, default='float32',
                         help='The types of floats used')
     parser.add_argument('--model_type', default='smpl', type=str,
                         choices=['smpl', 'smplh', 'smplx'],
                         help='The type of the model that we will fit to the' +
-                        ' data.')
+                             ' data.')
     parser.add_argument('--camera_type', type=str, default='user',
-                        choices=['persp','user'],
+                        choices=['persp', 'user'],
                         help='The type of camera used')
     parser.add_argument('--calib_path', type=str, default='calibration',
                         help='The folder where calibration files (xml) are stored')
 
     parser.add_argument('--calib_path_oriJ3d', type=str, default='calibration',
                         help='The folder where calibration files (xml) are stored')
-                        
+
     parser.add_argument('--optim_jaw', default=True,
                         type=lambda x: x.lower() in ['true', '1'],
                         help='Optimize over the jaw pose')
@@ -137,7 +198,7 @@ def parse_config(argv=None):
                         default=8,
                         type=int,
                         help='The number of gaussian for the Pose Mixture' +
-                        ' Prior.')
+                             ' Prior.')
     parser.add_argument('--use_pca', default=True,
                         type=lambda x: x.lower() in ['true', '1'],
                         help='Use the low dimensional PCA space for the hands')
@@ -148,25 +209,25 @@ def parse_config(argv=None):
                         help='Use the flat hand as the mean pose')
     parser.add_argument('--body_prior_type', default='mog', type=str,
                         help='The type of prior that will be used to' +
-                        ' regularize the optimization. Can be a Mixture of' +
-                        ' Gaussians (mog)')
+                             ' regularize the optimization. Can be a Mixture of' +
+                             ' Gaussians (mog)')
     parser.add_argument('--left_hand_prior_type', default='mog', type=str,
                         choices=['mog', 'l2', 'None'],
                         help='The type of prior that will be used to' +
-                        ' regularize the optimization of the pose of the' +
-                        ' left hand. Can be a Mixture of' +
-                        ' Gaussians (mog)')
+                             ' regularize the optimization of the pose of the' +
+                             ' left hand. Can be a Mixture of' +
+                             ' Gaussians (mog)')
     parser.add_argument('--right_hand_prior_type', default='mog', type=str,
                         choices=['mog', 'l2', 'None'],
                         help='The type of prior that will be used to' +
-                        ' regularize the optimization of the pose of the' +
-                        ' right hand. Can be a Mixture of' +
-                        ' Gaussians (mog)')
+                             ' regularize the optimization of the pose of the' +
+                             ' right hand. Can be a Mixture of' +
+                             ' Gaussians (mog)')
     parser.add_argument('--jaw_prior_type', default='l2', type=str,
                         choices=['l2', 'None'],
                         help='The type of prior that will be used to' +
-                        ' regularize the optimization of the pose of the' +
-                        ' jaw.')
+                             ' regularize the optimization of the pose of the' +
+                             ' jaw.')
     parser.add_argument('--use_vposer', default=False,
                         type=lambda arg: arg.lower() in ['true', '1'],
                         help='Use the VAE pose embedding')
@@ -180,8 +241,8 @@ def parse_config(argv=None):
                         type=lambda x: [list(map(int, pair.split('.')))
                                         for pair in x.split(',')],
                         help='The indices of the joints used to estimate' +
-                        ' the initial depth of the camera. The format' +
-                        ' should be vIdx1.vIdx2,vIdx3.vIdx4')
+                             ' the initial depth of the camera. The format' +
+                             ' should be vIdx1.vIdx2,vIdx3.vIdx4')
 
     parser.add_argument('--prior_folder', type=str, default='prior',
                         help='The folder where the prior is stored')
@@ -221,7 +282,7 @@ def parse_config(argv=None):
                         default=[0.0, 0.0, 0.0, 2.0], type=float,
                         nargs='*',
                         help='The weights for the facial keypoints' +
-                        ' for each stage of the optimization')
+                             ' for each stage of the optimization')
     parser.add_argument('--hand_joints_weights',
                         default=[0.0, 0.0, 0.0, 2.0],
                         type=float, nargs='*',
@@ -229,12 +290,12 @@ def parse_config(argv=None):
     parser.add_argument('--jaw_pose_prior_weights',
                         nargs='*',
                         help='The weights of the pose regularizer of the' +
-                        ' hands')
+                             ' hands')
     parser.add_argument('--hand_pose_prior_weights',
                         default=[1e2, 5 * 1e1, 1e1, .5 * 1e1],
                         type=float, nargs='*',
                         help='The weights of the pose regularizer of the' +
-                        ' hands')
+                             ' hands')
     parser.add_argument('--coll_loss_weights',
                         default=[0.0, 0.0, 0.0, 2.0], type=float,
                         nargs='*',
@@ -242,11 +303,11 @@ def parse_config(argv=None):
 
     parser.add_argument('--depth_loss_weight', default=1e2, type=float,
                         help='The weight for the regularizer for the' +
-                        ' z coordinate of the camera translation')
+                             ' z coordinate of the camera translation')
     parser.add_argument('--df_cone_height', default=0.5, type=float,
                         help='The default value for the height of the cone' +
-                        ' that is used to calculate the penetration distance' +
-                        ' field')
+                             ' that is used to calculate the penetration distance' +
+                             ' field')
     parser.add_argument('--max_collisions', default=8, type=int,
                         help='The maximum number of bounding box collisions')
     parser.add_argument('--point2plane', default=False,
@@ -254,18 +315,18 @@ def parse_config(argv=None):
                         help='Use point to plane distance')
     parser.add_argument('--part_segm_fn', default='', type=str,
                         help='The file with the part segmentation for the' +
-                        ' faces of the model')
+                             ' faces of the model')
     parser.add_argument('--ign_part_pairs', default=None,
                         nargs='*', type=str,
                         help='Pairs of parts whose collisions will be ignored')
     parser.add_argument('--use_hands', default=False,
                         type=lambda x: x.lower() in ['true', '1'],
                         help='Use the hand keypoints in the SMPL' +
-                        'optimization process')
+                             'optimization process')
     parser.add_argument('--use_face', default=False,
                         type=lambda x: x.lower() in ['true', '1'],
                         help='Use the facial keypoints in the optimization' +
-                        ' process')
+                             ' process')
     parser.add_argument('--use_face_contour', default=False,
                         type=lambda x: x.lower() in ['true', '1'],
                         help='Use the dynamic contours of the face')
@@ -273,10 +334,10 @@ def parse_config(argv=None):
                         default=25,
                         type=float,
                         help='This is thresholding value that determines' +
-                        ' whether the human is captured in a side view.' +
-                        'If the pixel distance between the shoulders is less' +
-                        ' than this value, two initializations of SMPL fits' +
-                        ' are tried.')
+                             ' whether the human is captured in a side view.' +
+                             'If the pixel distance between the shoulders is less' +
+                             ' than this value, two initializations of SMPL fits' +
+                             ' are tried.')
     parser.add_argument('--optim_type', type=str, default='adam',
                         help='The optimizer used')
     parser.add_argument('--lr', type=float, default=1e-6,
@@ -303,18 +364,15 @@ def parse_config(argv=None):
     parser.add_argument('--cam_dir', type=str, default='adam',
                         help='The optimizer used')
     parser.add_argument('--export_mesh', default=False, type=ast.literal_eval,
-                    help='training image')
+                        help='training image')
     parser.add_argument('--save_new_json', default=False, type=ast.literal_eval,
-                    help='training image')
+                        help='training image')
     parser.add_argument('--json_folder', type=str, default='adam',
                         help='The optimizer used')
 
-    # new config
 
-
-
-
-
-    args = parser.parse_args()
-    args_dict = vars(args)
-    return args_dict
+    return parser
+    #
+    # args = parser.parse_args()
+    # args_dict = vars(args)
+    # return args_dict
