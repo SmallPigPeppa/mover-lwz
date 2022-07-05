@@ -58,6 +58,23 @@ if __name__ == "__main__":
     model_folder = 'data/body_models'
     vposer_folder = '../../smplifyx-file/vposer_v1_0'
     segm_fn_path='../../smplifyx-file/smplx_parts_segm.pkl'
+    '''
+    #    --config ./cfg_files/fit_smpl.yaml \
+    #    --export_mesh True \
+    #    --save_new_json True \
+    #    --json_folder  ${JSON_FOLDER} \
+    #    --data_folder ${DATA_FOLDER} \
+    #    --output_folder ${OUTPUT_FOLDER} \
+    #    --pare_result ${pare_result} \
+    #    --cam_dir ${cam_dir} \
+    #    --visualize="False" \
+    #    --model_folder ${MODEL_FOLDER} \
+    #    --vposer_ckpt ${VPOSER_FOLDER} \
+    #    --part_segm_fn /root/code/mover/smplifyx-file/smplx_parts_segm.pkl \
+    #    --gender male \
+    #    --check_inverse_feet="False" \
+    '''
+
     parser2.set_defaults(config='cfg_files/fit_smpl.yaml', export_mesh=True, save_new_json=True,
                          json_folder=f'{json_folder}', data_folder=f'{image_dir}', output_folder=f'{output_folder}',
                          pare_result=f'{pare_result}', cam_dir=f'{cam_dir}', visualize=False,
