@@ -343,6 +343,7 @@ def main2(**args):
             len(glob.glob(os.path.join(img_folder, '*png')))  
     result_path = args.pop('pare_result')
     pare_result = joblib.load(result_path)
+    print('nframes:',nframes)
     pare_result_dict = reorganize_pare(pare_result, nframes)
 
     if not visualize:
