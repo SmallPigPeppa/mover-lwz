@@ -148,9 +148,9 @@ def main0(args):
     # folders = glob(os.path.join(root, '*'))
     folders = [root]
     for folder in folders:
-        # filenames = sorted(glob(os.path.join(folder, '*json')))
-        filenames = sorted(os.listdir(folder))
-        filenames=[f'{folder}/{i}' for i in filenames]
+        filenames = sorted(glob(os.path.join(folder, '*json')))
+        # filenames = sorted(os.listdir(folder))
+        # filenames=[f'{folder}/{i}' for i in filenames]
         # filenames = sorted(os.path.join(folder, '*json'))
         num = len(filenames)
         temp = np.zeros((num, 25, 3), dtype=np.float32)
@@ -206,6 +206,8 @@ def main0(args):
             new_result = save_json(filename, temp[i], save_path)
 
             if viz:
+                # img_path = os.path.join(img_dir, f'{i+1:06d}.jpg')
+                # save_img_path = os.path.join(dump, f'{i+1:06d}.jpg')
                 img_path = os.path.join(img_dir, f'{i:06d}.jpg')
                 save_img_path = os.path.join(dump, f'{i:06d}.jpg')
                 img = cv2.imread(img_path)
