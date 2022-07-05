@@ -54,7 +54,7 @@ def main1(args):
 
         
         # output_path = os.path.join(args.output_folder, os.path.basename(video_file).replace('.mp4', '_' + args.exp))
-        output_path = args.output_folder+'_'+args.exp
+        output_path = os.path.join(args.output_folder,args.exp)
 
         print(f'exist {output_path}: ', os.path.exists(os.path.join(output_path, 'tmp_images')))
         if not os.path.isfile(video_file) and not os.path.exists(os.path.join(output_path, 'tmp_images')):
