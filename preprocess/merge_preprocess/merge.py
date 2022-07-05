@@ -1,5 +1,6 @@
 import sys
 sys.path.append('footskate_reducer')
+sys.path.append('footskate_reducer/ground_detector')
 from footskate_reducer.ground_detector.op_filter_json_merge import main0
 from demo_merge import main1
 from demo_pare_result_merge import main2
