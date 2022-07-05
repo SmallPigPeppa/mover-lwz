@@ -235,4 +235,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    main0(args)
+    main1(args)
