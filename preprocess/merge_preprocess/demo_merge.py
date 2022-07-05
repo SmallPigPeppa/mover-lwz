@@ -79,7 +79,9 @@ def main1(args):
         os.makedirs(output_img_folder, exist_ok=True)
     elif demo_mode == 'folder':
         input_image_folder = args.image_folder
-        output_path = os.path.join(args.output_folder, os.path.basename(input_image_folder) + '_' + args.exp)
+        # output_path = os.path.join(args.output_folder, os.path.basename(input_image_folder) + '_' + args.exp)
+
+        output_path = os.path.join(args.output_folder, os.path.basename(input_image_folder),args.exp)
         os.makedirs(output_path, exist_ok=True)
 
         output_img_folder = os.path.join(output_path, 'pare_results')
