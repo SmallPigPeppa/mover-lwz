@@ -1,14 +1,14 @@
 dataset: 'openpose'
 joints_to_ign:
     - 1
-    - 9
+   pare_result - 9
     - 12
 #data_folder: "data"
-output_folder: 'smpl_debug'
+#output_folder: 'smpl_debug'
 prior_folder: 'priors'
-model_folder: 'models'
+#model_folder: 'models'
 result_folder: 'results'
-gender: "neutral"
+#gender: "neutral"
 model_type: 'smpl'
 # Flag for using the GPU
 use_cuda: True
@@ -42,7 +42,7 @@ lr: 1.0
 # Max number of optimization iterations
 maxiters: 30
 interactive: True
-visualize: False
+#visualize: False
 
 data_weights:
     - 1.0
@@ -65,4 +65,4 @@ shape_weights:
     - 1.0e1
     - 0.5e1
 use_vposer: True
-vposer_ckpt: "vposer"
+#vposer_ckpt: "vposer"
