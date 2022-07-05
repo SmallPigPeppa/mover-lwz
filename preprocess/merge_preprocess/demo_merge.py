@@ -34,7 +34,7 @@ from pare.utils.demo_utils import (
 MIN_NUM_FRAMES = 0
 
 
-def main0(args):
+def main1(args):
 
     demo_mode = 'video' # 'video', 'folder', 'webcam'
 

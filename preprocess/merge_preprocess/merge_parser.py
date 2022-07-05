@@ -3,6 +3,18 @@ import sys
 import os
 import configargparse
 import ast
+def parser_op_filter():
+    parser = argparse.ArgumentParser(description='Process openpose json through OneEuro Filter')
+    parser.add_argument('--root', type=str, help='an integer for the accumulator')
+    parser.add_argument('--dump', type=str, help='an integer for the accumulator')
+    parser.add_argument('--img_dir', type=str, help='an integer for the accumulator')
+    parser.add_argument('--viz',
+                        type=lambda arg: arg.lower() == 'true',
+                        default=False,
+                        help='Print info messages during the process')
+
+    # args = parser.parse_args()
+    return parser
 def parser_pare():
     parser = argparse.ArgumentParser()
 

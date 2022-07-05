@@ -271,7 +271,7 @@ def load_camera_from_xml(xml_fn):
 
     return intrinsics_mat, extrinsics_mat[:, :-1]
 
-def main1(**args):
+def main2(**args):
     output_folder = args.pop('output_folder')
     output_folder = osp.expandvars(output_folder)
     if not osp.exists(output_folder):
