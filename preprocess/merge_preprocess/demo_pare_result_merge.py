@@ -344,6 +344,9 @@ def main2(**args):
     result_path = args.pop('pare_result')
     pare_result = joblib.load(result_path)
     print('nframes:',nframes)
+    print('nframes2:',len(glob.glob(os.path.join(img_folder, '*jpg'))))
+    test_path='/root/code/mover/preprocess/input_data/Color_flip/imgs'
+    print('nframes3:',len(glob.glob(os.path.join(test_path, '*jpg'))))
     pare_result_dict = reorganize_pare(pare_result, nframes)
 
     if not visualize:
