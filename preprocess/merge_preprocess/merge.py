@@ -7,9 +7,9 @@ from merge_parser import parser_pare, parser_pare_result, parser_op_filter
 if __name__ == "__main__":
     video_name='Color_flip'
     video_path='Color_flip'
-    openpose_path='/root/code/mover/preprocess/Color_flip/Color_flip_openpose_backup'
-    image_path='/root/code/mover/preprocess/Color_flip/Color_flip_frames'
-    save_dir='/root/code/mover/preprocess/out'
+    openpose_path='/root/code/mover/preprocess/input_data/Color_flip/openpose'
+    image_path='/root/code/mover/preprocess/input_data/Color_flip/imgs'
+    save_dir='/root/code/mover/preprocess/out_data'
 
     parser0 = parser_op_filter()
     parser0.set_defaults(root=openpose_path,
