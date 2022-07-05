@@ -17,7 +17,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
 
-    video_name=args.video_name
+    # video_name=args.video_name
 
 
 
@@ -46,30 +46,30 @@ if __name__ == "__main__":
     main1(args1)
 
 
-    # step2: op2smplifyx_withPARE
-    parser2 = parser_pare_result()
-    OUTPUT_FOLDER = f'{out_dir}/{video_name}/op2smplifyx_withPARE'
-    # JSON_FOLDER = "/root/code/mover/preprocess/Color_flip/Color_flip_openpose"
-    pare_result = '/root/code/mover/preprocess/Color_flip/pare_output.pkl'
-    cam_dir = '/root/code/mover/smplifyx_cam'
-    cam_dir = '../../smplifyx_cam'
-    MODEL_FOLDER = '../pare/data/body_models'
-    VPOSER_FOLDER = '../../smplifyx-file/vposer_v1_0'
-    parser2.set_defaults(config='./cfg_files/fit_smpl.yaml', export_mesh=True, save_new_json=True,
-                         json_folder=f'{openpose_dir}', data_folder=f'{image_dir}', output_folder=f'{OUTPUT_FOLDER}',
-                         pare_result=f'{pare_result}', cam_dir=f'{cam_dir}', visualize=False,
-                         model_folder=f'{MODEL_FOLDER}', vposer_ckpt=f'{VPOSER_FOLDER}',
-                         part_segm_fn='/root/code/mover/smplifyx-file/smplx_parts_segm.pkl', gender='male',
-                         check_inverse_feet=False)
-    print('********************************************')
-    args2 = parser2.parse_args()
-    args_dict2 = vars(args2)
-    print(args_dict2)
-    main2(**args2)
-    #
-    # print(args1)
+    # # step2: op2smplifyx_withPARE
+    # parser2 = parser_pare_result()
+    # OUTPUT_FOLDER = f'{out_dir}/{video_name}/op2smplifyx_withPARE'
+    # # JSON_FOLDER = "/root/code/mover/preprocess/Color_flip/Color_flip_openpose"
+    # pare_result = '/root/code/mover/preprocess/Color_flip/pare_output.pkl'
+    # cam_dir = '/root/code/mover/smplifyx_cam'
+    # cam_dir = '../../smplifyx_cam'
+    # MODEL_FOLDER = '../pare/data/body_models'
+    # VPOSER_FOLDER = '../../smplifyx-file/vposer_v1_0'
+    # parser2.set_defaults(config='./cfg_files/fit_smpl.yaml', export_mesh=True, save_new_json=True,
+    #                      json_folder=f'{openpose_dir}', data_folder=f'{image_dir}', output_folder=f'{OUTPUT_FOLDER}',
+    #                      pare_result=f'{pare_result}', cam_dir=f'{cam_dir}', visualize=False,
+    #                      model_folder=f'{MODEL_FOLDER}', vposer_ckpt=f'{VPOSER_FOLDER}',
+    #                      part_segm_fn='/root/code/mover/smplifyx-file/smplx_parts_segm.pkl', gender='male',
+    #                      check_inverse_feet=False)
     # print('********************************************')
-    #
     # args2 = parser2.parse_args()
     # args_dict2 = vars(args2)
     # print(args_dict2)
+    # main2(**args2)
+    # #
+    # # print(args1)
+    # # print('********************************************')
+    # #
+    # # args2 = parser2.parse_args()
+    # # args_dict2 = vars(args2)
+    # # print(args_dict2)
