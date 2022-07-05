@@ -1,5 +1,4 @@
 import sys
-
 sys.path.append('footskate_reducer')
 sys.path.append('footskate_reducer/ground_detector')
 from footskate_reducer.ground_detector.op_filter_json_merge import main0
@@ -9,11 +8,12 @@ import argparse
 from merge_parser import parser_pare, parser_pare_result, parser_op_filter
 
 if __name__ == "__main__":
-    video_name = 'Color_flip'
-    video_path = '/root/code/mover/preprocess/input_data/Color_flip/Color_flip.mp4'
-    openpose_dir = '/root/code/mover/preprocess/input_data/Color_flip/openpose'
-    image_dir = '/root/code/mover/preprocess/input_data/Color_flip/imgs'
-    out_dir = '/root/code/mover/preprocess/out_data'
+    video_name='Color_flip'
+    video_path='/root/code/mover/preprocess/input_data/Color_flip/Color_flip.mp4'
+    openpose_dir='/root/code/mover/preprocess/input_data/Color_flip/openpose'
+    image_dir='/root/code/mover/preprocess/input_data/Color_flip/imgs'
+    out_dir='/root/code/mover/preprocess/out_data'
+
 
     # # step0: openpose filter
     # parser0 = parser_op_filter()
@@ -24,6 +24,7 @@ if __name__ == "__main__":
     # args0 = parser0.parse_args()
     # main0(args0)
 
+
     # step1: pare
     parser1 = parser_pare()
     pare_model = '../pare/hrnet_model'
@@ -33,6 +34,7 @@ if __name__ == "__main__":
                          detector='maskrcnn')
     args1 = parser1.parse_args()
     main1(args1)
+
 
     # # step2: op2smplifyx_withPARE
     # parser2 = parser_pare_result()
