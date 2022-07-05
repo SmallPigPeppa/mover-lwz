@@ -9,6 +9,12 @@ import argparse
 from merge_parser import parser_pare, parser_pare_result, parser_op_filter
 
 if __name__ == "__main__":
+    '''
+    input args:
+    --video_name
+    --out_dir
+    --root_dir
+    '''
     parser = argparse.ArgumentParser(description='merge preprocess for smplifyx-modified')
     parser.add_argument('--video_name', type=str, default='Color_flip', help='an integer for the accumulator')
     parser.add_argument('--out_dir', type=str, default='/root/code/mover/preprocess/out_data',
@@ -17,31 +23,39 @@ if __name__ == "__main__":
                         help='an integer for the accumulator')
     args = parser.parse_args()
 
-    # video_name=args.video_name
+    video_name=args.video_name
+    root_dir=args.root_dir
+    out_dir = args.out_dir
+    video_path=f'{root_dir}/{video_name}.mp4'
+    openpose_dir=f'{root_dir}/{video_name}/openpose'
+    image_dir=f'{root_dir}/{video_name}/imgs'
 
-    video_name = 'Color_flip'
-    video_path = '/root/code/mover/preprocess/input_data/Color_flip/Color_flip.mp4'
-    openpose_dir = '/root/code/mover/preprocess/input_data/Color_flip/openpose'
-    image_dir = '/root/code/mover/preprocess/input_data/Color_flip/imgs'
-    out_dir = '/root/code/mover/preprocess/out_data'
-    # # step0: openpose filter
-    # parser0 = parser_op_filter()
-    # parser0.set_defaults(root=openpose_dir,
-    #                     dump=f'{out_dir}/{video_name}/openpose_OneEurofilter',
-    #                     img_dir=image_dir,
-    #                     viz=True)
-    # args0 = parser0.parse_args()
-    # main0(args0)
+    # #debug
+    # video_name = 'Color_flip'
+    # video_path = '/root/code/mover/preprocess/input_data/Color_flip/Color_flip.mp4'
+    # openpose_dir = '/root/code/mover/preprocess/input_data/Color_flip/openpose'
+    # image_dir = '/root/code/mover/preprocess/input_data/Color_flip/imgs'
+    # out_dir = '/root/code/mover/preprocess/out_data'
 
-    # # step1: pare
-    # parser1 = parser_pare()
-    # pare_model = '../pare/hrnet_model'
+
+    # step0: openpose filter
+    parser0 = parser_op_filter()
+    parser0.set_defaults(root=openpose_dir,
+                        dump=f'{out_dir}/{video_name}/openpose_OneEurofilter',
+                        img_dir=image_dir,
+                        viz=True)
+    args0 = parser0.parse_args()
+    main0(args0)
+
+    # step1: pare
+    parser1 = parser_pare()
+    pare_model = '../pare/hrnet_model'
     pare_exp = 'pare'
-    # parser1.set_defaults(cfg=f'{pare_model}/config.yaml', ckpt=f'{pare_model}/checkpoint.ckpt',
-    #                      output_folder=f'{out_dir}/{video_name}', vid_file=f'{video_path}', draw_keypoints=True,
-    #                      detector='maskrcnn',exp=pare_exp)
-    # args1 = parser1.parse_args()
-    # main1(args1)
+    parser1.set_defaults(cfg=f'{pare_model}/config.yaml', ckpt=f'{pare_model}/checkpoint.ckpt',
+                         output_folder=f'{out_dir}/{video_name}', vid_file=f'{video_path}', draw_keypoints=True,
+                         detector='maskrcnn',exp=pare_exp)
+    args1 = parser1.parse_args()
+    main1(args1)
 
     # step2: op2smplifyx_withPARE
     parser2 = parser_pare_result()
