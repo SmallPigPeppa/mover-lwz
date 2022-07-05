@@ -408,7 +408,8 @@ def main2(**args):
     for idx in tqdm(range(nframes)): # frame_ids
         one_result = get_idx_result(pare_result_dict, idx)
     
-        frame_id = one_result.frame_ids + 1 # Warnings
+        # frame_id = one_result.frame_ids + 1 # Warnings
+        frame_id = one_result.frame_ids + 1  # Warnings
         img_path = os.path.join(img_folder, f'{frame_id:06d}.jpg')
         image = Image.open(img_path)
         w, h = image.size
