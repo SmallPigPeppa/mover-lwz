@@ -126,7 +126,8 @@ def main0(args):
     # root = sys.argv[1] #'/ps/scratch/hyi/HCI_dataset/20210204_capture/C0005/touch_rename_openpose'
     # dump = os.path.join(sys.argv[2], root.split('/')[-1])
     root = args.root
-    dump = os.path.join(args.dump, root.split('/')[-1]) # ! warnings
+    # dump = os.path.join(args.dump, root.split('/')[-1]) # ! warnings
+    dump = args.dump
     # dump = args.dump
     img_dir = args.img_dir
     viz = args.viz

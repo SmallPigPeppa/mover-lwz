@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     parser0 = parser_op_filter()
     parser0.set_defaults(root=openpose_path,
-                        dump=f'{save_dir}/{video_name}/mv_smplifyx_input_withPARE_PARE3DJointOneConfidence_OP2DJoints_openpose_filter',
+                        dump=f'{save_dir}/{video_name}/openpose_OneEurofilter',
                         img_dir=image_path,
                         viz=True)
     args0 = parser0.parse_args()
