@@ -45,7 +45,7 @@ if __name__ == "__main__":
                         img_dir=image_dir,
                         viz=True)
     args0 = parser0.parse_args()
-    main0(args0)
+    # main0(args0)
 
     # step1: pare
     parser1 = parser_pare()
@@ -55,7 +55,7 @@ if __name__ == "__main__":
                          output_folder=f'{out_dir}/{video_name}', vid_file=f'{video_path}', draw_keypoints=True,
                          detector='maskrcnn',exp=pare_exp)
     args1 = parser1.parse_args()
-    main1(args1)
+    # main1(args1)
 
     # step2: op2smplifyx_withPARE
     parser2 = parser_pare_result()
