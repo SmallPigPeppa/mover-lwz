@@ -154,6 +154,7 @@ def main0(args):
         num = len(filenames)
         temp = np.zeros((num, 25, 3), dtype=np.float32)
         for i, filename in enumerate(filenames):
+            filename=f'{folder}/{filename}'
             print(filename)
             tmp_json = read_json(filename)
             if tmp_json.shape[0] == 0:
