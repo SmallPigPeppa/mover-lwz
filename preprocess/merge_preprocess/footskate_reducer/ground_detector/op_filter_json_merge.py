@@ -150,11 +150,11 @@ def main0(args):
     for folder in folders:
         # filenames = sorted(glob(os.path.join(folder, '*json')))
         filenames = sorted(os.listdir(folder))
+        filenames=[f'{folder}/{i}' for i in filenames]
         # filenames = sorted(os.path.join(folder, '*json'))
         num = len(filenames)
         temp = np.zeros((num, 25, 3), dtype=np.float32)
         for i, filename in enumerate(filenames):
-            filename=f'{folder}/{filename}'
             print(filename)
             tmp_json = read_json(filename)
             if tmp_json.shape[0] == 0:
