@@ -53,7 +53,9 @@ def main1(args):
             logger.info(f'YouTube Video has been downloaded to {video_file}...')
 
         
-        output_path = os.path.join(args.output_folder, os.path.basename(video_file).replace('.mp4', '_' + args.exp))
+        # output_path = os.path.join(args.output_folder, os.path.basename(video_file).replace('.mp4', '_' + args.exp))
+        output_path = args.output_folder+'_'+args.exp
+
         print(f'exist {output_path}: ', os.path.exists(os.path.join(output_path, 'tmp_images')))
         if not os.path.isfile(video_file) and not os.path.exists(os.path.join(output_path, 'tmp_images')):
             exit(f'Input video \"{video_file}\" does not exist!')
@@ -79,9 +81,9 @@ def main1(args):
         os.makedirs(output_img_folder, exist_ok=True)
     elif demo_mode == 'folder':
         input_image_folder = args.image_folder
-        # output_path = os.path.join(args.output_folder, os.path.basename(input_image_folder) + '_' + args.exp)
+        output_path = os.path.join(args.output_folder, os.path.basename(input_image_folder) + '_' + args.exp)
 
-        output_path = os.path.join(args.output_folder, os.path.basename(input_image_folder),args.exp)
+        # output_path = os.path.join(args.output_folder, os.path.basename(input_image_folder),args.exp)
         os.makedirs(output_path, exist_ok=True)
 
         output_img_folder = os.path.join(output_path, 'pare_results')
