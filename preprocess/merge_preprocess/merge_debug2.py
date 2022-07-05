@@ -15,27 +15,27 @@ if __name__ == "__main__":
     --out_dir
     --root_dir
     '''
-    # parser = argparse.ArgumentParser(description='merge preprocess for smplifyx-modified')
-    # parser.add_argument('--video_name', type=str, default='Color_flip', help='an integer for the accumulator')
-    # parser.add_argument('--out_dir', type=str, default='/root/code/mover/preprocess/out_data',
-    #                     help='an integer for the accumulator')
-    # parser.add_argument('--root_dir', type=str, default='/root/code/mover/preprocess/input_data',
-    #                     help='an integer for the accumulator')
-    # args = parser.parse_args()
-    #
-    # video_name=args.video_name
-    # root_dir=args.root_dir
-    # out_dir = args.out_dir
-    # video_path=f'{root_dir}/{video_name}.mp4'
-    # openpose_dir=f'{root_dir}/{video_name}/openpose'
-    # image_dir=f'{root_dir}/{video_name}/imgs'
+    parser = argparse.ArgumentParser(description='merge preprocess for smplifyx-modified')
+    parser.add_argument('--video_name', type=str, default='Color_flip', help='an integer for the accumulator')
+    parser.add_argument('--out_dir', type=str, default='/root/code/mover/preprocess/out_data',
+                        help='an integer for the accumulator')
+    parser.add_argument('--root_dir', type=str, default='/root/code/mover/preprocess/input_data',
+                        help='an integer for the accumulator')
+    args = parser.parse_args()
 
-    #debug
-    video_name = 'Color_flip'
-    video_path = '/root/code/mover/preprocess/input_data/Color_flip/Color_flip.mp4'
-    openpose_dir = '/root/code/mover/preprocess/input_data/Color_flip/openpose'
-    image_dir = '/root/code/mover/preprocess/input_data/Color_flip/imgs'
-    out_dir = '/root/code/mover/preprocess/out_data'
+    video_name=args.video_name
+    root_dir=args.root_dir
+    out_dir = args.out_dir
+    video_path=f'{root_dir}/{video_name}.mp4'
+    openpose_dir=f'{root_dir}/{video_name}/openpose'
+    image_dir=f'{root_dir}/{video_name}/imgs'
+
+    # #debug
+    # video_name = 'Color_flip'
+    # video_path = '/root/code/mover/preprocess/input_data/Color_flip/Color_flip.mp4'
+    # openpose_dir = '/root/code/mover/preprocess/input_data/Color_flip/openpose'
+    # image_dir = '/root/code/mover/preprocess/input_data/Color_flip/imgs'
+    # out_dir = '/root/code/mover/preprocess/out_data'
 
 
     # step0: openpose filter
@@ -79,12 +79,4 @@ if __name__ == "__main__":
     args_dict2 = vars(args2)
     main2(**args_dict2)
 
-    # print('********************************************')
-    # print(args_dict2)
-    # #
-    # # print(args1)
-    # # print('********************************************')
-    # #
-    # # args2 = parser2.parse_args()
-    # # args_dict2 = vars(args2)
-    # # print(args_dict2)
+
