@@ -206,8 +206,8 @@ def main0(args):
             new_result = save_json(filename, temp[i], save_path)
 
             if viz:
-                img_path = os.path.join(img_dir, f'{i + 1:06d}.jpg')
-                save_img_path = os.path.join(dump, f'{i + 1:06d}.jpg')
+                img_path = os.path.join(img_dir, f'{i:06d}.jpg')
+                save_img_path = os.path.join(dump, f'{i:06d}.jpg')
                 img = cv2.imread(img_path)
 
                 # import pdb;pdb.set_trace()
