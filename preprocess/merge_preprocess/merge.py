@@ -76,7 +76,7 @@ if __name__ == "__main__":
     '''
 
     parser2.set_defaults(config='cfg_files/fit_smpl.yaml', export_mesh=True, save_new_json=True,
-                         json_folder=f'{json_folder}', data_folder=f'{image_dir}', output_folder=f'{output_folder}',
+                         json_folder=f'{json_folder}', data_folder='/root/code/mover/preprocess/input_data/Color_flip/imgs',output_folder=f'{output_folder}',
                          pare_result=f'{pare_result}', cam_dir=f'{cam_dir}', visualize=False,
                          model_folder=f'{model_folder}', vposer_ckpt=f'{vposer_folder}',
                          part_segm_fn=f'{segm_fn_path}', gender='male',
