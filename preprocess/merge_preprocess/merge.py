@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # # step1: pare
     # parser1 = parser_pare()
     # pare_model = '../pare/hrnet_model'
-    # pare_exp='pare'
+    pare_exp='pare'
     # parser1.set_defaults(cfg=f'{pare_model}/config.yaml', ckpt=f'{pare_model}/checkpoint.ckpt',
     #                      output_folder=f'{out_dir}/{video_name}', vid_file=f'{video_path}', draw_keypoints=True,
     #                      detector='maskrcnn',exp=pare_exp)
