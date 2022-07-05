@@ -1,6 +1,4 @@
-import sys
-sys.path.append('../')
-from preprocess.footskate_reducer.ground_detector.op_filter_json_merge import main0
+from footskate_reducer.ground_detector.op_filter_json_merge import main0
 from demo_merge import main1
 from demo_pare_result_merge import main2
 import argparse
