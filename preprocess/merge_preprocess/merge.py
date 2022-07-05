@@ -83,6 +83,8 @@ if __name__ == "__main__":
                          check_inverse_feet=False)
     args2 = parser2.parse_args()
     args_dict2 = vars(args2)
+    print('********************************************')
+    print(args_dict2)
     main2(**args_dict2)
 
 
