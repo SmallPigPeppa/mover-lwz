@@ -289,7 +289,7 @@ def main2(**args):
     # import scipy.io
     # GLOBAL_CAM_EXT = scipy.io.loadmat(os.path.join(OBJ_DIR, 'r_ex.mat'))['cam_R'] 
     # print('ori: \n', GLOBAL_CAM_EXT)
-    print('************debug**************')
+    # print('************debug**************')
     print(os.path.join(OBJ_DIR, '001.xml'))
     GLOBAL_CAM_INC, GLOBAL_CAM_EXT = load_camera_from_xml(os.path.join(OBJ_DIR, '001.xml'))
     print('load camera from ', os.path.join(OBJ_DIR, '001.xml'))
@@ -344,11 +344,11 @@ def main2(**args):
             len(glob.glob(os.path.join(img_folder, '*png')))  
     result_path = args.pop('pare_result')
     pare_result = joblib.load(result_path)
-    print('nframes:',nframes)
-    print('img_folder:',img_folder)
-    print('nframes2:',len(glob.glob(os.path.join(img_folder, '*jpg'))))
-    test_path='/root/code/mover/preprocess/input_data/Color_flip/imgs'
-    print('nframes3:',len(glob.glob(os.path.join(test_path, '*jpg'))))
+    # print('nframes:',nframes)
+    # print('img_folder:',img_folder)
+    # print('nframes2:',len(glob.glob(os.path.join(img_folder, '*jpg'))))
+    # test_path='/root/code/mover/preprocess/input_data/Color_flip/imgs'
+    # print('nframes3:',len(glob.glob(os.path.join(test_path, '*jpg'))))
     pare_result_dict = reorganize_pare(pare_result, nframes)
 
     if not visualize:
