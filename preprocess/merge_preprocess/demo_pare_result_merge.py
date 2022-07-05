@@ -330,7 +330,8 @@ def main2(**args):
     export_mesh = args.pop('export_mesh')
     print(f'export mesh {export_mesh}, save_new_json {save_new_json}, json folder {json_folder}')
 
-    data_folder = args.pop('data_folder', 'data')
+    # data_folder = args.pop('data_folder', 'data')
+    data_folder = args.pop('data_folder')
     img_folder = data_folder
     dataset_obj = create_dataset(data_folder=data_folder, **args)
     # dataset_obj = create_dataset(img_folder=img_folder, **args)
