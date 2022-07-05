@@ -29,7 +29,7 @@ if __name__ == "__main__":
     parser1 = parser_pare()
     pare_model = '../pare/hrnet_model'
     parser1.set_defaults(cfg=f'{pare_model}/config.yaml', ckpt=f'{pare_model}/checkpoint.ckpt',
-                         output_folder=f'{out_dir}', vid_file=f'${video_path}', draw_keypoints=True,
+                         output_folder=f'{out_dir}', vid_file=f'{video_path}', draw_keypoints=True,
                          detector='maskrcnn')
     args1 = parser1.parse_args()
     main1(args1)
