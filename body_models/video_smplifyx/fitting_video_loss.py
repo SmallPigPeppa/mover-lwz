@@ -111,7 +111,7 @@ class SMPLifyLoss3D(single_view_fitting.SMPLifyLoss):
         # visualizaion: use updated translated 3D joint in Perspective Camera.
         # Render Joint is still not accurate with the original joints.
         if False:
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             cameras = kwargs['cameras']
         
             import cv2
@@ -135,7 +135,7 @@ class SMPLifyLoss3D(single_view_fitting.SMPLifyLoss):
             # cv2.imshow("2d joint", cv2_img)
             cv2.imwrite("render.png", cv2_img)
             cv2.waitKey(5)
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
         
         # Calculate the loss from the Pose prior
         if use_vposer:

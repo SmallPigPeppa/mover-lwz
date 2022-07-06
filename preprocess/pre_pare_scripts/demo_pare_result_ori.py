@@ -393,7 +393,7 @@ def main(**args):
             cv2.imwrite("demo_bluePARE_redNew.png", cv2_img)
             cv2.waitKey(500)
             break
-            import pdb; pdb.set_trace()
+            # import pdb; pdb.set_trace()
             
 
         if export_mesh:

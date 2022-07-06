@@ -266,7 +266,7 @@ class SMPLifyLoss3D(single_view_fitting.SMPLifyLoss):
         # projected_joints = camera(body_model_output.joints)
         # Calculate the distance of the projected joints from
         # the ground truth 2D detections
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
         logger.info('run 3D joint loss.')
         joint_len = gt_joints.shape[1]
         print('joints shape', gt_joints.shape[-1])
@@ -394,7 +394,7 @@ class MultiViewSMPLifyLoss(single_view_fitting.SMPLifyLoss):
         pare_pose_prior_loss = 0.0
         #TODO:  if pare_pose not exists: Need to modifed.
         if self.pare_pose_prior and pare_body_pose is not None:
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             # pose embedding to body pose (angles)
             pare_pose_prior_loss = torch.sum((1 - joints_conf[0,:]) * torch.abs(body_pose - pare_body_pose).pow(2))
             pare_pose_prior_loss = pare_pose_prior_loss * self.pare_pose_weight ** 2

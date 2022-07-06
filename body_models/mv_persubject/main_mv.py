@@ -271,7 +271,7 @@ def main_mv(scene_prior, **args):
 
     # TODO: load previous results and start from the last two stage
     
-    import pdb;pdb.set_trace()
+    # import pdb;pdb.set_trace()
     fitted_body_model, scene_model =fit_multi_view(img, keypoints,
                     body_model=body_model,
                     cameras=cameras,

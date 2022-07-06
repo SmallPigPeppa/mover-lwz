@@ -256,7 +256,7 @@ class FittingMonitor(object):
                 from .tf_utils import save_scalars
                 
 
-                import pdb;pdb.set_trace()
+                # import pdb;pdb.set_trace()
                 if opt_stage >=4:
                     save_scalars(tb_logger, f'SMPLifyX stage{opt_stage}',debug_loss_dict, self.steps)
                 save_scalars(tb_logger, f'SMPLifyX whole fitting',debug_loss_dict, self.steps)

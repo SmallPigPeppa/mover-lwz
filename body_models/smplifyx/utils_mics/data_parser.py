@@ -434,7 +434,7 @@ class OpenPose_Pose2Room(Dataset):
                        'neck': keyp_tuple.neck, 
                        'keypoints_3d': keypoints_3d}
         if False:
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             for tmp_i in range(len(img_fn)):
                 save_name = os.path.basename(img_fn[tmp_i])
                 tmp_save_name = os.path.join('/is/cluster/work/hyi/results/SceneGeneration/Pose2Room',\
