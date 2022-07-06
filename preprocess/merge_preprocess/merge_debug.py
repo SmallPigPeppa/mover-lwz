@@ -79,6 +79,10 @@ if __name__ == "__main__":
     args_dict2 = vars(args2)
     main2(**args_dict2)
 
+
+    # result
+    # /root/code/mover/preprocess/out_data/Color_flip/op2smplifyx_withPARE_PARE3DJointOneConfidence_OP2DJoints
+
     # print('********************************************')
     # print(args_dict2)
     # #

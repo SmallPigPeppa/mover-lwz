@@ -112,7 +112,8 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     batch_size = args.get('batch_size',1)
     img_list = args.get('img_list', [1])
     if -1 in img_list:
-        img_list = [one for one in range(1, batch_size+1)]
+        # img_list = [one for one in range(1, batch_size+1)]
+        img_list = [one for one in range(0, batch_size)]
     assert batch_size == len(img_list)
 
     # Warning: load ground contact value
@@ -121,7 +122,8 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         ground_contact_path = args.get('ground_contact_path', None)
         ground_contact_array = np.load(ground_contact_path)
 
-        idx_gc = [one-1 for one in img_list]
+        # idx_gc = [one-1 for one in img_list]
+        idx_gc = [one for one in img_list]
         ground_contact_value = ground_contact_array[idx_gc]
     except:
         ground_contact_value = np.zeros((len(img_list), 4))
