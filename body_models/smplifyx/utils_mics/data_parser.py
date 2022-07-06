@@ -510,6 +510,8 @@ class OpenPose_Video(OpenPose):
             if type(img_idx) == int:
                 img_idx = f'{img_idx:06d}'
                 one_input = self.read_item(img_idx)
+                if idx==0 or idx==207:
+                    print('one_input:',one_input)
                 all_input_list.append(one_input)
 
         # collate fn
