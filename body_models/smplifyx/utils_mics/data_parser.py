@@ -548,7 +548,10 @@ class OpenPose_Video(OpenPose):
             # import pdb;pdb.set_trace()
             if key not in ['fn', 'img_path', 'img']:
                 # print(f'{key}: {value[0].shape}, {value[1].shape}')
-                print(f'{key}: {value[0].shape}, {value[207].shape}')
+                print('#############################################')
+                print(value[0])
+                print('#############################################')
+                print(value[207])
                 new_result[key] = np.concatenate(value, axis=0)
                 
             else:
