@@ -510,8 +510,8 @@ class OpenPose_Video(OpenPose):
             if type(img_idx) == int:
                 img_idx = f'{img_idx:06d}'
                 one_input = self.read_item(img_idx)
-                if idx==0 or idx==207 or idx==208:
-                    print('one_input:',one_input)
+                # if idx==0 or idx==207 or idx==208:
+                #     print('one_input:',one_input)
 
                 all_input_list.append(one_input)
 
@@ -551,10 +551,10 @@ class OpenPose_Video(OpenPose):
             # import pdb;pdb.set_trace()
             if key not in ['fn', 'img_path', 'img']:
                 # print(f'{key}: {value[0].shape}, {value[1].shape}')
-                print('#############################################')
-                print(value[0])
-                print('#############################################')
-                print(value[207])
+                # print('#############################################')
+                # print(value[0])
+                # print('#############################################')
+                # print(value[207])
                 new_result[key] = np.concatenate(value, axis=0)
                 
             else:
