@@ -1034,7 +1034,7 @@ def fit_multi_view(img,
                 if dataset_name != 'Pose2Room':
                     # ! warning set weight for each stage
                     ### only works in 2D projected loss.
-                    import pdb;pdb.set_trace()
+                    # import pdb;pdb.set_trace()
                     curr_weights['data_weight'] = data_weight
                     curr_weights['bending_prior_weight'] = (
                         3.17 * curr_weights['body_pose_weight'])
