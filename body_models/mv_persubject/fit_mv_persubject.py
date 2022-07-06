@@ -330,7 +330,7 @@ def fit_multi_view(img,
         opt_weights_dict['contact_loss_weight'] = contact_loss_weights
     if pare_pose_prior:
         opt_weights_dict['pare_pose_weight'] = pare_pose_weight
-    # import pdb;pdb.set_trace()
+    import pdb;pdb.set_trace()
     # TODO: add loss at five place: cfg, cmd_parser, input_def and in fit_mv, and in loss definition
     if scene:
         opt_weights_dict['scene_loss_weight'] = scene_loss_weight
@@ -514,7 +514,7 @@ def fit_multi_view(img,
                                                     **kwargs)
             init_optimizer.zero_grad()
 
-            # import pdb;pdb.set_trace()
+            import pdb;pdb.set_trace()
             # build loss closure
             fit_init = monitor.create_fitting_closure(
                                     init_optimizer, body_model, cameras=None,

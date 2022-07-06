@@ -110,7 +110,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     ################################ creat dataloader
     # TODO: get input dataset
     batch_size = args.get('batch_size',1)
-    img_list = args.get('img_list', [1])
+    img_list = args.get('img_list', [-1])
     if -1 in img_list:
         # img_list = [one for one in range(1, batch_size+1)]
         img_list = [one for one in range(0, batch_size)]
