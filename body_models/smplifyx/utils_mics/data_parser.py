@@ -562,7 +562,7 @@ class OpenPose_Video(OpenPose):
         return new_result
 
     def read_item(self, img_idx):
-        img_path = os.path.join(self.data_folder, img_idx, '00', self.img_folder, img_idx+'.jpg')
+        img_path = os.path.join(self.data_folder, img_idx, '00', self.img_folder, img_idx+'.png')
         
         # img = cv2.imread(img_path).astype(np.float32)[:, :, ::-1] / 255.0
         
