@@ -208,8 +208,8 @@ def main0(args):
             if viz:
                 # img_path = os.path.join(img_dir, f'{i+1:06d}.jpg')
                 # save_img_path = os.path.join(dump, f'{i+1:06d}.jpg')
-                img_path = os.path.join(img_dir, f'{i:06d}.jpg')
-                save_img_path = os.path.join(dump, f'{i:06d}.jpg')
+                img_path = os.path.join(img_dir, f'{i:06d}.png')
+                save_img_path = os.path.join(dump, f'{i:06d}.png')
                 img = cv2.imread(img_path)
 
                 # import pdb;pdb.set_trace()
