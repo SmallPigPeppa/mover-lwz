@@ -28,13 +28,14 @@ if __name__ == "__main__":
     # out_dir = args.out_dir
     # video_path=f'{root_dir}/{video_name}.mp4'
     # openpose_dir=f'{root_dir}/{video_name}/openpose'
-    # image_dir=f'{root_dir}/{video_name}/imgs'
+    # image_dir=f'{root_dir}/{video_name}/images'
 
     #debug
     video_name = 'Color_flip'
-    video_path = '/root/code/mover/preprocess/input_data/Color_flip/Color_flip.mp4'
-    openpose_dir = '/root/code/mover/preprocess/input_data/Color_flip/openpose'
-    image_dir = '/root/code/mover/preprocess/input_data/Color_flip/imgs'
+    video_name = 'test_video1'
+    video_path = f'/root/code/mover/preprocess/input_data/{video_name}/{video_name}.mp4'
+    openpose_dir = f'/root/code/mover/preprocess/input_data/{video_name}/openpose'
+    image_dir = f'/root/code/mover/preprocess/input_data/{video_name}/images'
     out_dir = '/root/code/mover/preprocess/out_data'
 
 
