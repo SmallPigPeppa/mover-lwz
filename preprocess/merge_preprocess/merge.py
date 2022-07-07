@@ -31,7 +31,7 @@ if __name__ == "__main__":
     # image_dir=f'{root_dir}/{video_name}/images'
 
     #debug
-    video_name = 'Color_flip'
+    # video_name = 'Color_flip'
     video_name = 'test_video1'
     video_path = f'/root/code/mover/preprocess/input_data/{video_name}/{video_name}.mp4'
     openpose_dir = f'/root/code/mover/preprocess/input_data/{video_name}/openpose'
