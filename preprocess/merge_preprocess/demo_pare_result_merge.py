@@ -410,7 +410,7 @@ def main2(**args):
     
         # frame_id = one_result.frame_ids + 1 # Warnings
         frame_id = one_result.frame_ids  # Warnings
-        img_path = os.path.join(img_folder, f'{frame_id:06d}.jpg')
+        img_path = os.path.join(img_folder, f'{frame_id:06d}.png')
         image = Image.open(img_path)
         w, h = image.size
 
