@@ -11,26 +11,27 @@ from merge_parser import parser_pare, parser_pare_result, parser_op_filter
 if __name__ == "__main__":
     '''
     input args:
-    --video_name
-    --out_dir
-    --root_dir
+        --video_name
+        --out_dir
+        --root_dir
     '''
-    # parser = argparse.ArgumentParser(description='merge preprocess for smplifyx-modified')
-    # parser.add_argument('--video_name', type=str, default='Color_flip', help='an integer for the accumulator')
-    # parser.add_argument('--out_dir', type=str, default='/root/code/mover/preprocess/out_data',
-    #                     help='an integer for the accumulator')
-    # parser.add_argument('--root_dir', type=str, default='/root/code/mover/preprocess/input_data',
-    #                     help='an integer for the accumulator')
-    # args = parser.parse_args()
-    #
-    # video_name=args.video_name
-    # root_dir=args.root_dir
-    # out_dir = args.out_dir
-    # video_path=f'{root_dir}/{video_name}.mp4'
-    # openpose_dir=f'{root_dir}/{video_name}/openpose'
-    # image_dir=f'{root_dir}/{video_name}/images'
+    parser = argparse.ArgumentParser(description='merge preprocess for smplifyx-modified')
+    parser.add_argument('--video_name', type=str, default='Color_flip', help='an integer for the accumulator')
+    parser.add_argument('--out_dir', type=str, default='/root/code/mover/preprocess/out_data',
+                        help='an integer for the accumulator')
+    parser.add_argument('--root_dir', type=str, default='/root/code/mover/preprocess/input_data',
+                        help='an integer for the accumulator')
+    args = parser.parse_args()
+
+    video_name=args.video_name
+    root_dir=args.root_dir
+    out_dir = args.out_dir
+    video_path=f'{root_dir}/{video_name}.mp4'
+    openpose_dir=f'{root_dir}/{video_name}/openpose'
+    image_dir=f'{root_dir}/{video_name}/images'
 
     #debug
+
     # video_name = 'Color_flip'
     video_name = 'test_video1'
     video_path = f'/root/code/mover/preprocess/input_data/{video_name}/{video_name}.mp4'
