@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+
 sys.path.append('footskate_reducer')
 sys.path.append('footskate_reducer/ground_detector')
 from footskate_reducer.ground_detector.op_filter_json_merge import main0
@@ -16,7 +17,8 @@ if __name__ == "__main__":
         --input_dir
     '''
     parser = argparse.ArgumentParser(description='merge preprocess for smplifyx-modified')
-    parser.add_argument('--video_name', type=str, default='Color_flip', help='video name without suffix in input dir to process')
+    parser.add_argument('--video_name', type=str, default='Color_flip',
+                        help='video name without suffix in input dir to process')
     parser.add_argument('--out_dir', type=str, default='/root/code/mover/preprocess/out_data',
                         help='output dir')
     parser.add_argument('--input_dir', type=str, default='/root/code/mover/preprocess/input_data',
@@ -26,7 +28,7 @@ if __name__ == "__main__":
     video_name = args.video_name
     input_dir = args.input_dir
     out_dir = args.out_dir
-    video_path = os.path.join(input_dir, video_name + ".mp4")
+    video_path = os.path.join(input_dir, video_name, video_name + ".mp4")
     openpose_dir = os.path.join(input_dir, video_name, "openpose'")
     image_dir = os.path.join(input_dir, video_name, "images'")
 
@@ -41,7 +43,7 @@ if __name__ == "__main__":
 
     # step1: pare
     parser1 = parser_pare()
-    pare_model = '../pare/hrnet_model'
+    pare_model = '../hrnet_model'
     pare_exp = 'pare'
     parser1.set_defaults(cfg=f'{pare_model}/config.yaml', ckpt=f'{pare_model}/checkpoint.ckpt',
                          output_folder=os.path.join(out_dir, video_name), vid_file=video_path, draw_keypoints=True,
@@ -56,8 +58,8 @@ if __name__ == "__main__":
     pare_result = os.path.join(out_dir, video_name, pare_exp, "pare_output.pkl")
     cam_dir = "../smplifyx_cam"
     model_folder = 'data/body_models'
-    vposer_folder = '../../smplifyx-file/vposer_v1_0'
-    segm_fn_path = '../../smplifyx-file/smplx_parts_segm.pkl'
+    vposer_folder = '../smplifyx-file/vposer_v1_0'
+    segm_fn_path = '../smplifyx-file/smplx_parts_segm.pkl'
 
     parser2.set_defaults(config='cfg_files/fit_smpl.yaml', export_mesh=True, save_new_json=True,
                          json_folder=json_folder, data_folder=image_dir, output_folder=output_folder,
