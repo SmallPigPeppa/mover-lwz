@@ -19,9 +19,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='merge preprocess for smplifyx-modified')
     parser.add_argument('--video_name', type=str, default='Color_flip',
                         help='video name without suffix in input dir to process')
-    parser.add_argument('--out_dir', type=str, default='/root/code/mover/preprocess/out_data',
+    parser.add_argument('--out_dir', type=str, default='/root/code/mover-lwz/out-data',
                         help='output dir')
-    parser.add_argument('--input_dir', type=str, default='/root/code/mover/preprocess/input_data',
+    parser.add_argument('--input_dir', type=str, default='/root/code/mover-lwz/input-data',
                         help='input dir')
     args = parser.parse_args()
 
