@@ -12,6 +12,21 @@ prepare enviroment according to https://github.com/mkocabas/PARE
 2. smplifyx-file
 3. hrnet_model
 4. smplifyx_cam
+5. vposer_v1_0
+
+directory organized like this
+```
+mover-project-dir
+├── hrnet_model
+├── input-data
+├── out-data
+├── preprocess
+├── README.md
+├── run.sh
+├── smplifyx_cam
+├── smplifyx-file
+└── vposer_v1_0
+```
 
 
 ## Prepare input data
@@ -32,3 +47,14 @@ input-data/
 modify input_dir out_dir and video_name in run.sh
 
 ```. run.sh```
+
+output directory will be organized like this
+```
+out-data/
+└── test_video1
+    ├── op2smplifyx_withPARE
+    ├── op2smplifyx_withPARE_ori_OP
+    ├── op2smplifyx_withPARE_PARE3DJointOneConfidence_OP2DJoints
+    ├── openpose_OneEurofilter
+    └── pare
+```
