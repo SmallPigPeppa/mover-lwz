@@ -4,9 +4,9 @@
 2. pare
 3. op2smplifyx_withPARE
 
-# Usage
+## 
 ## Enviroment
-
+prepare enviroment according to https://github.com/mkocabas/PARE
 ## Download pretrained model
 1. data
 2. smplifyx-file
