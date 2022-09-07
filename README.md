@@ -20,13 +20,13 @@ mover-project-dir
 ├── hrnet_model
 ├── input-data
 ├── out-data
-├── preprocess
-│   └── data
+├── vposer_v1_0
 ├── README.md
 ├── run.sh
 ├── smplifyx_cam
 ├── smplifyx-file
-└── vposer_v1_0
+└── preprocess
+    └── data
 ```
 
 
