@@ -23,7 +23,7 @@ def main(args):
                          dump=os.path.join(out_dir, video_name, "openpose_OneEurofilter"),
                          img_dir=image_dir,
                          viz=True)
-    args0 = parser0.Namespace()
+    args0 = parser0.parse_args([])
     # main0(args0)
 
     # step1: pare
@@ -33,7 +33,7 @@ def main(args):
     parser1.set_defaults(cfg=f'{pare_model}/config.yaml', ckpt=f'{pare_model}/checkpoint.ckpt',
                          output_folder=os.path.join(out_dir, video_name), vid_file=video_path, draw_keypoints=True,
                          detector='maskrcnn', exp=pare_exp)
-    args1 = parser1.Namespace()
+    args1 = parser1.parse_args([])
     # main1(args1)
 
     # step2: op2smplifyx_withPARE
@@ -52,7 +52,7 @@ def main(args):
                          model_folder=model_folder, vposer_ckpt=vposer_folder,
                          part_segm_fn=segm_fn_path, gender='male',
                          check_inverse_feet=False)
-    args2 = parser2.Namespace()
+    args2 = parser2.parse_args([])
     args_dict2 = vars(args2)
     main2(**args_dict2)
 
