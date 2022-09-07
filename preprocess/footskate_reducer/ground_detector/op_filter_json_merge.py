@@ -1,7 +1,9 @@
 # Merge OpenPose json files into npy files
 # Author: Yuliang Zou
 # Date: 03/01/2019
-
+import sys
+sys.path.append('footskate_reducer')
+sys.path.append('footskate_reducer/ground_detector')
 import json
 import numpy as np
 import os
