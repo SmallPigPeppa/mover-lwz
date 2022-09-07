@@ -14,8 +14,8 @@ def main(args):
     input_dir = args.input_dir
     out_dir = args.out_dir
     video_path = os.path.join(input_dir, video_name, video_name + ".mp4")
-    openpose_dir = os.path.join(input_dir, video_name, "openpose'")
-    image_dir = os.path.join(input_dir, video_name, "images'")
+    openpose_dir = os.path.join(input_dir, video_name, "openpose")
+    image_dir = os.path.join(input_dir, video_name, "images")
 
     # step0: openpose filter
     parser0 = parser_op_filter()
