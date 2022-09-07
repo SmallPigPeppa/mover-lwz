@@ -14,7 +14,7 @@ prepare enviroment according to https://github.com/mkocabas/PARE
 4. smplifyx_cam
 5. vposer_v1_0
 
-directory organized like this
+directory should be organized like this
 ```
 mover-project-dir
 ├── hrnet_model
@@ -31,7 +31,7 @@ mover-project-dir
 
 ## Prepare input data
 
-input data directory organized like this
+input data directory should be organized like this
 ```
 input-data/
 ├── Color_flip
