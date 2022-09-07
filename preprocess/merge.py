@@ -1,12 +1,14 @@
 import os
 import sys
 import argparse
+
 sys.path.append('preprocess/footskate_reducer')
 sys.path.append('preprocess/footskate_reducer/ground_detector')
 from footskate_reducer.ground_detector.op_filter_json_merge import main0
 from demo_merge import main1
 from demo_pare_result_merge import main2
 from merge_parser import parser_pare, parser_pare_result, parser_op_filter
+
 
 def main(args):
     video_name = args.video_name
@@ -54,6 +56,7 @@ def main(args):
     args2 = parser2.parse_args([])
     args_dict2 = vars(args2)
     main2(**args_dict2)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='merge preprocess for smplifyx-modified')
