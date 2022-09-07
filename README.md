@@ -16,7 +16,7 @@ prepare enviroment according to https://github.com/mkocabas/PARE
 
 directory should be organized like this
 ```
-mover-project-dir
+mover-project-dir/
 ├── hrnet_model
 ├── input-data
 ├── out-data
