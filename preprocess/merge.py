@@ -29,7 +29,7 @@ def main(args):
 
     # step1: pare
     parser1 = parser_pare()
-    pare_model = '../hrnet_model'
+    pare_model = 'hrnet_model'
     pare_exp = 'pare'
     parser1.set_defaults(cfg=f'{pare_model}/config.yaml', ckpt=f'{pare_model}/checkpoint.ckpt',
                          output_folder=os.path.join(out_dir, video_name), vid_file=video_path, draw_keypoints=True,
@@ -42,10 +42,10 @@ def main(args):
     output_folder = os.path.join(out_dir, video_name, "op2smplifyx_withPARE")
     json_folder = os.path.join(out_dir, video_name, "openpose_OneEurofilter")
     pare_result = os.path.join(out_dir, video_name, pare_exp, "pare_output.pkl")
-    cam_dir = "../smplifyx_cam"
+    cam_dir = "smplifyx_cam"
     model_folder = 'data/body_models'
-    vposer_folder = '../smplifyx-file/vposer_v1_0'
-    segm_fn_path = '../smplifyx-file/smplx_parts_segm.pkl'
+    vposer_folder = 'smplifyx-file/vposer_v1_0'
+    segm_fn_path = 'smplifyx-file/smplx_parts_segm.pkl'
 
     parser2.set_defaults(config='cfg_files/fit_smpl.yaml', export_mesh=True, save_new_json=True,
                          json_folder=json_folder, data_folder=image_dir, output_folder=output_folder,
