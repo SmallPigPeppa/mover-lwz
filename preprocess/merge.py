@@ -25,7 +25,7 @@ def main(args):
                          img_dir=image_dir,
                          viz=True)
     args0 = parser0.parse_args([])
-    main0(args0)
+    # main0(args0)
 
     # step1: pare
     parser1 = parser_pare()
