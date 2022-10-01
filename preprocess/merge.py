@@ -47,7 +47,7 @@ def main(args):
     vposer_folder = 'smplifyx-file/vposer_v1_0'
     segm_fn_path = 'smplifyx-file/smplx_parts_segm.pkl'
 
-    parser2.set_defaults(config='cfg_files/fit_smpl.yaml', export_mesh=True, save_new_json=True,
+    parser2.set_defaults(config='preprocess/cfg_files/fit_smpl.yaml', export_mesh=True, save_new_json=True,
                          json_folder=json_folder, data_folder=image_dir, output_folder=output_folder,
                          pare_result=pare_result, cam_dir=cam_dir, visualize=False,
                          model_folder=model_folder, vposer_ckpt=vposer_folder,
