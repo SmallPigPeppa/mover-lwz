@@ -43,7 +43,7 @@ def main(args):
     json_folder = os.path.join(out_dir, video_name, "openpose_OneEurofilter")
     pare_result = os.path.join(out_dir, video_name, pare_exp, "pare_output.pkl")
     cam_dir = "smplifyx_cam"
-    model_folder = 'data/body_models'
+    model_folder = 'preprocess/data/body_models'
     vposer_folder = 'smplifyx-file/vposer_v1_0'
     segm_fn_path = 'smplifyx-file/smplx_parts_segm.pkl'
 
