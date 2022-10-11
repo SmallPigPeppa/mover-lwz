@@ -127,15 +127,15 @@ def read_keypoints_VH(skeleton_joints, use_hands=True, use_face=True,
     cnt = 0
     print('load kpts from VH !!!!!')
     # no need map
-    # for idx, map_i in enumerate(IDX_MAPPING):
-    #     if map_i != -1:
-    #         vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, idx]
-    #         vh_2_smplx_joints[:, map_i, -1] += 1.0
-    #
-    #     # if map_i != -1 and idx in valid_joint_ids:
-    #     #     cnt += 1
-    #     #     vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, cnt]
-    #     #     vh_2_smplx_joints[:, map_i, -1] += 1.0
+    for idx, map_i in enumerate(IDX_MAPPING):
+        if map_i != -1:
+            vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, idx]
+            vh_2_smplx_joints[:, map_i, -1] += 1.0
+
+        # if map_i != -1 and idx in valid_joint_ids:
+        #     cnt += 1
+        #     vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, cnt]
+        #     vh_2_smplx_joints[:, map_i, -1] += 1.0
 
     # import pdb;pdb.set_trace()
     keypoints = []

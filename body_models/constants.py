@@ -31,6 +31,12 @@ IDX_MAPPING = [
     #  
     # 9, -1, in_valid
 ]
+IDX_MAPPING_GTA = [
+    # body joints
+    15, 12, -1, 17, 19, 21, -1,
+    16, 18, 20, 3, 6, 9, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
+    2, 5, 8, 1, 4,
+    7]
 
 SKELETON_IDX = [IDX_MAPPING[i] for i in range(23) if IDX_MAPPING[i] != -1]
 # print(OLD_SKELETON_IDX == SKELETON_IDX)
