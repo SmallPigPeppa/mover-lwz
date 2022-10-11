@@ -53,17 +53,20 @@ IDX_MAPPING_GTA = [
 
 # SKELETON_IDX = [IDX_MAPPING[i] for i in range(23) if IDX_MAPPING[i] != -1]
 SKELETON_IDX = [IDX_MAPPING_GTA[i] for i in range(21) if IDX_MAPPING_GTA[i] != -1]
+RIGHT_HAND_IDX=[]
+LEFT_HAND_IDX=[]
 # print(OLD_SKELETON_IDX == SKELETON_IDX)
-RIGHT_HAND_IDX = [37, 38, 39,
-            25, 26, 27,
-            28, 29, 30,
-            34, 35, 36,
-            31, 32, 33]
-LEFT_HAND_IDX = [52, 53, 54,
-            40, 41, 42,
-            43, 44, 45,
-            49, 50, 51,
-            46, 47, 48]
+# SKELETON_IDX = [IDX_MAPPING[i] for i in range(23) if IDX_MAPPING[i] != -1]
+# RIGHT_HAND_IDX = [37, 38, 39,
+#             25, 26, 27,
+#             28, 29, 30,
+#             34, 35, 36,
+#             31, 32, 33]
+# LEFT_HAND_IDX = [52, 53, 54,
+#             40, 41, 42,
+#             43, 44, 45,
+#             49, 50, 51,
+#             46, 47, 48]
 
 HAND_IDX = RIGHT_HAND_IDX + LEFT_HAND_IDX
 # SKELETON_IDX = [2, 1, 5, 4, 65, 
