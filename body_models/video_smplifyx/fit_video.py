@@ -1183,7 +1183,7 @@ def fit_multi_view(img,
                         expression = expression,
                         )
 
-            results[min_idx]['result']['keypoints_3d'] = model_output.joints.detach().cpu().numpy()[:, :25, :]
+            # results[min_idx]['result']['keypoints_3d'] = model_output.joints.detach().cpu().numpy()[:, :25, :]
             results[min_idx]['result']['body_pose'] = body_pose.detach().cpu().numpy()
             results[min_idx]['result']['pose_embedding'] = pose_embedding.detach().cpu().numpy()
             results[min_idx]['result']['gender'] = kwargs['gender']
