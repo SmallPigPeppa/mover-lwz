@@ -37,7 +37,7 @@ import h5py
 from .utils import smpl_to_openpose
 
 # VH joint definition.
-from ...constants import IDX_MAPPING, JOINT_NAMES
+from ...constants import IDX_MAPPING, JOINT_NAMES,IDX_MAPPING_GTA
 
 
 Keypoints = namedtuple('Keypoints',
@@ -127,7 +127,7 @@ def read_keypoints_VH(skeleton_joints, use_hands=True, use_face=True,
     cnt = 0
     print('load kpts from VH !!!!!')
     # no need map
-    for idx, map_i in enumerate(IDX_MAPPING):
+    for idx, map_i in enumerate(IDX_MAPPING_GTA):
         if map_i != -1:
             vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, idx]
             vh_2_smplx_joints[:, map_i, -1] += 1.0
@@ -403,8 +403,9 @@ class OpenPose_Pose2Room(Dataset):
         # change tmp path.
         # tmp_img_fn = \
         #     '/ps/scratch/hyi/HCI_dataset/holistic_scene_human/smplifyx_test/00001/00/images/000001.jpg'
-        tmp_img_fn = \
-            '/share/wenzhuoliu/code/mover-lwz/input-data/Color_flip/images/000001.jpg'
+        # tmp_img_fn = \
+        #     '/share/wenzhuoliu/code/mover-lwz/input-data/Color_flip/images/000001.jpg'
+        tmp_img_fn = '/share/wenzhuoliu/code/mover-lwz/input-data/gta-test/images/000000.png'
         img_fn = [tmp_img_fn for i in range(batch_size)]
         
         if len(keyp_tuple.keypoints) < 1:
