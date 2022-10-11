@@ -8,7 +8,7 @@ info_npz_name = "samples_clean_gta/FPS-5/2020-06-11-10-06-48/info_frames.npz"
 info_npz = np.load(info_npz_name)
 print(info_npz['joints_3d_world'].shape)
 joints = info_npz['joints_3d_cam'][:, :, [2, 0, 1]]
-joints[:, :, 2] = joints[:, :, 2] * -1
+joints[:, :, 0] *=  -1
 # joints = info_npz['joints_3d_cam']
 with h5py.File(gta_name, "r+") as f:
     print("Keys: %s" % f.keys())
