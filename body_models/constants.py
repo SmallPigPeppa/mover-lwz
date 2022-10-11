@@ -37,21 +37,22 @@ IDX_MAPPING = [
 #     16, 18, 20, 3, 6, 9, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
 #     2, 5, 8, 1, 4,
 #     7]
-# IDX_MAPPING_GTA = [
-#     # body joints
-#     15, 12, -1, 17, 19, 21, -1,
-#     16, 18, 20, -1, -1, -1, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
-#     2, 5, 8, 1, 4,
-#     7]
 IDX_MAPPING_GTA = [
     # body joints
-    15, 12, -1, 16, 18, 20, -1,
-    17, 19, 21, -1, -1, -1, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
-    1, 4, 7, 2, 5,
-    8]
+    15, 12, -1, 17, 19, 21, -1,
+    16, 18, 20, -1, -1, -1, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
+    2, 5, 8, 1, 4,
+    7]
+# IDX_MAPPING_GTA = [
+#     # body joints
+#     15, 12, -1, 16, 18, 20, -1,
+#     17, 19, 21, -1, -1, -1, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
+#     1, 4, 7, 2, 5,
+#     8]
 
 
-SKELETON_IDX = [IDX_MAPPING[i] for i in range(23) if IDX_MAPPING[i] != -1]
+# SKELETON_IDX = [IDX_MAPPING[i] for i in range(23) if IDX_MAPPING[i] != -1]
+SKELETON_IDX = [IDX_MAPPING_GTA[i] for i in range(21) if IDX_MAPPING_GTA[i] != -1]
 # print(OLD_SKELETON_IDX == SKELETON_IDX)
 RIGHT_HAND_IDX = [37, 38, 39,
             25, 26, 27,
