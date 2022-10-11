@@ -7,7 +7,8 @@ info_npz_name = "samples_clean_gta/FPS-5/2020-06-11-10-06-48/info_frames.npz"
 # info_npz = np.load(open(info_npz_name, 'rb'))
 info_npz = np.load(info_npz_name)
 print(info_npz['joints_3d_world'].shape)
-joints = np.einsum('zxy->xyz', info_npz['joints_3d_world'])
+joints = info_npz['joints_3d_world']
+joints[:, :,[0,1,2]] = joints[:, :,[1,2,0]]
 with h5py.File(gta_name, "r+") as f:
     print("Keys: %s" % f.keys())
     del f['skeleton_joints']
