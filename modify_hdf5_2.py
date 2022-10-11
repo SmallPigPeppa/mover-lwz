@@ -11,7 +11,7 @@ with h5py.File(temp_name, "r+") as f:
     print("Keys: %s" % f.keys())
     del f['skeleton_joints']
     print("Keys: %s" % f.keys())
-    f.create_dataset('skeleton_joints', data=info_npz['joints_3d_cam'])
+    f.create_dataset('skeleton_joints', data=info_npz['joints_3d_world'])
     print(f['skeleton_joints'])
     print("Keys: %s" % f.keys())
 
