@@ -923,226 +923,226 @@ def fit_multi_view(img,
         ####################
         # Step 2: Optimize the full model with 2D joints.
         # import pdb;pdb.set_trace()
-        end_opt_stage = min(end_opt_stage, len(opt_weights))
-        final_loss_val = 0
-        for or_idx, orient in enumerate(tqdm(orientations, desc='Orientation')):
-            opt_start = time.time()
-            # stage: :6
-            for opt_idx, curr_weights in enumerate(tqdm(opt_weights[start_opt_stage:end_opt_stage], desc='Stage')):
-
-                ## change input.
-                if dataset_name == 'Pose2Room':
-                    
-                    # TODO: refactorize.
-                    #! same as IDX_MAPPING from smpl_joints_map.
-                    # if input 4 dimension, the last dim would be weight.
-                    
-                    body_pose_joints = np.concatenate((initialization['keypoints_3d'][:, :, :-1], \
-                                        initialization['keypoints_3d'][:, :, -1:] * 0.0,
-                                        ), -1)
-                    
-                    body_pose_joints[:, SKELETON_IDX, -1] += 1.0
-                    body_pose_joints[:, LEFT_HAND_IDX, -1] += 1.0
-                    body_pose_joints[:, RIGHT_HAND_IDX, -1] += 1.0
-                    gt_joints = torch.tensor(body_pose_joints, device=device)
-                    
-                    
-                # Warning: ot update the scene, we could also generate a plausible human body
-                # set update scene module
-                if scene_model is not None:
-                    if update_scene:
-                        logger.debug('update scene in SMPLify-X')
-                        scene_model.set_active_scene(activate_list=[ 'translations_object', 'int_scales_object', 'ground_plane'])
-                    # elif update_scene and opt_idx == len(opt_weights[start_opt_stage:]) - 1:
-                    #     scene_model.set_active_scene(activate_list=[ 'rotations_object', 'translations_object']) #'rotate_cam_pitch', 'rotate_cam_roll',
-                    else:
-                        # set static scene
-                        scene_model.set_static_scene()
-                
-                # fixed body parameters
-                # TODO: use body to optimize 3D scene
-                if not update_body: # several stage for update scene only
-                    betas.requires_grad = False
-                    global_orient.requires_grad = False
-                    transl.requires_grad = False
-                    left_hand_pose.requires_grad = False
-                    right_hand_pose.requires_grad = False
-                    jaw_pose.requires_grad = False
-                    leye_pose.requires_grad = False
-                    reye_pose.requires_grad = False
-                    expression.requires_grad = False
-                    pose_embedding.requires_grad = False
-                    
-                else:
-                    if not beta_precomputed:
-                        #     # WARNING: how to generate accurate pose parameters;
-                        betas.requires_grad = True
-                    else:
-                        betas.requires_grad = False
-                    global_orient.requires_grad = True
-                    transl.requires_grad = True
-                    left_hand_pose.requires_grad = True
-                    right_hand_pose.requires_grad = True
-                    jaw_pose.requires_grad = True
-                    expression.requires_grad = True
-                    pose_embedding.requires_grad = True
-                
-                # if opt_idx + start_opt_stage < 2:
-                #     betas.requires_grad = False
-                #     global_orient.requires_grad = True
-                #     transl.requires_grad = True
-                #     left_hand_pose.requires_grad = False
-                #     right_hand_pose.requires_grad = False
-                #     jaw_pose.requires_grad = False
-                #     expression.requires_grad = False
-                #     pose_embedding.requires_grad = False
-
-                if dataset_name == 'Pose2Room':
-                    jaw_pose.requires_grad = False
-
-
-                body_params = [betas, global_orient, transl, 
-                                                left_hand_pose,
-                                                right_hand_pose,
-                                                jaw_pose,
-                                                leye_pose,
-                                                reye_pose,
-                                                expression]
-                if use_vposer:
-                    body_params.append(pose_embedding)
-
-                final_params = list(
-                    filter(lambda x: x.requires_grad, body_params))
-                
-                # use the same optimizer
-                if update_scene:
-                    scene_params = list(scene_model.parameters())
-                    final_scene_params = list(
-                        filter(lambda x: x.requires_grad, scene_params))
-                    for one in final_scene_params:
-                        final_params.append(one)
-                    # scene_optimizer, scene_create_graph = optim_factory.create_optimizer(
-                    #     final_scene_params,     **kwargs)
-                    # scene_optimizer.zero_grad()
-
-                body_optimizer, body_create_graph = optim_factory.create_optimizer(
-                    final_params,
-                    **kwargs)
-                body_optimizer.zero_grad()
-                
-                # import pdb;pdb.set_trace()
-                if dataset_name != 'Pose2Room':
-                    # ! warning set weight for each stage
-                    ### only works in 2D projected loss.
-                    # import pdb;pdb.set_trace()
-                    curr_weights['data_weight'] = data_weight
-                    curr_weights['bending_prior_weight'] = (
-                        3.17 * curr_weights['body_pose_weight'])
-                    if use_hands:
-                        joint_weights[:, 25:76] = curr_weights['hand_weight']
-                    if use_face:
-                        joint_weights[:, 76:] = curr_weights['face_weight']
-                    loss.reset_loss_weights(curr_weights)
-
-                # For debug, to skip the following optimization.
-                # break;
-
-                # warining: add loss, need to modify create_fitting_closure and run_fitting
-                closure = monitor.create_fitting_closure(
-                    body_optimizer, body_model,
-                    cameras=cameras, gt_joints=gt_joints,
-                    joints_conf=joints_conf,
-                    joint_weights=joint_weights,
-                    loss=loss, create_graph=body_create_graph,
-                    use_vposer=use_vposer, vposer=vposer,
-                    pose_embedding=pose_embedding, 
-                    gt_contact_value=ground_contact_value,
-                    scene_model=scene_model,
-                    betas = betas.expand(batch_size, -1),
-                    global_orient = global_orient,
-                    transl = transl,
-                    left_hand_pose = left_hand_pose,
-                    right_hand_pose = right_hand_pose,
-                    jaw_pose = jaw_pose,
-                    leye_pose = leye_pose,
-                    reye_pose = reye_pose,
-                    expression = expression,
-                    return_verts=True, return_full_pose=True,
-                    tb_debug=tb_debug,
-                    tb_logger=tb_logger,
-                    opt_idx=opt_idx+start_opt_stage,
-                    # pare pose input
-                    pare_body_pose=pare_pose,
-                    pare_body_flag=pare_pose_flag,
-                    )
-
-                if interactive:
-                    if use_cuda and torch.cuda.is_available():
-                        torch.cuda.synchronize()
-                    stage_start = time.time()
-                
-                #update multiple smplx_model
-                final_loss_val = monitor.run_fitting(
-                    body_optimizer,
-                    closure, final_params,
-                    body_model,
-                    pose_embedding=pose_embedding, vposer=vposer,
-                    use_vposer=use_vposer,
-                    betas = betas.expand(batch_size, -1),
-                    global_orient = global_orient,
-                    transl = transl,
-                    left_hand_pose = left_hand_pose,
-                    right_hand_pose = right_hand_pose,
-                    jaw_pose = jaw_pose,
-                    leye_pose = leye_pose,
-                    reye_pose = reye_pose,
-                    expression = expression,
-                    scene_model=scene_model,
-                    # pare pose input
-                    pare_pose=pare_pose,
-                    pare_pose_flag=pare_pose_flag)
-
-                if interactive:
-                    if use_cuda and torch.cuda.is_available():
-                        torch.cuda.synchronize()
-                    elapsed = time.time() - stage_start
-                    if interactive:
-                        tqdm.write('Stage {:03d}/{} done after {:.4f} seconds'.format(
-                            opt_idx+start_opt_stage, len(opt_weights), elapsed))
-
-            if final_loss_val is None:
-                final_loss_val = -1
-            # fix bug in Visulization 
-            monitor.close_viewer()
-            # print("{} -> {}".format(initialization['transl'], body_model.transl))
-            if interactive:
-                if use_cuda and torch.cuda.is_available():
-                    torch.cuda.synchronize()
-                elapsed = time.time() - opt_start
-                tqdm.write(
-                    'Body fitting Orientation {} done after {:.4f} seconds'.format(
-                        or_idx, elapsed))
-                tqdm.write('Body final loss val = {:.5f}'.format(
-                    final_loss_val))
-
-            # Get the result of the fitting process
-            # Store in it the errors list in order to compare multiple
-            # orientations, if they exist
-            result = {}
-            result['betas'] = betas.detach().cpu().numpy()
-            result['global_orient'] = global_orient.detach().cpu().numpy()
-            result['transl'] = transl.detach().cpu().numpy()
-            result['left_hand_pose'] = left_hand_pose.detach().cpu().numpy()
-            result['right_hand_pose'] = right_hand_pose.detach().cpu().numpy()
-            result['jaw_pose'] = jaw_pose.detach().cpu().numpy()
-            result['leye_pose'] = leye_pose.detach().cpu().numpy()
-            result['reye_pose'] = reye_pose.detach().cpu().numpy()
-            result['expression'] = expression.detach().cpu().numpy()
-            if use_vposer:
-                result['body_pose'] = pose_embedding.detach().cpu().numpy()
-
-            results.append({'loss': final_loss_val,
-                            'result': result})
+        # end_opt_stage = min(end_opt_stage, len(opt_weights))
+        # final_loss_val = 0
+        # for or_idx, orient in enumerate(tqdm(orientations, desc='Orientation')):
+        #     opt_start = time.time()
+        #     # stage: :6
+        #     for opt_idx, curr_weights in enumerate(tqdm(opt_weights[start_opt_stage:end_opt_stage], desc='Stage')):
+        #
+        #         ## change input.
+        #         if dataset_name == 'Pose2Room':
+        #
+        #             # TODO: refactorize.
+        #             #! same as IDX_MAPPING from smpl_joints_map.
+        #             # if input 4 dimension, the last dim would be weight.
+        #
+        #             body_pose_joints = np.concatenate((initialization['keypoints_3d'][:, :, :-1], \
+        #                                 initialization['keypoints_3d'][:, :, -1:] * 0.0,
+        #                                 ), -1)
+        #
+        #             body_pose_joints[:, SKELETON_IDX, -1] += 1.0
+        #             body_pose_joints[:, LEFT_HAND_IDX, -1] += 1.0
+        #             body_pose_joints[:, RIGHT_HAND_IDX, -1] += 1.0
+        #             gt_joints = torch.tensor(body_pose_joints, device=device)
+        #
+        #
+        #         # Warning: ot update the scene, we could also generate a plausible human body
+        #         # set update scene module
+        #         if scene_model is not None:
+        #             if update_scene:
+        #                 logger.debug('update scene in SMPLify-X')
+        #                 scene_model.set_active_scene(activate_list=[ 'translations_object', 'int_scales_object', 'ground_plane'])
+        #             # elif update_scene and opt_idx == len(opt_weights[start_opt_stage:]) - 1:
+        #             #     scene_model.set_active_scene(activate_list=[ 'rotations_object', 'translations_object']) #'rotate_cam_pitch', 'rotate_cam_roll',
+        #             else:
+        #                 # set static scene
+        #                 scene_model.set_static_scene()
+        #
+        #         # fixed body parameters
+        #         # TODO: use body to optimize 3D scene
+        #         if not update_body: # several stage for update scene only
+        #             betas.requires_grad = False
+        #             global_orient.requires_grad = False
+        #             transl.requires_grad = False
+        #             left_hand_pose.requires_grad = False
+        #             right_hand_pose.requires_grad = False
+        #             jaw_pose.requires_grad = False
+        #             leye_pose.requires_grad = False
+        #             reye_pose.requires_grad = False
+        #             expression.requires_grad = False
+        #             pose_embedding.requires_grad = False
+        #
+        #         else:
+        #             if not beta_precomputed:
+        #                 #     # WARNING: how to generate accurate pose parameters;
+        #                 betas.requires_grad = True
+        #             else:
+        #                 betas.requires_grad = False
+        #             global_orient.requires_grad = True
+        #             transl.requires_grad = True
+        #             left_hand_pose.requires_grad = True
+        #             right_hand_pose.requires_grad = True
+        #             jaw_pose.requires_grad = True
+        #             expression.requires_grad = True
+        #             pose_embedding.requires_grad = True
+        #
+        #         # if opt_idx + start_opt_stage < 2:
+        #         #     betas.requires_grad = False
+        #         #     global_orient.requires_grad = True
+        #         #     transl.requires_grad = True
+        #         #     left_hand_pose.requires_grad = False
+        #         #     right_hand_pose.requires_grad = False
+        #         #     jaw_pose.requires_grad = False
+        #         #     expression.requires_grad = False
+        #         #     pose_embedding.requires_grad = False
+        #
+        #         if dataset_name == 'Pose2Room':
+        #             jaw_pose.requires_grad = False
+        #
+        #
+        #         body_params = [betas, global_orient, transl,
+        #                                         left_hand_pose,
+        #                                         right_hand_pose,
+        #                                         jaw_pose,
+        #                                         leye_pose,
+        #                                         reye_pose,
+        #                                         expression]
+        #         if use_vposer:
+        #             body_params.append(pose_embedding)
+        #
+        #         final_params = list(
+        #             filter(lambda x: x.requires_grad, body_params))
+        #
+        #         # use the same optimizer
+        #         if update_scene:
+        #             scene_params = list(scene_model.parameters())
+        #             final_scene_params = list(
+        #                 filter(lambda x: x.requires_grad, scene_params))
+        #             for one in final_scene_params:
+        #                 final_params.append(one)
+        #             # scene_optimizer, scene_create_graph = optim_factory.create_optimizer(
+        #             #     final_scene_params,     **kwargs)
+        #             # scene_optimizer.zero_grad()
+        #
+        #         body_optimizer, body_create_graph = optim_factory.create_optimizer(
+        #             final_params,
+        #             **kwargs)
+        #         body_optimizer.zero_grad()
+        #
+        #         # import pdb;pdb.set_trace()
+        #         if dataset_name != 'Pose2Room':
+        #             # ! warning set weight for each stage
+        #             ### only works in 2D projected loss.
+        #             # import pdb;pdb.set_trace()
+        #             curr_weights['data_weight'] = data_weight
+        #             curr_weights['bending_prior_weight'] = (
+        #                 3.17 * curr_weights['body_pose_weight'])
+        #             if use_hands:
+        #                 joint_weights[:, 25:76] = curr_weights['hand_weight']
+        #             if use_face:
+        #                 joint_weights[:, 76:] = curr_weights['face_weight']
+        #             loss.reset_loss_weights(curr_weights)
+        #
+        #         # For debug, to skip the following optimization.
+        #         # break;
+        #
+        #         # warining: add loss, need to modify create_fitting_closure and run_fitting
+        #         closure = monitor.create_fitting_closure(
+        #             body_optimizer, body_model,
+        #             cameras=cameras, gt_joints=gt_joints,
+        #             joints_conf=joints_conf,
+        #             joint_weights=joint_weights,
+        #             loss=loss, create_graph=body_create_graph,
+        #             use_vposer=use_vposer, vposer=vposer,
+        #             pose_embedding=pose_embedding,
+        #             gt_contact_value=ground_contact_value,
+        #             scene_model=scene_model,
+        #             betas = betas.expand(batch_size, -1),
+        #             global_orient = global_orient,
+        #             transl = transl,
+        #             left_hand_pose = left_hand_pose,
+        #             right_hand_pose = right_hand_pose,
+        #             jaw_pose = jaw_pose,
+        #             leye_pose = leye_pose,
+        #             reye_pose = reye_pose,
+        #             expression = expression,
+        #             return_verts=True, return_full_pose=True,
+        #             tb_debug=tb_debug,
+        #             tb_logger=tb_logger,
+        #             opt_idx=opt_idx+start_opt_stage,
+        #             # pare pose input
+        #             pare_body_pose=pare_pose,
+        #             pare_body_flag=pare_pose_flag,
+        #             )
+        #
+        #         if interactive:
+        #             if use_cuda and torch.cuda.is_available():
+        #                 torch.cuda.synchronize()
+        #             stage_start = time.time()
+        #
+        #         #update multiple smplx_model
+        #         final_loss_val = monitor.run_fitting(
+        #             body_optimizer,
+        #             closure, final_params,
+        #             body_model,
+        #             pose_embedding=pose_embedding, vposer=vposer,
+        #             use_vposer=use_vposer,
+        #             betas = betas.expand(batch_size, -1),
+        #             global_orient = global_orient,
+        #             transl = transl,
+        #             left_hand_pose = left_hand_pose,
+        #             right_hand_pose = right_hand_pose,
+        #             jaw_pose = jaw_pose,
+        #             leye_pose = leye_pose,
+        #             reye_pose = reye_pose,
+        #             expression = expression,
+        #             scene_model=scene_model,
+        #             # pare pose input
+        #             pare_pose=pare_pose,
+        #             pare_pose_flag=pare_pose_flag)
+        #
+        #         if interactive:
+        #             if use_cuda and torch.cuda.is_available():
+        #                 torch.cuda.synchronize()
+        #             elapsed = time.time() - stage_start
+        #             if interactive:
+        #                 tqdm.write('Stage {:03d}/{} done after {:.4f} seconds'.format(
+        #                     opt_idx+start_opt_stage, len(opt_weights), elapsed))
+        #
+        #     if final_loss_val is None:
+        #         final_loss_val = -1
+        #     # fix bug in Visulization
+        #     monitor.close_viewer()
+        #     # print("{} -> {}".format(initialization['transl'], body_model.transl))
+        #     if interactive:
+        #         if use_cuda and torch.cuda.is_available():
+        #             torch.cuda.synchronize()
+        #         elapsed = time.time() - opt_start
+        #         tqdm.write(
+        #             'Body fitting Orientation {} done after {:.4f} seconds'.format(
+        #                 or_idx, elapsed))
+        #         tqdm.write('Body final loss val = {:.5f}'.format(
+        #             final_loss_val))
+        #
+        #     # Get the result of the fitting process
+        #     # Store in it the errors list in order to compare multiple
+        #     # orientations, if they exist
+        #     result = {}
+        #     result['betas'] = betas.detach().cpu().numpy()
+        #     result['global_orient'] = global_orient.detach().cpu().numpy()
+        #     result['transl'] = transl.detach().cpu().numpy()
+        #     result['left_hand_pose'] = left_hand_pose.detach().cpu().numpy()
+        #     result['right_hand_pose'] = right_hand_pose.detach().cpu().numpy()
+        #     result['jaw_pose'] = jaw_pose.detach().cpu().numpy()
+        #     result['leye_pose'] = leye_pose.detach().cpu().numpy()
+        #     result['reye_pose'] = reye_pose.detach().cpu().numpy()
+        #     result['expression'] = expression.detach().cpu().numpy()
+        #     if use_vposer:
+        #         result['body_pose'] = pose_embedding.detach().cpu().numpy()
+        #
+        #     results.append({'loss': final_loss_val,
+        #                     'result': result})
         
 
         ###### save to pickle and mesh
