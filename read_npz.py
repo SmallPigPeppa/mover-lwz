@@ -13,7 +13,8 @@ filename = "samples_clean/3_3_78_Female2_0.hdf5"
 
 with h5py.File(filename, "r") as f:
     print("Keys: %s" % f.keys())
-    print(f['skeleton_joints'][()])
+    # print(f['skeleton_joints'][()])
+    print((f['skeleton_joints'][()][:,:,0]))
 # with h5py.File(temp_name, "r+") as f:
 #     print("Keys: %s" % f.keys())
 #     del f['newarray']
