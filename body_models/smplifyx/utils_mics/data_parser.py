@@ -126,7 +126,7 @@ def read_keypoints_VH(skeleton_joints, use_hands=True, use_face=True,
     # vh_2_smplx_joints[np.array(IDX_MAPPING)==-1] *= 0.0
     cnt = 0
     print('load kpts from VH !!!!!')
-    # no need map
+
     for idx, map_i in enumerate(IDX_MAPPING_GTA):
         if map_i != -1:
             vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, idx]
