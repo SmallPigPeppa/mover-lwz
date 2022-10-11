@@ -126,15 +126,16 @@ def read_keypoints_VH(skeleton_joints, use_hands=True, use_face=True,
     # vh_2_smplx_joints[np.array(IDX_MAPPING)==-1] *= 0.0
     cnt = 0
     print('load kpts from VH !!!!!')
-    for idx, map_i in enumerate(IDX_MAPPING):
-        if map_i != -1:
-            vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, idx]
-            vh_2_smplx_joints[:, map_i, -1] += 1.0
-
-        # if map_i != -1 and idx in valid_joint_ids:
-        #     cnt += 1
-        #     vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, cnt]
-        #     vh_2_smplx_joints[:, map_i, -1] += 1.0
+    # no need map
+    # for idx, map_i in enumerate(IDX_MAPPING):
+    #     if map_i != -1:
+    #         vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, idx]
+    #         vh_2_smplx_joints[:, map_i, -1] += 1.0
+    #
+    #     # if map_i != -1 and idx in valid_joint_ids:
+    #     #     cnt += 1
+    #     #     vh_2_smplx_joints[:, map_i, :-1] = skeleton_joints[:, cnt]
+    #     #     vh_2_smplx_joints[:, map_i, -1] += 1.0
 
     # import pdb;pdb.set_trace()
     keypoints = []
@@ -371,22 +372,22 @@ class OpenPose_Pose2Room(Dataset):
     def read_item(self, sample_file):
         
         sample_data = h5py.File(sample_file, "r")
-        room_bbox = {}
-        for key in sample_data['room_bbox'].keys():
-            room_bbox[key] = sample_data['room_bbox'][key][:]
+        # room_bbox = {}
+        # for key in sample_data['room_bbox'].keys():
+        #     room_bbox[key] = sample_data['room_bbox'][key][:]
+        # skeleton_joints = sample_data['skeleton_joints'][:]
+        #
+        # object_nodes = []
+        # for idx in range(len(sample_data['object_nodes'])):
+        #     object_node = {}
+        #     node_data = sample_data['object_nodes'][str(idx)]
+        #     for key in node_data.keys():
+        #         if node_data[key].shape is None:
+        #             continue
+        #         object_node[key] = node_data[key][:]
+        #     object_nodes.append(object_node)
+        
         skeleton_joints = sample_data['skeleton_joints'][:]
-        
-        object_nodes = []
-        for idx in range(len(sample_data['object_nodes'])):
-            object_node = {}
-            node_data = sample_data['object_nodes'][str(idx)]
-            for key in node_data.keys():
-                if node_data[key].shape is None:
-                    continue
-                object_node[key] = node_data[key][:]
-            object_nodes.append(object_node)
-        
-        
         # face and contour
         keyp_tuple = read_keypoints_VH(skeleton_joints, use_hands=self.use_hands,
                                     use_face=self.use_face,
