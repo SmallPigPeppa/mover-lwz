@@ -147,6 +147,13 @@ def read_keypoints_VH(skeleton_joints, use_hands=True, use_face=True,
     # hand_left_keypoints_3d = []
     # right_left_keypoints_3d = []
     
+    # for idx, person_data in enumerate([vh_2_smplx_joints]):
+    #     # assert use_hands == True and use_face == False
+    #     body_keypoints = person_data[:, 23:53]
+    #     keypoints.append(body_keypoints) # this is for hand.
+    #     midhip.append(person_data[:, 4*0+0:4*0+3])
+    #     neck.append(person_data[:, 4*12+0:4*12+3])
+    #     pose_keypoints_3d.append(person_data) # all joints.
     for idx, person_data in enumerate([vh_2_smplx_joints]):
         # assert use_hands == True and use_face == False
         body_keypoints = person_data[:, 23:53]
