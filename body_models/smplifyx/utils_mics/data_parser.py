@@ -400,8 +400,10 @@ class OpenPose_Pose2Room(Dataset):
         sample_fn = [osp.split(sample_file)[1] for i in range(batch_size)]
         
         # change tmp path.
+        # tmp_img_fn = \
+        #     '/ps/scratch/hyi/HCI_dataset/holistic_scene_human/smplifyx_test/00001/00/images/000001.jpg'
         tmp_img_fn = \
-            '/ps/scratch/hyi/HCI_dataset/holistic_scene_human/smplifyx_test/00001/00/images/000001.jpg'
+            '/share/wenzhuoliu/code/mover-lwz/input-data/Color_flip/images/000001.jpg'
         img_fn = [tmp_img_fn for i in range(batch_size)]
         
         if len(keyp_tuple.keypoints) < 1:
