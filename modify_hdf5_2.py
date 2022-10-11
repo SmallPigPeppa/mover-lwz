@@ -9,7 +9,7 @@ info_npz = np.load(info_npz_name)
 print(info_npz['joints_3d_world'].shape)
 # joints = info_npz['joints_3d_cam'][:, :, [2, 1, 0]]
 # joints[:, :, 0] *=  -1
-joints = info_npz['joints_3d_cam']
+joints = info_npz['joints_3d_world']
 with h5py.File(gta_name, "r+") as f:
     print("Keys: %s" % f.keys())
     del f['skeleton_joints']
