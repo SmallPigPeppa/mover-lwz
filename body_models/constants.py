@@ -8,6 +8,7 @@ USE_PROX_VPOSER = False
 
 # this mapping is opposite from SMPL-X.
 
+
 IDX_MAPPING = [
     # body joints
     -1, 2, 1, 5, 4, 8,
