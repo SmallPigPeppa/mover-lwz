@@ -37,8 +37,7 @@ import h5py
 from .utils import smpl_to_openpose
 
 # VH joint definition.
-from ...constants import IDX_MAPPING, JOINT_NAMES,IDX_MAPPING_GTA
-
+from ...constants import IDX_MAPPING, JOINT_NAMES, IDX_MAPPING_GTA
 
 Keypoints = namedtuple('Keypoints',
                        ['keypoints', 'gender_gt', 'gender_pd', 'pelvis', 'neck', 'keypoints_3d'])
@@ -108,20 +107,20 @@ def read_keypoints(keypoint_fn, use_hands=True, use_face=True,
 
         keypoints.append(body_keypoints)
 
-        midhip.append(person_data['pose_keypoints_3d'][4*8+0:4*8+3])
-        neck.append(person_data['pose_keypoints_3d'][4*1+0:4*1+3])
+        midhip.append(person_data['pose_keypoints_3d'][4 * 8 + 0:4 * 8 + 3])
+        neck.append(person_data['pose_keypoints_3d'][4 * 1 + 0:4 * 1 + 3])
         pose_keypoints_3d.append(person_data['pose_keypoints_3d'])
         # import pdb;pdb.set_trace()
     return Keypoints(keypoints=keypoints, gender_pd=gender_pd,
-                     gender_gt=gender_gt, pelvis=midhip, neck=neck, 
+                     gender_gt=gender_gt, pelvis=midhip, neck=neck,
                      keypoints_3d=pose_keypoints_3d)
-    
+
+
 def read_keypoints_VH(skeleton_joints, use_hands=True, use_face=True,
-                   use_face_contour=False):
-    
+                      use_face_contour=False):
     smplx_joints_num = len(JOINT_NAMES)
     vh_2_smplx_joints = np.zeros((skeleton_joints.shape[0], \
-                        smplx_joints_num, 4))
+                                  smplx_joints_num, 4))
     # vh_2_smplx_joints[:, :, :-1] = skeleton_joints[:, IDX_MAPPING]
     # vh_2_smplx_joints[np.array(IDX_MAPPING)==-1] *= 0.0
     cnt = 0
@@ -150,18 +149,17 @@ def read_keypoints_VH(skeleton_joints, use_hands=True, use_face=True,
     for idx, person_data in enumerate([vh_2_smplx_joints]):
         # assert use_hands == True and use_face == False
         body_keypoints = person_data[:, 23:53]
-        keypoints.append(body_keypoints) # this is for hand.
-        midhip.append(person_data[:, 4*0+0:4*0+3])
-        neck.append(person_data[:, 4*12+0:4*12+3])
-        pose_keypoints_3d.append(person_data) # all joints.
-        
+        keypoints.append(body_keypoints)  # this is for hand.
+        midhip.append(person_data[:, 4 * 0 + 0:4 * 0 + 3])
+        neck.append(person_data[:, 4 * 12 + 0:4 * 12 + 3])
+        pose_keypoints_3d.append(person_data)  # all joints.
+
     return Keypoints(keypoints=keypoints, gender_pd=gender_pd,
-                     gender_gt=gender_gt, pelvis=midhip, neck=neck, 
+                     gender_gt=gender_gt, pelvis=midhip, neck=neck,
                      keypoints_3d=pose_keypoints_3d)
 
 
 class OpenPose(Dataset):
-
     NUM_BODY_JOINTS = 25
     NUM_HAND_JOINTS = 20
 
@@ -250,8 +248,8 @@ class OpenPose(Dataset):
 
         output_dict = {'fn': img_fn,
                        'img_path': img_path,
-                       'keypoints': keypoints, 'img': img, 
-                       'pelvis': keyp_tuple.pelvis, 'neck': keyp_tuple.neck, 
+                       'keypoints': keypoints, 'img': img,
+                       'pelvis': keyp_tuple.pelvis, 'neck': keyp_tuple.neck,
                        'keypoints_3d': keyp_tuple.keypoints_3d}
         if keyp_tuple.gender_gt is not None:
             if len(keyp_tuple.gender_gt) > 0:
@@ -278,7 +276,6 @@ class OpenPose(Dataset):
 
 
 class OpenPose_Pose2Room(Dataset):
-
     NUM_BODY_JOINTS = 25
     NUM_HAND_JOINTS = 20
 
@@ -307,11 +304,11 @@ class OpenPose_Pose2Room(Dataset):
                            2 * self.NUM_HAND_JOINTS * use_hands)
 
         self.img_folder = osp.join(data_folder, '.')
-        
+
         # get all obj path.
         self.img_paths = [osp.join(self.img_folder, img_fn)
                           for img_fn in os.listdir(self.img_folder)
-                          if img_fn.endswith('.hdf5') ]
+                          if img_fn.endswith('.hdf5')]
         self.img_paths = sorted(self.img_paths)
 
         self.cnt = 0
@@ -370,7 +367,7 @@ class OpenPose_Pose2Room(Dataset):
         return self.read_item(img_path)
 
     def read_item(self, sample_file):
-        
+
         sample_data = h5py.File(sample_file, "r")
         # room_bbox = {}
         # for key in sample_data['room_bbox'].keys():
@@ -386,34 +383,37 @@ class OpenPose_Pose2Room(Dataset):
         #             continue
         #         object_node[key] = node_data[key][:]
         #     object_nodes.append(object_node)
-        
+
         skeleton_joints = sample_data['skeleton_joints'][:]
         # face and contour
         keyp_tuple = read_keypoints_VH(skeleton_joints, use_hands=self.use_hands,
-                                    use_face=self.use_face,
-                                    use_face_contour=self.use_face_contour)
+                                       use_face=self.use_face,
+                                       use_face_contour=self.use_face_contour)
         if self.single:
             batch_size = 1
         else:
             batch_size = keyp_tuple.keypoints[0].shape[0]
-        
-        
+
         sample_fn = [osp.split(sample_file)[1] for i in range(batch_size)]
-        
+
         # change tmp path.
         # tmp_img_fn = \
         #     '/ps/scratch/hyi/HCI_dataset/holistic_scene_human/smplifyx_test/00001/00/images/000001.jpg'
         # tmp_img_fn = \
         #     '/share/wenzhuoliu/code/mover-lwz/input-data/Color_flip/images/000001.jpg'
-        tmp_img_fn = '/share/wenzhuoliu/code/mover-lwz/input-data/gta-test/images/000000.png'
-        img_fn = [tmp_img_fn for i in range(batch_size)]
-        
+
+        # tmp_img_fn = '/share/wenzhuoliu/code/mover-lwz/input-data/gta-test/images/000000.png'
+        # img_fn = [tmp_img_fn for i in range(batch_size)]
+
+        import glob
+        img_fn = glob.glob('/share/wenzhuoliu/code/mover-lwz/input-data/gta-test/images/*.png')
+
         if len(keyp_tuple.keypoints) < 1:
             return {}
         # keypoints = np.stack(keyp_tuple.keypoints)
         assert len(keyp_tuple.keypoints) == 1
         keypoints = np.zeros((keyp_tuple.keypoints[0].shape[0], 68, 3))
-        
+
         # import pdb;pdb.set_trace()
         # body & hand
         # keypoints_3d = np.concatenate([keyp_tuple.keypoints_3d[0], \
@@ -421,30 +421,30 @@ class OpenPose_Pose2Room(Dataset):
 
         # All Skeletons.
         keypoints_3d = keyp_tuple.keypoints_3d[0]
-        
+
         # import pdb;pdb.set_trace()
         if self.single:
             output_dict = {'fn': sample_fn,
-                       'img_path': img_fn,
-                       'keypoints': keypoints[:1], 
-                       'pelvis': keyp_tuple.pelvis[:1], 
-                       'neck': keyp_tuple.neck[:1], 
-                       'keypoints_3d': keypoints_3d[:1]}
+                           'img_path': img_fn,
+                           'keypoints': keypoints[:1],
+                           'pelvis': keyp_tuple.pelvis[:1],
+                           'neck': keyp_tuple.neck[:1],
+                           'keypoints_3d': keypoints_3d[:1]}
         else:
             output_dict = {'fn': sample_fn,
-                       'img_path': img_fn,
-                       'keypoints': keypoints, 
-                       'pelvis': keyp_tuple.pelvis, 
-                       'neck': keyp_tuple.neck, 
-                       'keypoints_3d': keypoints_3d}
+                           'img_path': img_fn,
+                           'keypoints': keypoints,
+                           'pelvis': keyp_tuple.pelvis,
+                           'neck': keyp_tuple.neck,
+                           'keypoints_3d': keypoints_3d}
         if False:
             # import pdb;pdb.set_trace()
             for tmp_i in range(len(img_fn)):
                 save_name = os.path.basename(img_fn[tmp_i])
-                tmp_save_name = os.path.join('/is/cluster/work/hyi/results/SceneGeneration/Pose2Room',\
-                     save_name+f'{tmp_i}.ply')
+                tmp_save_name = os.path.join('/is/cluster/work/hyi/results/SceneGeneration/Pose2Room', \
+                                             save_name + f'{tmp_i}.ply')
                 import trimesh
-                output_ply = trimesh.Trimesh(keypoints_3d[tmp_i:tmp_i+1].reshape(-1, 4)[:, :-1], process=False)
+                output_ply = trimesh.Trimesh(keypoints_3d[tmp_i:tmp_i + 1].reshape(-1, 4)[:, :-1], process=False)
                 output_ply.export(tmp_save_name)
         print('kspt3d dim:', keypoints_3d.shape)
         return output_dict
@@ -466,7 +466,6 @@ class OpenPose_Pose2Room(Dataset):
 
 
 class OpenPose_Video(OpenPose):
-
     NUM_BODY_JOINTS = 25
     NUM_HAND_JOINTS = 20
 
@@ -538,13 +537,13 @@ class OpenPose_Video(OpenPose):
                     #     print(key, len(value))
 
                     # TODO: check why exists 1x17x3, 1x0x3 kpts
-                    if key == 'keypoints' and value.shape[1] != 118: 
+                    if key == 'keypoints' and value.shape[1] != 118:
                         result[key].append(np.zeros((1, 118, 3)))
                     else:
                         result[key].append(value)
                 else:
                     print(f'key {key} not in one item')
-                    if key == 'keypoints' and value.shape[1] != 118: 
+                    if key == 'keypoints' and value.shape[1] != 118:
                         result[key] = [np.zeros((1, 118, 3))]
                     else:
                         result[key] = [value]
@@ -560,16 +559,16 @@ class OpenPose_Video(OpenPose):
                 # print('#############################################')
                 # print(value[207])
                 new_result[key] = np.concatenate(value, axis=0)
-                
+
             else:
                 new_result[key] = value
         return new_result
 
     def read_item(self, img_idx):
-        img_path = os.path.join(self.data_folder, img_idx, '00', self.img_folder, img_idx+'.png')
-        
+        img_path = os.path.join(self.data_folder, img_idx, '00', self.img_folder, img_idx + '.png')
+
         # img = cv2.imread(img_path).astype(np.float32)[:, :, ::-1] / 255.0
-        
+
         img_fn = img_idx
 
         keypoint_fn = osp.join(self.data_folder, img_idx, '00', self.keyp_folder,
@@ -582,11 +581,11 @@ class OpenPose_Video(OpenPose):
             return {}
         keypoints = np.stack(keyp_tuple.keypoints)
 
-        #'img': img,
+        # 'img': img,
         output_dict = {'fn': img_fn,
                        'img_path': img_path,
-                       'keypoints': keypoints,  
-                       'pelvis': keyp_tuple.pelvis, 'neck': keyp_tuple.neck, 
+                       'keypoints': keypoints,
+                       'pelvis': keyp_tuple.pelvis, 'neck': keyp_tuple.neck,
                        'keypoints_3d': keyp_tuple.keypoints_3d}
         if keyp_tuple.gender_gt is not None:
             if len(keyp_tuple.gender_gt) > 0:
@@ -595,6 +594,3 @@ class OpenPose_Video(OpenPose):
             if len(keyp_tuple.gender_pd) > 0:
                 output_dict['gender_pd'] = keyp_tuple.gender_pd
         return output_dict
-
-
-
