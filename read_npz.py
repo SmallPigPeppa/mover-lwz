@@ -8,6 +8,9 @@ info_npz_name = "samples_clean_gta/FPS-5/2020-06-11-10-06-48/info_frames.npz"
 info_npz = np.load(info_npz_name)
 print(info_npz['joints_3d_cam'].shape)
 print(info_npz['joints_3d_cam'])
+print('#########################')
+print(info_npz['intrinsics'])
+print('#########################')
 
 filename = "samples_clean/3_3_78_Female2_0.hdf5"
 
