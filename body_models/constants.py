@@ -1,5 +1,4 @@
-USE_PROX_VPOSER=False
-
+USE_PROX_VPOSER = False
 
 ## dataset for VirtualHome
 # OLD_SKELETON_IDX = [2, 1, 5, 4, 8, 7, #65, 62,
@@ -8,10 +7,11 @@ USE_PROX_VPOSER=False
 #     20, 63, 60, 24, 23]
 
 # this mapping is opposite from SMPL-X.
+
 IDX_MAPPING = [
     # body joints
     -1, 2, 1, 5, 4, 8,
-    7, -1, -1, 12, -1, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
+    7, -1, -1, 12, -1, -1, -1,  # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
     17, 16, 19, 18, 21,
     20, 63, 60, 24, 23,
     # 22, in_valid.
@@ -37,24 +37,39 @@ IDX_MAPPING = [
 #     16, 18, 20, 3, 6, 9, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
 #     2, 5, 8, 1, 4,
 #     7]
-IDX_MAPPING_GTA = [
-    # body joints
-    15, 12, -1, 17, 19, 21, -1,
-    16, 18, 20, -1, -1, -1, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
-    2, 5, 8, 1, 4,
-    7]
+# best
+# IDX_MAPPING_GTA = [
+#     # body joints
+#     15, 12, -1, 17, 19, 21, -1,
+#     16, 18, 20, -1, -1, -1, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
+#     2, 5, 8, 1, 4,
+#     7]
 # IDX_MAPPING_GTA = [
 #     # body joints
 #     15, 12, -1, 16, 18, 20, -1,
 #     17, 19, 21, -1, -1, -1, -1, -1, # 0, 3 | 3, 6 | 'Neck': 12, | feet: 11, 12; angle: 7, 8
 #     1, 4, 7, 2, 5,
 #     8]
-
+IDX_MAPPING_GTA = [0, 1, 2, 3, 4, 5, 6, 7, 8, -1, 10, 11, 12, -1, -1, 15, 16, 17, 18, 19, 20, 21, -1, -1, -1, 25, 26,
+                   27, 28, 29, 30, 31, 32, 33, 34, 35, 36, -1, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
+                   -1, 53, 54, 55, 56, 57, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+                   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 
 # SKELETON_IDX = [IDX_MAPPING[i] for i in range(23) if IDX_MAPPING[i] != -1]
-SKELETON_IDX = [IDX_MAPPING_GTA[i] for i in range(21) if IDX_MAPPING_GTA[i] != -1]
-RIGHT_HAND_IDX=[]
-LEFT_HAND_IDX=[]
+# SKELETON_IDX = [IDX_MAPPING_GTA[i] for i in range(21) if IDX_MAPPING_GTA[i] != -1]
+SKELETON_IDX = [IDX_MAPPING_GTA[i] for i in
+                [0, 1, 2, 16, 17, 3, 6, 9, 12, 15, 7, 4, 8, 5, 11, 10, 13, 14, 18, 19, 20, 21, 60, 61, 62, 63, 64, 65,
+                 59, 58, 56, 55, 57, 22] if IDX_MAPPING_GTA[i] != -1]
+# RIGHT_HAND_IDX = []
+# LEFT_HAND_IDX = []
+RIGHT_HAND_IDX = [IDX_MAPPING_GTA[i] for i in
+                  [21, 52, 53, 54, 71, 40, 41, 42, 72, 43, 44, 45, 73, 49, 50, 51, 74, 46, 47, 48, 75] if
+                  IDX_MAPPING_GTA[i] != -1]
+LEFT_HAND_IDX = [IDX_MAPPING_GTA[i] for i in
+                  [20, 37, 38, 39, 66, 25, 26, 27, 67, 28, 29, 30, 68, 34, 35, 36, 69, 31, 32, 33, 70] if
+                  IDX_MAPPING_GTA[i] != -1]
 # print(OLD_SKELETON_IDX == SKELETON_IDX)
 # SKELETON_IDX = [IDX_MAPPING[i] for i in range(23) if IDX_MAPPING[i] != -1]
 # RIGHT_HAND_IDX = [37, 38, 39,
@@ -110,26 +125,24 @@ HAND_IDX = RIGHT_HAND_IDX + LEFT_HAND_IDX
 # ]
 
 
-
 VH_joint_names = ['Hips', 'LeftUpperLeg', 'RightUpperLeg', 'LeftLowerLeg', 'RightLowerLeg', 'LeftFoot',
-               'RightFoot', 'Spine', 'Chest', 'Neck', 'Head', 'LeftShoulder', 'RightShoulder',
-               'LeftUpperArm', 'RightUpperArm', 'LeftLowerArm', 'RightLowerArm', 'LeftHand',
-               'RightHand', 'LeftToes', 'RightToes', 'LeftEye', 'RightEye', 
-               'Jaw', 
-               'LeftThumbProximal',
-               'LeftThumbIntermediate', 'LeftThumbDistal', 'LeftIndexProximal',
-               'LeftIndexIntermediate', 'LeftIndexDistal', 'LeftMiddleProximal',
-               'LeftMiddleIntermediate', 'LeftMiddleDistal', 'LeftRingProximal',
-               'LeftRingIntermediate', 'LeftRingDistal', 'LeftLittleProximal',
-               'LeftLittleIntermediate', 'LeftLittleDistal', 
-               'RightThumbProximal',
-               'RightThumbIntermediate', 'RightThumbDistal', 'RightIndexProximal',
-               'RightIndexIntermediate', 'RightIndexDistal', 'RightMiddleProximal',
-               'RightMiddleIntermediate', 'RightMiddleDistal', 'RightRingProximal',
-               'RightRingIntermediate', 'RightRingDistal', 'RightLittleProximal',
-               'RightLittleIntermediate', 'RightLittleDistal', 
-               'UpperChest', 'LastBone']
-
+                  'RightFoot', 'Spine', 'Chest', 'Neck', 'Head', 'LeftShoulder', 'RightShoulder',
+                  'LeftUpperArm', 'RightUpperArm', 'LeftLowerArm', 'RightLowerArm', 'LeftHand',
+                  'RightHand', 'LeftToes', 'RightToes', 'LeftEye', 'RightEye',
+                  'Jaw',
+                  'LeftThumbProximal',
+                  'LeftThumbIntermediate', 'LeftThumbDistal', 'LeftIndexProximal',
+                  'LeftIndexIntermediate', 'LeftIndexDistal', 'LeftMiddleProximal',
+                  'LeftMiddleIntermediate', 'LeftMiddleDistal', 'LeftRingProximal',
+                  'LeftRingIntermediate', 'LeftRingDistal', 'LeftLittleProximal',
+                  'LeftLittleIntermediate', 'LeftLittleDistal',
+                  'RightThumbProximal',
+                  'RightThumbIntermediate', 'RightThumbDistal', 'RightIndexProximal',
+                  'RightIndexIntermediate', 'RightIndexDistal', 'RightMiddleProximal',
+                  'RightMiddleIntermediate', 'RightMiddleDistal', 'RightRingProximal',
+                  'RightRingIntermediate', 'RightRingDistal', 'RightLittleProximal',
+                  'RightLittleIntermediate', 'RightLittleDistal',
+                  'UpperChest', 'LastBone']
 
 JOINT_NAMES = [
     'pelvis',
@@ -279,7 +292,6 @@ JOINT_NAMES = [
     'left_contour_1',
 ]
 
-
 SMPLH_JOINT_NAMES = [
     'pelvis',
     'left_hip',
@@ -358,7 +370,6 @@ SMPLH_JOINT_NAMES = [
 
 valid_joint_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28,
                    29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
-
 
 if __name__ == '__main__':
     for i, n in enumerate(VH_joint_names):
