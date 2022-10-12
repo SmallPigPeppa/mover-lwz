@@ -42,13 +42,17 @@ world2cam = np.array(info_npz['world2cam_trans'])
 kpts_world = np.concatenate((kpts_npz, kpts_pkl), axis=1)
 print(kpts_npz.shape, kpts_pkl.shape, kpts_world.shape)
 kpts_camera = []
+print(kpts_world[0])
 for i in range(len(kpts_world)):
     r_i = world2cam[i][:3, :3].T
     t_i = world2cam[i][3, :3]
     # cam_point_i = r_i * kpts_world[i] + t_i
     cam_point_i = [np.matmul(r_i, kpt) + t_i for kpt in kpts_world[i]]
     kpts_camera.append(cam_point_i)
-
+print(numpy.array(kpts_camera[0]))
+for idx,i in enumerate( numpy.array(kpts_camera[0])):
+    if i[2]>10:
+        print(idx)
 # step1
 # gta_im to gta
 kpts_gta_im = numpy.array(kpts_camera)
@@ -100,17 +104,25 @@ for i in range(len(kpts_smplx)):
 
 # step3: save smplx as hdf5
 # temp_name = "samples_clean/3_3_78_Female2_0.hdf5"
-hdf5_name = "samples_clean_gta/FPS-5-clean/FPS-5-2020-06-11-10-06-48.hdf5"
-# joints[:, :, 0] *=  -1
-# joints = info_npz['joints_3d_camera']
-with h5py.File(hdf5_name, "r+") as f:
-    print("Keys: %s" % f.keys())
-    del f['skeleton_joints']
-    print("Keys: %s" % f.keys())
-    f.create_dataset('skeleton_joints', data=kpts_smplx)
-    print(f['skeleton_joints'])
-    print("Keys: %s" % f.keys())
-
+# hdf5_name = "samples_clean_gta/FPS-5-clean/FPS-5-2020-06-11-10-06-48.hdf5"
+# # joints[:, :, 0] *=  -1
+# # joints = info_npz['joints_3d_camera']
+# with h5py.File(hdf5_name, "r+") as f:
+#     print("Keys: %s" % f.keys())
+#     del f['skeleton_joints']
+#     print("Keys: %s" % f.keys())
+#     f.create_dataset('skeleton_joints', data=kpts_smplx)
+#     print(f['skeleton_joints'])
+#     print("Keys: %s" % f.keys())
+mapping_list3_new=[]
+for idx,valid in enumerate(mapping_list2):
+    if kpts_smplx [0][idx][2]>10:
+        mapping_list3_new.append(-1)
+    elif valid!=-1:
+        mapping_list3_new.append(idx)
+    else:
+        mapping_list3_new.append(-1)
+print(mapping_list3_new)
 
 mapping_list3=[]
 for idx,valid in enumerate(mapping_list2):
@@ -120,25 +132,25 @@ for idx,valid in enumerate(mapping_list2):
         mapping_list3.append(-1)
 print(mapping_list3)
 
-body_list=[]
-from kpts_mapping.smplx import SMPLX_LIMBS
-for i in SMPLX_LIMBS['body']:
-    for j in i:
-        if SMPLX_KEYPOINTS.index(j) not in body_list:
-            body_list.append(SMPLX_KEYPOINTS.index(j))
-print(body_list)
-
-left_hand_list=[]
-for i in SMPLX_LIMBS['left_hand']:
-    for j in i:
-        if SMPLX_KEYPOINTS.index(j) not in left_hand_list:
-            left_hand_list.append(SMPLX_KEYPOINTS.index(j))
-print(left_hand_list)
-
-
-right_hand_list=[]
-for i in SMPLX_LIMBS['right_hand']:
-    for j in i:
-        if SMPLX_KEYPOINTS.index(j) not in right_hand_list:
-            right_hand_list.append(SMPLX_KEYPOINTS.index(j))
-print(right_hand_list)
+# body_list=[]
+# from kpts_mapping.smplx import SMPLX_LIMBS
+# for i in SMPLX_LIMBS['body']:
+#     for j in i:
+#         if SMPLX_KEYPOINTS.index(j) not in body_list:
+#             body_list.append(SMPLX_KEYPOINTS.index(j))
+# print(body_list)
+#
+# left_hand_list=[]
+# for i in SMPLX_LIMBS['left_hand']:
+#     for j in i:
+#         if SMPLX_KEYPOINTS.index(j) not in left_hand_list:
+#             left_hand_list.append(SMPLX_KEYPOINTS.index(j))
+# print(left_hand_list)
+#
+#
+# right_hand_list=[]
+# for i in SMPLX_LIMBS['right_hand']:
+#     for j in i:
+#         if SMPLX_KEYPOINTS.index(j) not in right_hand_list:
+#             right_hand_list.append(SMPLX_KEYPOINTS.index(j))
+# print(right_hand_list)
