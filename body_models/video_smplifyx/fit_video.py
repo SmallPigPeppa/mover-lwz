@@ -1302,6 +1302,7 @@ def fit_multi_view(img,
                     scene.add(m, f'kpts_{kpts_idx}')
 
 
+
                 # TODO: img, render image is not right!!!
                 input_img = get_image(img[ci], no_resize=True)
                 if input_img.max() > 1:
