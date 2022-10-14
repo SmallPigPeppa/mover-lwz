@@ -19,8 +19,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-import time
 
+import time
 try:
     import cPickle as pickle
 except ImportError:
@@ -39,7 +39,7 @@ import copy
 import cv2
 import PIL.Image as pil_img
 
-from ..smplifyx.optimizers import optim_factory
+from ..smplifyx. optimizers import optim_factory
 
 from .fitting_video_monitor import *
 from .fitting_video_loss import *
@@ -51,11 +51,10 @@ import json
 import scipy.sparse as sparse
 from loguru import logger
 from ..smplifyx.utils_mics.misc_utils import get_image
-from ..constants import USE_PROX_VPOSER, \
+from ..constants import USE_PROX_VPOSER,\
     SKELETON_IDX, LEFT_HAND_IDX, RIGHT_HAND_IDX
 
 from .vposer import VPoserDecoder
-
 
 # TODO: body_model has its own attributes: betas, thetas; or could also get other betes as input
 # ! warning: 
@@ -65,138 +64,138 @@ from .vposer import VPoserDecoder
 # ! - end_opt_stage
 
 def faces_by_vertex_function(f, v, as_sparse_matrix=False):
-    import scipy.sparse as sp
-    if not as_sparse_matrix:
-        faces_by_vertex = [[] for i in range(len(v))]
-        for i, face in enumerate(f):
-            faces_by_vertex[face[0]].append(i)
-            faces_by_vertex[face[1]].append(i)
-            faces_by_vertex[face[2]].append(i)
-    else:
-        row = f.flatten()
-        col = np.array([range(f.shape[0])] * 3).T.flatten()
-        data = np.ones(len(col))
-        faces_by_vertex = sp.csr_matrix((data, (row, col)), shape=(v.shape[0], f.shape[0]))
-    return faces_by_vertex
-
+        import scipy.sparse as sp
+        if not as_sparse_matrix:
+            faces_by_vertex = [[] for i in range(len(v))]
+            for i, face in enumerate(f):
+                faces_by_vertex[face[0]].append(i)
+                faces_by_vertex[face[1]].append(i)
+                faces_by_vertex[face[2]].append(i)
+        else:
+            row = f.flatten()
+            col = np.array([range(f.shape[0])] * 3).T.flatten()
+            data = np.ones(len(col))
+            faces_by_vertex = sp.csr_matrix((data, (row, col)), shape=(v.shape[0], f.shape[0]))
+        return faces_by_vertex
 
 def fit_multi_view(img,
-                   keypoints,
-                   body_model,
-                   cameras,
-                   initialization,
-                   joint_weights,
-                   body_pose_prior,
-                   jaw_prior,
-                   left_hand_prior,
-                   right_hand_prior,
-                   shape_prior,
-                   expr_prior,
-                   angle_prior,
-                   result_fn='out.pkl',
-                   mesh_fn='out.obj',
-                   out_img_fn='overlay.png',
-                   loss_type='multiview_smplify',
-                   use_cuda=True,
-                   init_joints_idxs=(9, 12, 2, 5),
-                   use_face=True,
-                   use_hands=True,
-                   data_weights=None,
-                   body_pose_prior_weights=None,
-                   hand_pose_prior_weights=None,
-                   jaw_pose_prior_weights=None,
-                   shape_weights=None,
-                   expr_weights=None,
-                   hand_joints_weights=None,
-                   face_joints_weights=None,
-                   depth_loss_weight=1e2,
-                   interpenetration=True,
-                   coll_loss_weights=None,
-                   df_cone_height=0.5,
-                   penalize_outside=True,
-                   max_collisions=8,
-                   point2plane=False,
-                   part_segm_fn='',
-                   side_view_thsh=25.,
-                   rho=100,
-                   vposer_latent_dim=32,
-                   vposer_ckpt='',
-                   use_joints_conf=False,
-                   interactive=True,
-                   visualize=False,
-                   save_meshes=True,
-                   degrees=None,
-                   dtype=torch.float32,
-                   ign_part_pairs=None,
-                   left_shoulder_idx=2,
-                   right_shoulder_idx=5,
-                   start_opt_stage=0,
-                   end_opt_stage=7,
-                   batch_size=1,
-                   ####################
-                   ### PROX-POSA EXTENSION
-                   scene_model=None,
-                   update_scene=False,
-                   update_body=True,
-                   render_results=True,
-                   ## Camera
-                   camera_mode='moving',
-                   ## Groud Support Loss
-                   ground_plane_support=False,
-                   # ground_plane_value=None,
-                   gp_support_weights_init=0.0,
-                   gp_support_weights=None,
-                   ground_contact_support=False,
-                   ground_contact_value=None,
-                   gp_contact_weights=None,
-                   # penetration
-                   sdf_penetration=False,
-                   sdf_penetration_loss_weight=None,
-                   sdf_dir=None,
-                   cam2world_dir=None,
-                   # contact
-                   contact=False,
-                   rho_contact=1.0,
-                   contact_loss_weights=None,
-                   contact_angle=15,
-                   contact_body_parts=None,
-                   body_segments_dir=None,
-                   load_scene=False,
-                   scene_dir=None,
-                   scene=False,
-                   scene_loss_weight=None,
+                keypoints,
+                body_model,
+                cameras,
+                initialization,
+                joint_weights,
+                body_pose_prior,
+                jaw_prior,
+                left_hand_prior,
+                right_hand_prior,
+                shape_prior,
+                expr_prior,
+                angle_prior,
+                result_fn='out.pkl',
+                mesh_fn='out.obj',
+                out_img_fn='overlay.png',
+                loss_type='multiview_smplify',
+                use_cuda=True,
+                init_joints_idxs=(9, 12, 2, 5),
+                use_face=True,
+                use_hands=True,
+                data_weights=None,
+                body_pose_prior_weights=None,
+                hand_pose_prior_weights=None,
+                jaw_pose_prior_weights=None,
+                shape_weights=None,
+                expr_weights=None,
+                hand_joints_weights=None,
+                face_joints_weights=None,
+                depth_loss_weight=1e2,
+                interpenetration=True,
+                coll_loss_weights=None,
+                df_cone_height=0.5,
+                penalize_outside=True,
+                max_collisions=8,
+                point2plane=False,
+                part_segm_fn='',
+                side_view_thsh=25.,
+                rho=100,
+                vposer_latent_dim=32,
+                vposer_ckpt='',
+                use_joints_conf=False,
+                interactive=True,
+                visualize=False,
+                save_meshes=True,
+                degrees=None,
+                dtype=torch.float32,
+                ign_part_pairs=None,
+                left_shoulder_idx=2,
+                right_shoulder_idx=5,
+                start_opt_stage=0,
+                end_opt_stage=7,
+                batch_size=1,
+                ####################
+                ### PROX-POSA EXTENSION
+                scene_model=None,
+                update_scene=False,
+                update_body=True,
+                render_results=True,
+                ## Camera
+                camera_mode='moving',
+                ## Groud Support Loss
+                ground_plane_support=False,
+                # ground_plane_value=None,
+                gp_support_weights_init=0.0,
+                gp_support_weights=None,
+                ground_contact_support=False,
+                ground_contact_value=None,
+                gp_contact_weights=None,
+                #penetration
+                sdf_penetration=False,
+                sdf_penetration_loss_weight=None,
+                sdf_dir=None,
+                cam2world_dir=None,
+                #contact
+                contact=False,
+                rho_contact=1.0,
+                contact_loss_weights=None,
+                contact_angle=15,
+                contact_body_parts=None,
+                body_segments_dir=None,
+                load_scene=False,
+                scene_dir=None,
+                scene=False,
+                scene_loss_weight=None,
 
-                   ## Ordinal Depth
-                   ordinal_depth=False,
-                   ordinal_depth_loss_weight=None,
-                   perframe_mask=None,
-                   ##
-                   s2m=False,
-                   s2m_weights=None,
-                   m2s=False,
-                   m2s_weights=None,
-                   rho_s2m=1,
-                   rho_m2s=1,
-                   init_mode=None,
-                   trans_opt_stages=None,
-                   viz_mode='mv',
-                   ## debug
-                   tb_debug=True,
-                   tb_logger=None,
-                   ## pre-load model and Parameters
-                   pre_smplx_model=None,
-                   pre_load=False,
-                   pre_load_pare_pose=False,
-                   ## pare pose prior
-                   pare_pose_prior=False,
-                   pare_pose_weight=None,
-                   ## ! original camera for joint3d,
-                   camera_3d=None,
-                   ## offline posa
-                   posa_flag=False,
-                   online_pose=False,
-                   posa_body_contact_labels=None,
-                   **kwargs):
+                ## Ordinal Depth
+                ordinal_depth=False,
+                ordinal_depth_loss_weight=None,
+                perframe_mask=None,
+                ##
+                s2m=False,
+                s2m_weights=None,
+                m2s=False,
+                m2s_weights=None,
+                rho_s2m=1,
+                rho_m2s=1,
+                init_mode=None,
+                trans_opt_stages=None,
+                viz_mode='mv',
+                ## debug
+                tb_debug=True,
+                tb_logger=None,
+                ## pre-load model and Parameters
+                pre_smplx_model=None,
+                pre_load=False,
+                pre_load_pare_pose=False,
+                ## pare pose prior
+                pare_pose_prior=False,
+                pare_pose_weight=None,
+                ## ! original camera for joint3d,
+                camera_3d=None,
+                ## offline posa
+                posa_flag=False,
+                online_pose=False,
+                posa_body_contact_labels=None,
+                **kwargs):
+
     ################################ Init
     # assert batch_size == 1, 'PyTorch L-BFGS only supports batch_size == 1'
     logger.info(f'run batch size: {batch_size}')
@@ -214,10 +213,10 @@ def fit_multi_view(img,
         body_pose_prior_weights = [4.04 * 1e2, 4.04 * 1e2, 57.4, 4.78]
 
     msg = (
-            'Number of Body pose prior weights {}'.format(
-                len(body_pose_prior_weights)) +
-            ' does not match the number of data term weights {}'.format(
-                len(data_weights)))
+        'Number of Body pose prior weights {}'.format(
+            len(body_pose_prior_weights)) +
+        ' does not match the number of data term weights {}'.format(
+            len(data_weights)))
     assert (len(data_weights) ==
             len(body_pose_prior_weights)), msg
 
@@ -241,8 +240,8 @@ def fit_multi_view(img,
            ' number of Shape prior weights = {}')
     assert (len(shape_weights) ==
             len(body_pose_prior_weights)), msg.format(
-        len(shape_weights),
-        len(body_pose_prior_weights))
+                len(shape_weights),
+                len(body_pose_prior_weights))
 
     if use_face:
         if jaw_pose_prior_weights is None:
@@ -262,15 +261,16 @@ def fit_multi_view(img,
                ' number of Expression prior weights = {}')
         assert (len(expr_weights) ==
                 len(body_pose_prior_weights)), msg.format(
-            len(body_pose_prior_weights),
-            len(expr_weights))
+                    len(body_pose_prior_weights),
+                    len(expr_weights))
 
         if face_joints_weights is None:
             face_joints_weights = [0.0, 0.0, 0.0, 1.0]
         msg = ('Number of Body pose prior weights does not match the' +
                ' number of face joint distance weights')
         assert (len(face_joints_weights) ==
-                len(body_pose_prior_weights)), msg
+              len(body_pose_prior_weights)), msg
+
 
     if coll_loss_weights is None:
         coll_loss_weights = [0.0] * len(body_pose_prior_weights)
@@ -287,7 +287,7 @@ def fit_multi_view(img,
                                      requires_grad=True)
         if USE_PROX_VPOSER:
             vposer = VPoserDecoder(vposer_ckpt=vposer_ckpt, latent_dim=vposer_latent_dim,
-                                   dtype=dtype, **kwargs)
+                               dtype=dtype, **kwargs)
         else:
             vposer_ckpt = osp.expandvars(vposer_ckpt)
             vposer, _ = load_vposer(vposer_ckpt, vp_model='snapshot')
@@ -297,14 +297,15 @@ def fit_multi_view(img,
     if use_vposer:
         # import pdb;pdb.set_trace()
         if USE_PROX_VPOSER:
-            latent_mean = torch.zeros([batch_size, vposer_latent_dim], device=device,
-                                      requires_grad=True, dtype=dtype)
+            latent_mean = torch.zeros([batch_size, vposer_latent_dim],device=device,
+            requires_grad=True, dtype=dtype)
             body_mean_pose = vposer(latent_mean).detach().cpu()
         else:
             body_mean_pose = torch.zeros([batch_size, vposer_latent_dim],
-                                         dtype=dtype)
+                                     dtype=dtype)
     else:
         body_mean_pose = body_pose_prior.get_mean().detach().cpu()
+
 
     # Create the search tree
     search_tree = None
@@ -340,6 +341,7 @@ def fit_multi_view(img,
                 faces_segm=faces_segm, faces_parents=faces_parents,
                 ign_part_pairs=ign_part_pairs).to(device=device)
 
+
     dataset_name = kwargs['dataset']
     ################################################################ end initialization
 
@@ -349,7 +351,7 @@ def fit_multi_view(img,
     # body_pose: Optional[Tensor] = None,
     # global_orient: Optional[Tensor] = None,
     # transl: Optional[Tensor] = None,
-    betas = torch.zeros((1, 10), requires_grad=True, device=device)  # use only one fixed betas
+    betas = torch.zeros((1,  10), requires_grad=True, device=device) # use only one fixed betas
 
     # TODO: load pre-calculated SMPL-X model and parameters
     beta_precomputed = kwargs.get('beta_precomputed', False)
@@ -369,13 +371,13 @@ def fit_multi_view(img,
     #         print('beta_precomputed == True but no beta files (.pkl) found.')
     #         exit()
 
-    if start_opt_stage > 0:  # the camera is modified from OpenGL CS to OpenCV CS.
+    if start_opt_stage > 0: # the camera is modified from OpenGL CS to OpenCV CS.
         global_orient = torch.zeros((batch_size, 3), requires_grad=True, device=device)
     else:
         tmp_x_inverse = torch.zeros((batch_size, 3), device=device)
         tmp_x_inverse[:, 0] = -3.14
         global_orient = torch.clone(tmp_x_inverse)
-        global_orient.requires_grad = True
+        global_orient.requires_grad=True
     transl = torch.zeros((batch_size, 3), requires_grad=True, device=device)
     left_hand_pose = torch.zeros((batch_size, 12), requires_grad=True, device=device)
     right_hand_pose = torch.zeros((batch_size, 12), requires_grad=True, device=device)
@@ -390,22 +392,20 @@ def fit_multi_view(img,
         if type(pre_smplx_model) == list:
             for idx in range(len(pre_smplx_model)):
                 # betas.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['betas']))
-                betas.data.copy_(torch.tensor(pre_smplx_model[idx][
-                                                  'betas']))  # add on 06.18: it may leads to unmatching error from previous results.
-                global_orient.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['global_orient']))
-                transl.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['transl']))
-                left_hand_pose.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['left_hand_pose']))
-                right_hand_pose.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['right_hand_pose']))
-                jaw_pose.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['jaw_pose']))
-                leye_pose.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['leye_pose']))
-                reye_pose.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['reye_pose']))
-                expression.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['expression']))
+                betas.data.copy_(torch.tensor(pre_smplx_model[idx]['betas'])) # add on 06.18: it may leads to unmatching error from previous results.
+                global_orient.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['global_orient']))
+                transl.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['transl']))
+                left_hand_pose.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['left_hand_pose']))
+                right_hand_pose.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['right_hand_pose']))
+                jaw_pose.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['jaw_pose']))
+                leye_pose.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['leye_pose']))
+                reye_pose.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['reye_pose']))
+                expression.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['expression']))
                 if use_vposer:
-                    pose_embedding.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['pose_embedding']))
+                    pose_embedding.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['pose_embedding']))
         elif type(pre_smplx_model) == dict:
             assert global_orient.shape[0] == pre_smplx_model['global_orient'].shape[0]
-            betas.data.copy_(torch.tensor(
-                pre_smplx_model['betas']))  # add on 06.18: it may leads to unmatching error from previous results.
+            betas.data.copy_(torch.tensor(pre_smplx_model['betas'])) # add on 06.18: it may leads to unmatching error from previous results.
             global_orient.data.copy_(torch.tensor(pre_smplx_model['global_orient']))
             transl.data.copy_(torch.tensor(pre_smplx_model['transl']))
             left_hand_pose.data.copy_(torch.tensor(pre_smplx_model['left_hand_pose']))
@@ -455,7 +455,7 @@ def fit_multi_view(img,
             pare_pose_output = vposer.encode(pare_body_pose.view(-1, 63))
             # pare_pose_embedding = pare_pose_output.rsample()
             pare_pose_embedding = pare_pose_output.mean
-            pose_embedding.data[idx:idx + 1].copy_(pare_pose_embedding)
+            pose_embedding.data[idx:idx+1].copy_(pare_pose_embedding)
     else:
         pare_pose = None
         pare_pose_flag = None
@@ -487,7 +487,7 @@ def fit_multi_view(img,
         opt_weights_dict['s2m_weight'] = s2m_weights
     if m2s:
         opt_weights_dict['m2s_weight'] = m2s_weights
-    if sdf_penetration:  ## Human && Objs inter-penetration loss
+    if sdf_penetration: ## Human && Objs inter-penetration loss
         opt_weights_dict['sdf_penetration_loss_weight'] = sdf_penetration_loss_weight
     if contact:
         opt_weights_dict['contact_loss_weight'] = contact_loss_weights
@@ -510,7 +510,7 @@ def fit_multi_view(img,
     if ground_contact_support or True:
         ground_contact_vertices_ids = []
         # for part in [ 'L_feet_front', 'L_feet_back', 'R_feet_front', 'R_feet_back']: # for self-defined feet contact
-        for part in ['L_Leg', 'R_Leg']:
+        for part in [ 'L_Leg', 'R_Leg']:
             with open(os.path.join(body_segments_dir, part + '.json'), 'r') as f:
                 data = json.load(f)
                 ground_contact_vertices_ids.append(list(set(data["verts_ind"])))
@@ -525,8 +525,7 @@ def fit_multi_view(img,
                 contact_verts_ids.append(list(set(data["verts_ind"])))
         contact_verts_ids = np.concatenate(contact_verts_ids)
 
-        vertices = body_model(return_verts=True,
-                              body_pose=torch.zeros((batch_size, 63), dtype=dtype, device=device)).vertices
+        vertices = body_model(return_verts=True, body_pose= torch.zeros((batch_size, 63), dtype=dtype, device=device)).vertices
         # calculate normal map of the contact vertices;
         vertices_np = vertices[0].detach().cpu().numpy().squeeze()
         body_faces_np = body_model.faces_tensor.detach().cpu().numpy().reshape(-1, 3)
@@ -544,8 +543,8 @@ def fit_multi_view(img,
         shape = ftov.shape
         ftov = torch.sparse.FloatTensor(indices, values, torch.Size(shape))
     else:
-        contact_verts_ids = None,
-        ftov = None,
+        contact_verts_ids=None,
+        ftov=None,
 
     keys = opt_weights_dict.keys()
     opt_weights = [dict(zip(keys, vals)) for vals in
@@ -562,6 +561,7 @@ def fit_multi_view(img,
     if use_joints_conf:
         joints_conf = keypoint_data[:, :, :, 2].reshape(len(keypoints), -1)
 
+
     # Transfer the data to the correct device
     gt_joints = gt_joints.to(device=device, dtype=dtype)
     if use_joints_conf:
@@ -570,9 +570,9 @@ def fit_multi_view(img,
     # The indices of the joints used for the initialization of the camera
     init_joints_idxs = torch.tensor(init_joints_idxs, device=device)
     body_orientation_loss = create_loss('body_orient_multiview',
-                                        init_joints_idxs=init_joints_idxs,
-                                        depth_loss_weight=depth_loss_weight,
-                                        dtype=dtype).to(device=device)
+                                      init_joints_idxs=init_joints_idxs,
+                                      depth_loss_weight=depth_loss_weight,
+                                      dtype=dtype).to(device=device)
 
     # set scene parameters
     # if not update_scene:
@@ -588,24 +588,24 @@ def fit_multi_view(img,
 
     ################################################################ define loss
     init_loss = create_loss("3D_joint_loss",
-                            joint_weights=joint_weights,
-                            rho=rho,
-                            vposer=vposer,
-                            pose_embedding=pose_embedding,
-                            body_pose_prior=body_pose_prior,
-                            shape_prior=shape_prior,
-                            angle_prior=angle_prior,
-                            interpenetration=interpenetration,
-                            pen_distance=pen_distance,
-                            search_tree=search_tree,
-                            tri_filtering_module=filter_faces,
-                            data_weight=1e1,
-                            body_pose_weight=1.0,
-                            shape_weight=1e2,
-                            dtype=dtype,
-                            ground_plane_support=ground_plane_support,
-                            gp_support_loss_weight_init=gp_support_weights_init,  # 1e1
-                            ).to(device=device)
+                               joint_weights=joint_weights,
+                               rho=rho,
+                               vposer=vposer,
+                               pose_embedding=pose_embedding,
+                               body_pose_prior=body_pose_prior,
+                               shape_prior=shape_prior,
+                               angle_prior=angle_prior,
+                               interpenetration=interpenetration,
+                               pen_distance=pen_distance,
+                               search_tree=search_tree,
+                               tri_filtering_module=filter_faces,
+                               data_weight=1e1,
+                               body_pose_weight=1.0,
+                               shape_weight=1e2,
+                               dtype=dtype,
+                               ground_plane_support=ground_plane_support,
+                               gp_support_loss_weight_init=gp_support_weights_init, #1e1
+                               ).to(device=device)
 
     if dataset_name == 'Pose2Room':
         ################################
@@ -613,88 +613,87 @@ def fit_multi_view(img,
         ################################
         # import pdb;pdb.set_trace()
         loss = create_loss("3D_joint_hands_loss",
-                           joint_weights=joint_weights,
-                           rho=rho,
-                           use_joints_conf=use_joints_conf,
-                           use_face=use_face, use_hands=use_hands,
-                           vposer=vposer,
-                           pose_embedding=pose_embedding,
-                           body_pose_prior=body_pose_prior,
-                           shape_prior=shape_prior,
-                           angle_prior=angle_prior,
-                           left_hand_prior=left_hand_prior,
-                           right_hand_prior=right_hand_prior,
-                           interpenetration=interpenetration,
-                           pen_distance=pen_distance,
-                           search_tree=search_tree,
-                           tri_filtering_module=filter_faces,
-                           data_weight=1e1,
-                           body_pose_weight=1.0,  # 0.5,
-                           shape_weight=5,
-                           hand_joints_weights=4.0,
-                           hand_prior_weight=4.78,
-                           dtype=dtype,
-                           #    ground_plane_support=ground_plane_support,
-                           #    gp_support_loss_weight_init=gp_support_weights_init, #1e1
-                           ).to(device=device)
+                                joint_weights=joint_weights,
+                                rho=rho,
+                                use_joints_conf=use_joints_conf,
+                                use_face=use_face, use_hands=use_hands,
+                                vposer=vposer,
+                                pose_embedding=pose_embedding,
+                                body_pose_prior=body_pose_prior,
+                                shape_prior=shape_prior,
+                                angle_prior=angle_prior,
+                                left_hand_prior=left_hand_prior,
+                                right_hand_prior=right_hand_prior,
+                                interpenetration=interpenetration,
+                                pen_distance=pen_distance,
+                                search_tree=search_tree,
+                                tri_filtering_module=filter_faces,
+                                data_weight=1e1,
+                                body_pose_weight=1.0, #0.5,
+                                shape_weight=5,
+                                hand_joints_weights=4.0,
+                                hand_prior_weight=4.78,
+                                dtype=dtype,
+                                #    ground_plane_support=ground_plane_support,
+                                #    gp_support_loss_weight_init=gp_support_weights_init, #1e1
+                                ).to(device=device)
         # use 3D joints for following fitting.
     else:
         # import pdb;pdb.set_trace()
         loss = create_loss("multiview_smplify",
-                           joint_weights=joint_weights,
-                           rho=rho,
-                           use_joints_conf=use_joints_conf,
-                           use_face=use_face, use_hands=use_hands,
-                           vposer=vposer,
-                           pose_embedding=pose_embedding,
-                           body_pose_prior=body_pose_prior,
-                           shape_prior=shape_prior,
-                           angle_prior=angle_prior,
-                           expr_prior=expr_prior,
-                           left_hand_prior=left_hand_prior,
-                           right_hand_prior=right_hand_prior,
-                           jaw_prior=jaw_prior,
-                           interpenetration=interpenetration,
-                           pen_distance=pen_distance,
-                           search_tree=search_tree,
-                           tri_filtering_module=filter_faces,
-                           dtype=dtype,
-                           ##HDSR
-                           ground_plane_support=ground_plane_support,
-                           ground_contact_support=ground_contact_support,
-                           ground_contact_vertices_ids=ground_contact_vertices_ids,
-                           gp_support_loss_weight=gp_support_weights,
-                           # init sample, only one, will be replaced during optimization
-                           gp_contact_loss_weight=gp_contact_weights,
-                           sdf_penetration=sdf_penetration,
-                           scene_model=scene_model,
-                           sdf_penetration_loss_weight=sdf_penetration_loss_weight,
-                           ## contact loss, TODO: change to POSA
-                           contact=contact,
-                           contact_verts_ids=contact_verts_ids,
-                           rho_contact=rho_contact,
-                           contact_angle=contact_angle,
-                           ftov=ftov,
-                           contact_loss_weight=contact_loss_weights,
-                           ## scene loss:
-                           scene=scene,
-                           scene_loss_weight=scene_loss_weight,
-                           ## depth_ordinal
-                           ordinal_depth=ordinal_depth,
-                           ordinal_depth_loss_weight=ordinal_depth_loss_weight,
-                           ## pare pose prior
-                           pare_pose_prior=pare_pose_prior,
-                           pare_pose_weight=pare_pose_weight,
-                           pare_body_pose=pare_pose,
-                           pare_body_flag=pare_pose_flag,
-                           #    ## video smooth
-                           #    smooth_2d_weight=smooth_2d_weight,
-                           #    smooth_3d_weight=smooth_3d_weight,
-                           ## offline posa
-                           posa_flag=posa_flag,
-                           online_pose=online_pose,
-                           posa_body_contact_labels=posa_body_contact_labels,
-                           **kwargs)
+                                joint_weights=joint_weights,
+                                rho=rho,
+                                use_joints_conf=use_joints_conf,
+                                use_face=use_face, use_hands=use_hands,
+                                vposer=vposer,
+                                pose_embedding=pose_embedding,
+                                body_pose_prior=body_pose_prior,
+                                shape_prior=shape_prior,
+                                angle_prior=angle_prior,
+                                expr_prior=expr_prior,
+                                left_hand_prior=left_hand_prior,
+                                right_hand_prior=right_hand_prior,
+                                jaw_prior=jaw_prior,
+                                interpenetration=interpenetration,
+                                pen_distance=pen_distance,
+                                search_tree=search_tree,
+                                tri_filtering_module=filter_faces,
+                                dtype=dtype,
+                                ##HDSR
+                                ground_plane_support=ground_plane_support,
+                                ground_contact_support=ground_contact_support,
+                                ground_contact_vertices_ids=ground_contact_vertices_ids,
+                                gp_support_loss_weight=gp_support_weights, # init sample, only one, will be replaced during optimization
+                                gp_contact_loss_weight=gp_contact_weights,
+                                sdf_penetration=sdf_penetration,
+                                scene_model=scene_model,
+                                sdf_penetration_loss_weight=sdf_penetration_loss_weight,
+                                ## contact loss, TODO: change to POSA
+                                contact=contact,
+                                contact_verts_ids=contact_verts_ids,
+                                rho_contact=rho_contact,
+                                contact_angle=contact_angle,
+                                ftov=ftov,
+                                contact_loss_weight=contact_loss_weights,
+                                ## scene loss:
+                                scene=scene,
+                                scene_loss_weight=scene_loss_weight,
+                                ## depth_ordinal
+                                ordinal_depth=ordinal_depth,
+                                ordinal_depth_loss_weight=ordinal_depth_loss_weight,
+                                ## pare pose prior
+                                pare_pose_prior=pare_pose_prior,
+                                pare_pose_weight=pare_pose_weight,
+                                pare_body_pose=pare_pose,
+                                pare_body_flag=pare_pose_flag,
+                                #    ## video smooth
+                                #    smooth_2d_weight=smooth_2d_weight,
+                                #    smooth_3d_weight=smooth_3d_weight,
+                                ## offline posa
+                                posa_flag=posa_flag,
+                                online_pose=online_pose,
+                                posa_body_contact_labels=posa_body_contact_labels,
+                                **kwargs)
     loss = loss.to(device=device)
 
     # not_running = kwargs.get('not_running', False)
@@ -710,23 +709,23 @@ def fit_multi_view(img,
 
         data_weight = 1000 / H
 
-        # Step 1: Initialization
-        # Two options:
-        # 1. Optimize the full pose using 3D skl provided externally (OpenPose or MvPose)
-        # 2. Optimize the body orientation using the torso joints
+         # Step 1: Initialization
+         # Two options:
+         # 1. Optimize the full pose using 3D skl provided externally (OpenPose or MvPose)
+         # 2. Optimize the body orientation using the torso joints
 
         # ! load stage estimated body pose.
         if not pre_load:
             # TODO: load prefixed results from SMPLify-X
-            if start_opt_stage > 0:  # if the starting stage bigger than 0: fit to 3D skeletons
+            if start_opt_stage > 0:     # if the starting stage bigger than 0: fit to 3D skeletons
                 if dataset_name == 'Pose2Room':
 
                     # TODO: refactorize.
-                    # ! same as IDX_MAPPING from smpl_joints_map.
+                    #! same as IDX_MAPPING from smpl_joints_map.
                     # if input 4 dimension, the last dim would be weight.
                     body_pose_joints = np.concatenate((initialization['keypoints_3d'][:, :, :-1], \
-                                                       initialization['keypoints_3d'][:, :, -1:] * 0.0,
-                                                       ), -1)
+                                        initialization['keypoints_3d'][:, :, -1:] * 0.0,
+                                        ), -1)
 
                     body_pose_joints[:, SKELETON_IDX, -1] += 1.0
                     # body_pose_joints[:, LEFT_HAND_IDX, -1] += 1.0
@@ -750,7 +749,7 @@ def fit_multi_view(img,
                 # gt_joints_3d = torch.transpose(torch.matmul(torch.transpose(batch_rotation, 2, 1), torch.transpose(gt_joints_3d, 2, 1)), 2, 1)
 
                 # !!!  the initialization is wrong but the result is good.  Why use correct result, it is wierd.
-                # gt_joints_3d[:, :, 1] = -1 * gt_joints_3d[:, :, 1]
+                #gt_joints_3d[:, :, 1] = -1 * gt_joints_3d[:, :, 1]
 
                 # if beta_precomputed:
                 #     body_model.reset_params(body_pose=body_mean_pose, betas=torch.tensor(betas[:betas_num], device=device))
@@ -762,55 +761,55 @@ def fit_multi_view(img,
                     init_params.append(pose_embedding)
 
                 init_optimizer, init_create_graph = optim_factory.create_optimizer(
-                    init_params,
-                    **kwargs)
+                                                        init_params,
+                                                        **kwargs)
                 init_optimizer.zero_grad()
                 # import pdb;pdb.set_trace()
 
                 # build loss closure
                 fit_init = monitor.create_fitting_closure(
-                    init_optimizer, body_model, cameras=cameras,  # TODO: None
-                    loss=init_loss, gt_joints=gt_joints_3d, create_graph=init_create_graph,
-                    # use defined smplx model params
-                    betas=betas.expand(batch_size, -1),
-                    global_orient=global_orient,
-                    transl=transl,
-                    left_hand_pose=left_hand_pose,
-                    right_hand_pose=right_hand_pose,
-                    jaw_pose=jaw_pose,
-                    leye_pose=leye_pose,
-                    reye_pose=reye_pose,
-                    expression=expression,
-                    use_vposer=use_vposer, vposer=vposer,
-                    pose_embedding=pose_embedding,
-                    scene_model=scene_model,
-                    return_full_pose=True, return_verts=True,
-                    # debugging
-                    tb_debug=tb_debug,
-                    tb_logger=tb_logger,
-                    opt_idx=0)
+                                        init_optimizer, body_model, cameras=cameras, # TODO: None
+                                        loss=init_loss, gt_joints=gt_joints_3d, create_graph=init_create_graph,
+                                        # use defined smplx model params
+                                        betas = betas.expand(batch_size, -1),
+                                        global_orient = global_orient,
+                                        transl = transl,
+                                        left_hand_pose = left_hand_pose,
+                                        right_hand_pose = right_hand_pose,
+                                        jaw_pose = jaw_pose,
+                                        leye_pose = leye_pose,
+                                        reye_pose = reye_pose,
+                                        expression = expression,
+                                        use_vposer=use_vposer, vposer=vposer,
+                                        pose_embedding=pose_embedding,
+                                        scene_model=scene_model,
+                                        return_full_pose=True, return_verts=True,
+                                        # debugging
+                                        tb_debug=tb_debug,
+                                        tb_logger=tb_logger,
+                                        opt_idx=0)
                 # fitting process
                 ori_init_start = time.time()
                 init_loss_val = monitor.run_fitting(init_optimizer,
-                                                    fit_init,
-                                                    init_params, body_model,
-                                                    gt_joints=gt_joints_3d,
-                                                    use_vposer=use_vposer,
-                                                    pose_embedding=pose_embedding,
-                                                    vposer=vposer,
-                                                    # gt_ground_plane=ground_plane_value,
-                                                    # update multiple smplx_model
-                                                    betas=betas.expand(batch_size, -1),
-                                                    global_orient=global_orient,
-                                                    transl=transl,
-                                                    left_hand_pose=left_hand_pose,
-                                                    right_hand_pose=right_hand_pose,
-                                                    jaw_pose=jaw_pose,
-                                                    leye_pose=leye_pose,
-                                                    reye_pose=reye_pose,
-                                                    expression=expression,
-                                                    scene_model=scene_model,
-                                                    )
+                                                        fit_init,
+                                                        init_params, body_model,
+                                                        gt_joints=gt_joints_3d,
+                                                        use_vposer=use_vposer,
+                                                        pose_embedding=pose_embedding,
+                                                        vposer=vposer,
+                                                        # gt_ground_plane=ground_plane_value,
+                                                        #update multiple smplx_model
+                                                        betas = betas.expand(batch_size, -1),
+                                                        global_orient = global_orient,
+                                                        transl = transl,
+                                                        left_hand_pose = left_hand_pose,
+                                                        right_hand_pose = right_hand_pose,
+                                                        jaw_pose = jaw_pose,
+                                                        leye_pose = leye_pose,
+                                                        reye_pose = reye_pose,
+                                                        expression = expression,
+                                                        scene_model=scene_model,
+                                                        )
 
 
             else:
@@ -842,48 +841,48 @@ def fit_multi_view(img,
                 # TODO: modify body_orientation_loss
 
                 fit_camera = monitor.create_fitting_closure(
-                    body_orientation_optimizer, body_model, cameras, gt_joints,
-                    body_orientation_loss, create_graph=body_orientation_create_graph,
-                    # use defined smplx model params
-                    betas=betas.expand(batch_size, -1),
-                    global_orient=global_orient,
-                    transl=transl,
-                    left_hand_pose=left_hand_pose,
-                    right_hand_pose=right_hand_pose,
-                    jaw_pose=jaw_pose,
-                    leye_pose=leye_pose,
-                    reye_pose=reye_pose,
-                    expression=expression,
-                    use_vposer=use_vposer, vposer=vposer,
-                    pose_embedding=pose_embedding,
-                    scene_model=scene_model,
-                    return_full_pose=True, return_verts=True,
-                    # debugging
-                    tb_debug=tb_debug,
-                    tb_logger=tb_logger,
-                    opt_idx=0)
+                                        body_orientation_optimizer, body_model, cameras, gt_joints,
+                                        body_orientation_loss, create_graph=body_orientation_create_graph,
+                                        # use defined smplx model params
+                                        betas = betas.expand(batch_size, -1),
+                                        global_orient = global_orient,
+                                        transl = transl,
+                                        left_hand_pose = left_hand_pose,
+                                        right_hand_pose = right_hand_pose,
+                                        jaw_pose = jaw_pose,
+                                        leye_pose = leye_pose,
+                                        reye_pose = reye_pose,
+                                        expression = expression,
+                                        use_vposer=use_vposer, vposer=vposer,
+                                        pose_embedding=pose_embedding,
+                                        scene_model=scene_model,
+                                        return_full_pose=True, return_verts=True,
+                                        # debugging
+                                        tb_debug=tb_debug,
+                                        tb_logger=tb_logger,
+                                        opt_idx=0)
                 # cameras feeding the initial translation
                 # of the camera and the initial pose of the body model.
                 ori_init_start = time.time()
                 init_loss_val = monitor.run_fitting(body_orientation_optimizer,
-                                                    fit_camera,
-                                                    body_orientation_opt_params, body_model,
-                                                    use_vposer=use_vposer,
-                                                    pose_embedding=pose_embedding,
-                                                    vposer=vposer,
-                                                    # gt_ground_plane=ground_plane_value,
-                                                    # update multiple smplx_model
-                                                    betas=betas.expand(batch_size, -1),
-                                                    global_orient=global_orient,
-                                                    transl=transl,
-                                                    left_hand_pose=left_hand_pose,
-                                                    right_hand_pose=right_hand_pose,
-                                                    jaw_pose=jaw_pose,
-                                                    leye_pose=leye_pose,
-                                                    reye_pose=reye_pose,
-                                                    expression=expression,
-                                                    scene_model=scene_model,
-                                                    )
+                                                        fit_camera,
+                                                        body_orientation_opt_params, body_model,
+                                                        use_vposer=use_vposer,
+                                                        pose_embedding=pose_embedding,
+                                                        vposer=vposer,
+                                                        # gt_ground_plane=ground_plane_value,
+                                                        #update multiple smplx_model
+                                                        betas = betas.expand(batch_size, -1),
+                                                        global_orient = global_orient,
+                                                        transl = transl,
+                                                        left_hand_pose = left_hand_pose,
+                                                        right_hand_pose = right_hand_pose,
+                                                        jaw_pose = jaw_pose,
+                                                        leye_pose = leye_pose,
+                                                        reye_pose = reye_pose,
+                                                        expression = expression,
+                                                        scene_model=scene_model,
+                                                        )
 
             if interactive:
                 if use_cuda and torch.cuda.is_available():
@@ -907,12 +906,17 @@ def fit_multi_view(img,
         # and pick the orientation resulting in the lowest error
         results = []
 
+
         # load pare pose for further optimization
         if pre_load_pare_pose:
             if use_vposer:
-                pose_embedding.data[idx:idx + 1].copy_(pare_pose_embedding)
+                pose_embedding.data[idx:idx+1].copy_(pare_pose_embedding)
 
         # import pdb;pdb.set_trace()
+
+
+
+
 
         ####################
         ##### fit body pose to 2D pose, hand, face
@@ -928,26 +932,27 @@ def fit_multi_view(img,
 
                 ## change input.
                 if dataset_name == 'Pose2Room':
+
                     # TODO: refactorize.
-                    # ! same as IDX_MAPPING from smpl_joints_map.
+                    #! same as IDX_MAPPING from smpl_joints_map.
                     # if input 4 dimension, the last dim would be weight.
 
                     body_pose_joints = np.concatenate((initialization['keypoints_3d'][:, :, :-1], \
-                                                       initialization['keypoints_3d'][:, :, -1:] * 0.0,
-                                                       ), -1)
+                                        initialization['keypoints_3d'][:, :, -1:] * 0.0,
+                                        ), -1)
 
                     body_pose_joints[:, SKELETON_IDX, -1] += 1.0
                     body_pose_joints[:, LEFT_HAND_IDX, -1] += 1.0
                     body_pose_joints[:, RIGHT_HAND_IDX, -1] += 1.0
                     gt_joints = torch.tensor(body_pose_joints, device=device)
 
+
                 # Warning: ot update the scene, we could also generate a plausible human body
                 # set update scene module
                 if scene_model is not None:
                     if update_scene:
                         logger.debug('update scene in SMPLify-X')
-                        scene_model.set_active_scene(
-                            activate_list=['translations_object', 'int_scales_object', 'ground_plane'])
+                        scene_model.set_active_scene(activate_list=[ 'translations_object', 'int_scales_object', 'ground_plane'])
                     # elif update_scene and opt_idx == len(opt_weights[start_opt_stage:]) - 1:
                     #     scene_model.set_active_scene(activate_list=[ 'rotations_object', 'translations_object']) #'rotate_cam_pitch', 'rotate_cam_roll',
                     else:
@@ -956,7 +961,7 @@ def fit_multi_view(img,
 
                 # fixed body parameters
                 # TODO: use body to optimize 3D scene
-                if not update_body:  # several stage for update scene only
+                if not update_body: # several stage for update scene only
                     betas.requires_grad = False
                     global_orient.requires_grad = False
                     transl.requires_grad = False
@@ -995,13 +1000,14 @@ def fit_multi_view(img,
                 if dataset_name == 'Pose2Room':
                     jaw_pose.requires_grad = False
 
+
                 body_params = [betas, global_orient, transl,
-                               left_hand_pose,
-                               right_hand_pose,
-                               jaw_pose,
-                               leye_pose,
-                               reye_pose,
-                               expression]
+                                                left_hand_pose,
+                                                right_hand_pose,
+                                                jaw_pose,
+                                                leye_pose,
+                                                reye_pose,
+                                                expression]
                 if use_vposer:
                     body_params.append(pose_embedding)
 
@@ -1031,7 +1037,7 @@ def fit_multi_view(img,
                     # import pdb;pdb.set_trace()
                     curr_weights['data_weight'] = data_weight
                     curr_weights['bending_prior_weight'] = (
-                            3.17 * curr_weights['body_pose_weight'])
+                        3.17 * curr_weights['body_pose_weight'])
                     if use_hands:
                         joint_weights[:, 25:76] = curr_weights['hand_weight']
                     if use_face:
@@ -1052,45 +1058,45 @@ def fit_multi_view(img,
                     pose_embedding=pose_embedding,
                     gt_contact_value=ground_contact_value,
                     scene_model=scene_model,
-                    betas=betas.expand(batch_size, -1),
-                    global_orient=global_orient,
-                    transl=transl,
-                    left_hand_pose=left_hand_pose,
-                    right_hand_pose=right_hand_pose,
-                    jaw_pose=jaw_pose,
-                    leye_pose=leye_pose,
-                    reye_pose=reye_pose,
-                    expression=expression,
+                    betas = betas.expand(batch_size, -1),
+                    global_orient = global_orient,
+                    transl = transl,
+                    left_hand_pose = left_hand_pose,
+                    right_hand_pose = right_hand_pose,
+                    jaw_pose = jaw_pose,
+                    leye_pose = leye_pose,
+                    reye_pose = reye_pose,
+                    expression = expression,
                     return_verts=True, return_full_pose=True,
                     tb_debug=tb_debug,
                     tb_logger=tb_logger,
-                    opt_idx=opt_idx + start_opt_stage,
+                    opt_idx=opt_idx+start_opt_stage,
                     # pare pose input
                     pare_body_pose=pare_pose,
                     pare_body_flag=pare_pose_flag,
-                )
+                    )
 
                 if interactive:
                     if use_cuda and torch.cuda.is_available():
                         torch.cuda.synchronize()
                     stage_start = time.time()
 
-                # update multiple smplx_model
+                #update multiple smplx_model
                 final_loss_val = monitor.run_fitting(
                     body_optimizer,
                     closure, final_params,
                     body_model,
                     pose_embedding=pose_embedding, vposer=vposer,
                     use_vposer=use_vposer,
-                    betas=betas.expand(batch_size, -1),
-                    global_orient=global_orient,
-                    transl=transl,
-                    left_hand_pose=left_hand_pose,
-                    right_hand_pose=right_hand_pose,
-                    jaw_pose=jaw_pose,
-                    leye_pose=leye_pose,
-                    reye_pose=reye_pose,
-                    expression=expression,
+                    betas = betas.expand(batch_size, -1),
+                    global_orient = global_orient,
+                    transl = transl,
+                    left_hand_pose = left_hand_pose,
+                    right_hand_pose = right_hand_pose,
+                    jaw_pose = jaw_pose,
+                    leye_pose = leye_pose,
+                    reye_pose = reye_pose,
+                    expression = expression,
                     scene_model=scene_model,
                     # pare pose input
                     pare_pose=pare_pose,
@@ -1102,7 +1108,7 @@ def fit_multi_view(img,
                     elapsed = time.time() - stage_start
                     if interactive:
                         tqdm.write('Stage {:03d}/{} done after {:.4f} seconds'.format(
-                            opt_idx + start_opt_stage, len(opt_weights), elapsed))
+                            opt_idx+start_opt_stage, len(opt_weights), elapsed))
 
             if final_loss_val is None:
                 final_loss_val = -1
@@ -1138,6 +1144,7 @@ def fit_multi_view(img,
             results.append({'loss': final_loss_val,
                             'result': result})
 
+
         ###### save to pickle and mesh
         # TODO: for single person
         # for idx, one_result_fn in enumerate(result_fn):
@@ -1145,7 +1152,7 @@ def fit_multi_view(img,
         with open(one_result_fn, 'wb') as result_file:
             if len(results) > 1:
                 min_idx = (0 if results[0]['loss'] < results[1]['loss']
-                           else 1)
+                        else 1)
             else:
                 min_idx = 0
             if USE_PROX_VPOSER:
@@ -1159,22 +1166,22 @@ def fit_multi_view(img,
             append_wrists = model_type == 'smpl' and use_vposer
             if append_wrists:
                 wrist_pose = torch.zeros([body_pose.shape[0], 6],
-                                         dtype=body_pose.dtype,
-                                         device=body_pose.device)
+                                        dtype=body_pose.dtype,
+                                        device=body_pose.device)
                 body_pose = torch.cat([body_pose, wrist_pose], dim=1)
 
             model_output = body_model(
-                return_verts=True, body_pose=body_pose,
-                betas=betas,
-                global_orient=global_orient,
-                transl=transl,
-                left_hand_pose=left_hand_pose,
-                right_hand_pose=right_hand_pose,
-                jaw_pose=jaw_pose,
-                leye_pose=leye_pose,
-                reye_pose=reye_pose,
-                expression=expression,
-            )
+                        return_verts=True, body_pose=body_pose,
+                        betas = betas,
+                        global_orient = global_orient,
+                        transl = transl,
+                        left_hand_pose = left_hand_pose,
+                        right_hand_pose = right_hand_pose,
+                        jaw_pose = jaw_pose,
+                        leye_pose = leye_pose,
+                        reye_pose = reye_pose,
+                        expression = expression,
+                        )
 
             results[min_idx]['result']['keypoints_3d'] = model_output.joints.detach().cpu().numpy()[:, :25, :]
             results[min_idx]['result']['body_pose'] = body_pose.detach().cpu().numpy()
@@ -1185,6 +1192,7 @@ def fit_multi_view(img,
 
         vertices_ = model_output.vertices.detach().cpu().numpy()
 
+
         ################################
         # To get final optimization information
         if tb_debug and False:
@@ -1192,31 +1200,30 @@ def fit_multi_view(img,
             for b_idx in range(vertices_.shape[0]):
                 with torch.no_grad():
                     body_model_output = body_model(
-                        return_verts=True, body_pose=body_pose[b_idx:b_idx + 1].repeat(batch_size, 1),
-                        betas=betas.repeat(batch_size, 1),
-                        global_orient=global_orient[b_idx:b_idx + 1].repeat(batch_size, 1),
-                        transl=transl[b_idx:b_idx + 1].repeat(batch_size, 1),
-                        left_hand_pose=left_hand_pose[b_idx:b_idx + 1].repeat(batch_size, 1),
-                        right_hand_pose=right_hand_pose[b_idx:b_idx + 1].repeat(batch_size, 1),
-                        jaw_pose=jaw_pose[b_idx:b_idx + 1].repeat(batch_size, 1),
-                        leye_pose=leye_pose[b_idx:b_idx + 1].repeat(batch_size, 1),
-                        reye_pose=reye_pose[b_idx:b_idx + 1].repeat(batch_size, 1),
-                        expression=expression[b_idx:b_idx + 1].repeat(batch_size, 1),
+                        return_verts=True, body_pose=body_pose[b_idx:b_idx+1].repeat(batch_size, 1),
+                        betas = betas.repeat(batch_size, 1),
+                        global_orient = global_orient[b_idx:b_idx+1].repeat(batch_size, 1),
+                        transl = transl[b_idx:b_idx+1].repeat(batch_size, 1),
+                        left_hand_pose = left_hand_pose[b_idx:b_idx+1].repeat(batch_size, 1),
+                        right_hand_pose = right_hand_pose[b_idx:b_idx+1].repeat(batch_size, 1),
+                        jaw_pose = jaw_pose[b_idx:b_idx+1].repeat(batch_size, 1),
+                        leye_pose = leye_pose[b_idx:b_idx+1].repeat(batch_size, 1),
+                        reye_pose = reye_pose[b_idx:b_idx+1].repeat(batch_size, 1),
+                        expression = expression[b_idx:b_idx+1].repeat(batch_size, 1),
                         return_full_pose=True
-                    )
+                        )
                     faces_tensor = body_model.faces_tensor.view(-1)
                     total_loss, debug_loss_dict = loss(body_model_output, cameras=cameras,
-                                                       gt_joints=gt_joints[b_idx:b_idx + 1].repeat(batch_size, 1, 1, 1),
-                                                       body_model_faces=faces_tensor,
-                                                       joints_conf=joints_conf[b_idx:b_idx + 1].repeat(batch_size, 1),
-                                                       joint_weights=joint_weights,
-                                                       pose_embedding=pose_embedding[b_idx:b_idx + 1].repeat(batch_size,
-                                                                                                             1),
-                                                       tb_debug=True,
-                                                       scene_model=scene_model,
-                                                       gt_contact_value=ground_contact_value,
-                                                       **kwargs,
-                                                       )
+                                    gt_joints=gt_joints[b_idx:b_idx+1].repeat(batch_size, 1, 1, 1),
+                                    body_model_faces=faces_tensor,
+                                    joints_conf=joints_conf[b_idx:b_idx+1].repeat(batch_size, 1),
+                                    joint_weights=joint_weights,
+                                    pose_embedding=pose_embedding[b_idx:b_idx+1].repeat(batch_size, 1),
+                                    tb_debug = True,
+                                    scene_model=scene_model,
+                                    gt_contact_value=ground_contact_value,
+                                    **kwargs,
+                                )
 
                     assert tb_logger is not None
                     from .tf_utils import save_scalars
@@ -1226,10 +1233,10 @@ def fit_multi_view(img,
         # Get height of the body
         batch_size = body_pose.shape[0]
         tpose_body = body_model(
-            return_verts=True,
-            body_pose=torch.zeros(batch_size, 63).type_as(betas),
-            betas=betas.expand(batch_size, -1),
-        )
+                        return_verts=True,
+                        body_pose= torch.zeros(batch_size, 63).type_as(betas),
+                        betas = betas.expand(batch_size, -1),
+                        )
         tpose_vertices = tpose_body.vertices[0].detach().cpu().numpy()
 
         # write out body height
@@ -1237,6 +1244,7 @@ def fit_multi_view(img,
         body_height = get_body_height(tpose_vertices, body_model.faces_tensor.detach().cpu().numpy())
         with open(f'{result_fn[0][:-4]}_{body_height}.txt', 'w') as fout:
             fout.write(f'body height: {body_height}')
+
 
         # save each body into obj file, in world coordinates system.
         import trimesh
@@ -1246,7 +1254,7 @@ def fit_multi_view(img,
                 vertices = vertices_[idx]
 
                 world_out_mesh = trimesh.Trimesh(vertices, body_model.faces, process=False)
-                all_out_mesh.append(world_out_mesh)  # ! warning: save in world CS
+                all_out_mesh.append(world_out_mesh) # ! warning: save in world CS
                 world_out_mesh.export(mesh_fn[idx])
 
                 os.environ['PYOPENGL_PLATFORM'] = 'egl'
@@ -1257,11 +1265,12 @@ def fit_multi_view(img,
                 ci = idx
                 # scene
                 material = pyrender.MetallicRoughnessMaterial(
-                    metallicFactor=0.0,
-                    wireframe=True,
-                    roughnessFactor=.5,
-                    alphaMode='OPAQUE',
-                    baseColorFactor=(0.9, 0.5, 0.9, 1))
+                            metallicFactor=0.0,
+                            wireframe=True,
+                            roughnessFactor=.5,
+                            alphaMode='OPAQUE',
+                            baseColorFactor=(0.9, 0.5, 0.9, 1))
+
 
                 scene = pyrender.Scene(bg_color=[0.0, 0.0, 0.0, 0.0])
 
@@ -1270,7 +1279,12 @@ def fit_multi_view(img,
                 # mesh
                 rot_mat = cam.rotation.detach().cpu().numpy()[0].squeeze()
                 translation = cam.translation.detach().cpu().numpy()[0].squeeze()
-                out_mesh.vertices = np.matmul(vertices, rot_mat.T) + translation  # ! this is in camera CS
+                out_mesh.vertices = np.matmul(vertices, rot_mat.T) + translation # ! this is in camera CS
+
+
+
+
+
 
                 # import pdb;pdb.set_trace()
                 # write out cs mesh
@@ -1284,28 +1298,22 @@ def fit_multi_view(img,
                     out_mesh,
                     material=material)
 
+
                 scene.add(mesh, 'mesh')
 
+
                 # 3d joints
-                kpts_all = initialization['keypoints_3d'][:, :, :-1]
+                kpts_all=initialization['keypoints_3d'][:, :, :-1]
                 kpts_frame_i = kpts_all[idx]
-                from body_models.constants import IDX_MAPPING_GTA
                 for kpts_idx in len(kpts_frame_i):
-                    if IDX_MAPPING_GTA[kpts_idx]==-1:
-                        continue
-                    kpts_i = kpts_frame_i[kpts_idx]
-                    transform_kpts_i=np.identity(4)
-                    transform_kpts_i[:3,3] = kpts_i
-                    sm = trimesh.creation.uv_sphere(radius=0.1)
-                    sm.visual.vertex_colors = [1.0, 0.0, 0.0]
-                    m = pyrender.Mesh.from_trimesh(sm, poses=transform_kpts_i)
-                    scene.add(m, f'kpts_{kpts_idx}')
+                    kpts_i=kpts_frame_i[kpts_idx]
+
 
 
                 # TODO: img, render image is not right!!!
-                input_img = get_image(img[ci], no_resize=True)
+                input_img =get_image(img[ci], no_resize=True)
                 if input_img.max() > 1:
-                    input_img = input_img.astype(np.float32) / 255.0
+                    input_img = input_img.astype(np.float32) /  255.0
 
                 height, width = input_img.shape[:2]
 
@@ -1326,15 +1334,15 @@ def fit_multi_view(img,
                 scene.add(light_node, pose=camera_pose)
 
                 r = pyrender.OffscreenRenderer(viewport_width=width,
-                                               viewport_height=height,
-                                               point_size=1.0)
+                                                viewport_height=height,
+                                                point_size=1.0)
                 color, _ = r.render(scene, flags=pyrender.RenderFlags.RGBA)
                 color = color.astype(np.float32) / 255.0
 
                 valid_mask = (color[:, :, -1] > 0)[:, :, np.newaxis]
 
                 output_img = (color[:, :, :-1] * valid_mask +
-                              (1 - valid_mask) * input_img)
+                                (1 - valid_mask) * input_img)
 
                 output_img = pil_img.fromarray((output_img * 255.).astype(np.uint8))
                 output_img.save("{}/../images/{:02}.png".format(kwargs['result_folder'], ci))
