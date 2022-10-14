@@ -1290,7 +1290,7 @@ def fit_multi_view(img,
                 kpts_all = initialization['keypoints_3d'][:, :, :-1]
                 kpts_frame_i = kpts_all[idx]
                 from body_models.constants import IDX_MAPPING_GTA
-                for kpts_idx in len(kpts_frame_i):
+                for kpts_idx in range(len(kpts_frame_i)):
                     if IDX_MAPPING_GTA[kpts_idx]==-1:
                         continue
                     kpts_i = kpts_frame_i[kpts_idx]
