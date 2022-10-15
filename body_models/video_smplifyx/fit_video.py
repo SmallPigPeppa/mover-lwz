@@ -1256,12 +1256,18 @@ def fit_multi_view(img,
                 cam = cameras[0]
                 ci = idx
                 # scene
+                # material = pyrender.MetallicRoughnessMaterial(
+                #     metallicFactor=0.0,
+                #     wireframe=True,
+                #     roughnessFactor=.5,
+                #     alphaMode='OPAQUE',
+                #     baseColorFactor=(0.9, 0.5, 0.9, 1))
                 material = pyrender.MetallicRoughnessMaterial(
                     metallicFactor=0.0,
                     wireframe=True,
                     roughnessFactor=.5,
-                    alphaMode='OPAQUE',
-                    baseColorFactor=(0.9, 0.5, 0.9, 1))
+                    alphaMode='MASK',
+                    baseColorFactor=(0.9, 0.5, 0.9, 0.5))
 
                 scene = pyrender.Scene(bg_color=[0.0, 0.0, 0.0, 0.0])
 
@@ -1282,7 +1288,6 @@ def fit_multi_view(img,
 
                 mesh = pyrender.Mesh.from_trimesh(
                     out_mesh,
-                    is_transparent=True,
                     material=material)
 
                 scene.add(mesh, 'mesh')
