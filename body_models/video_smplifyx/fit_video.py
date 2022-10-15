@@ -1263,7 +1263,10 @@ def fit_multi_view(img,
                 #     alphaMode='OPAQUE',
                 #     baseColorFactor=(0.9, 0.5, 0.9, 1))
                 material = pyrender.MetallicRoughnessMaterial(
-                    alphaMode='MASK',
+                    metallicFactor=0.0,
+                    wireframe=True,
+                    roughnessFactor=.5,
+                    alphaMode='BLEND',
                     baseColorFactor=(0.9, 0.5, 0.9, 0.5)
                 )
 
