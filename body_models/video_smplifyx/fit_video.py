@@ -1267,7 +1267,7 @@ def fit_multi_view(img,
                     wireframe=True,
                     roughnessFactor=.5,
                     alphaMode='MASK',
-                    baseColorFactor=(0.9, 0.5, 0.9, 0.2)
+                    baseColorFactor=(0.1, 0.5, 0.9, 0.2)
                 )
 
                 scene = pyrender.Scene(bg_color=[0.0, 0.0, 0.0, 0.0])
