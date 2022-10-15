@@ -1282,6 +1282,7 @@ def fit_multi_view(img,
 
                 mesh = pyrender.Mesh.from_trimesh(
                     out_mesh,
+                    is_transparent=True,
                     material=material)
 
                 scene.add(mesh, 'mesh')
@@ -1296,7 +1297,7 @@ def fit_multi_view(img,
                     kpts_i = kpts_frame_i[kpts_idx]
                     transform_kpts_i=np.identity(4)
                     transform_kpts_i[:3,3] = kpts_i
-                    sm = trimesh.creation.uv_sphere(radius=0.01)
+                    sm = trimesh.creation.uv_sphere(radius=0.04)
                     sm.visual.vertex_colors = [1.0, 0.0, 0.0]
                     m = pyrender.Mesh.from_trimesh(sm, poses=transform_kpts_i)
                     scene.add(m, f'kpts_{kpts_idx}')
