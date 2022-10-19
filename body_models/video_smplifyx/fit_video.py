@@ -373,7 +373,7 @@ def fit_multi_view(img,
         global_orient = torch.zeros((batch_size, 3), requires_grad=True, device=device)
     else:
         tmp_x_inverse = torch.zeros((batch_size, 3), device=device)
-        tmp_x_inverse[:, 0] = -3.14
+        # tmp_x_inverse[:, 0] = -3.14
         global_orient = torch.clone(tmp_x_inverse)
         global_orient.requires_grad = True
     transl = torch.zeros((batch_size, 3), requires_grad=True, device=device)
@@ -758,8 +758,8 @@ def fit_multi_view(img,
                 #     body_model.reset_params(body_pose=body_mean_pose)
 
                 init_params = [global_orient, transl]
-                if use_vposer:
-                    init_params.append(pose_embedding)
+                # if use_vposer:
+                #     init_params.append(pose_embedding)
 
                 init_optimizer, init_create_graph = optim_factory.create_optimizer(
                     init_params,
