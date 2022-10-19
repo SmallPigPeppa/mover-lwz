@@ -32,6 +32,7 @@ import os
 # step0:
 # merge info_frames.pickle info_frames.npz
 # trans world to camera
+img_list=[24,25]
 data_root = os.path.join('samples_clean_gta', 'FPS-5')
 rec_idx = '2020-06-11-10-06-48'
 info_pkl = pickle.load(open(os.path.join(data_root, rec_idx, 'info_frames.pickle'), 'rb'))
@@ -78,7 +79,13 @@ for i in range(len(kpts_gta)):
 #     else:
 #         mapping_list.append(gta_im_names.index(kpt_name))
 
-for i in range(len(kpts_gta)):
+# for i in range(len(kpts_gta)):
+#     for j in range(len(kpts_gta[0])):
+#         if mapping_list[i][j] != -1:
+#             kpts_gta[i][j] = kpts_gta_im[i][mapping_list[i][j]]
+
+
+for i in img_list:
     for j in range(len(kpts_gta[0])):
         if mapping_list[i][j] != -1:
             kpts_gta[i][j] = kpts_gta_im[i][mapping_list[i][j]]
@@ -117,7 +124,7 @@ for i in range(len(kpts_smplx)):
 
 # step3: save smplx as hdf5
 temp_name = "samples_clean/3_3_78_Female2_0.hdf5"
-hdf5_name = "samples_clean_gta/FPS-5-clean/FPS-5-2020-06-11-10-06-48.hdf5"
+hdf5_name = "samples_clean_gta/FPS-5-clean-debug/FPS-5-2020-06-11-10-06-48.hdf5"
 # joints[:, :, 0] *=  -1
 # joints = info_npz['joints_3d_camera']
 with h5py.File(hdf5_name, "r+") as f:

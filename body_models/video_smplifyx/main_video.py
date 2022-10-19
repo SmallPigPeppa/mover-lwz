@@ -136,7 +136,6 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
 
     ############################### load dataset.
     dataset_obj = create_dataset(**args)
-    print(img_list)
     data_input = dataset_obj.__getitem__(img_list)
     # A weight for every joint of the model
     joint_weights = dataset_obj.get_joint_weights().to(device=device,
