@@ -116,6 +116,8 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         img_list = [one for one in range(0, batch_size)]
     assert batch_size == len(img_list)
 
+    img_list=[24,25]
+
     # Warning: load ground contact value
     import numpy as np
     try:
