@@ -128,7 +128,7 @@ hdf5_name = "samples_clean_gta/FPS-5-clean-debug/FPS-5-2020-06-11-10-06-48.hdf5"
 # joints[:, :, 0] *=  -1
 # joints = info_npz['joints_3d_camera']
 img_list=[24,25]
-img_list=list(range(0,206))
+img_list=list(range(0,30))
 with h5py.File(hdf5_name, "r+") as f:
     print("Keys: %s" % f.keys())
     del f['skeleton_joints']
