@@ -9,7 +9,10 @@ info_npz = np.load(info_npz_name)
 print(info_npz['joints_3d_cam'].shape)
 print(info_npz['joints_3d_cam'])
 print('#########################')
-print(info_npz['intrinsics'])
+print('#########################')
+print(info_npz['intrinsics'][206])
+print(info_npz['intrinsics'][207])
+print(info_npz['intrinsics'][208])
 print('#########################')
 
 filename = "samples_clean/3_3_78_Female2_0.hdf5"
