@@ -406,7 +406,12 @@ class OpenPose_Pose2Room(Dataset):
         # img_fn = [tmp_img_fn for i in range(batch_size)]
 
         import glob
-        img_fn = glob.glob('/share/wenzhuoliu/code/mover-lwz/input-data/gta-test/images/*.png')
+        img_fn_tmp = glob.glob('/share/wenzhuoliu/code/mover-lwz/input-data/gta-test/images/*.png')
+        img_fn=[]
+        for i in img_fn_tmp:
+            if int(i.split('.')[0]) in range(207,408):
+                img_fn.append(i)
+
 
         if len(keyp_tuple.keypoints) < 1:
             return {}
