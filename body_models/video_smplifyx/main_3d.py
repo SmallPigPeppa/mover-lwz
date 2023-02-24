@@ -221,6 +221,9 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     if not_running:
         args.update({'batch_size': 1})
         # not influence data input
+
+
+    #   todo
     model_params = dict(model_path=args.get('model_folder'),
                         joint_mapper=joint_mapper,
                         create_global_orient=True,

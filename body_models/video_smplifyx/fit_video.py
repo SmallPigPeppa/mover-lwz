@@ -525,6 +525,7 @@ def fit_multi_view(img,
                 contact_verts_ids.append(list(set(data["verts_ind"])))
         contact_verts_ids = np.concatenate(contact_verts_ids)
 
+        # todo: body model
         vertices = body_model(return_verts=True,
                               body_pose=torch.zeros((batch_size, 63), dtype=dtype, device=device)).vertices
         # calculate normal map of the contact vertices;

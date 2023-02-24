@@ -221,14 +221,16 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     if not_running:
         args.update({'batch_size': 1})
         # not influence data input
+
+    # todo: transfer to smpl
     model_params = dict(model_path=args.get('model_folder'),
                         joint_mapper=joint_mapper,
                         create_global_orient=True,
                         create_body_pose=not args.get('use_vposer'),
                         create_betas=True,
-                        create_left_hand_pose=True,
-                        create_right_hand_pose=True,
-                        create_expression=True,
+                        create_left_hand_pose=False,
+                        create_right_hand_pose=False,
+                        create_expression=False,
                         create_jaw_pose=True,
                         create_leye_pose=True,
                         create_reye_pose=True,
