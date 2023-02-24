@@ -1,16 +1,16 @@
 #!/bin/bash
 batch_size=1
 img_list=-1
-DATA_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d/samples_clean_gta/FPS-5-clean-debug"
-OUTPUT_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d/out-data-gta-debug"
-CALIBRATION_FOLDER=/share/wenzhuoliu/code/mover-lwz-fit3d/smplifyx_cam/
-CONFIG_FILE=/share/wenzhuoliu/code/mover/body_models/cfg_files/fit_smplx_3D.yaml
+DATA_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d-smpl/samples_clean_gta/FPS-5-clean-debug"
+OUTPUT_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d-smpl/out-data-gta-debug"
+CALIBRATION_FOLDER=/share/wenzhuoliu/code/mover-lwz-fit3d-smpl/smplifyx_cam/
+CONFIG_FILE=/share/wenzhuoliu/code/mover-lwz-fit3d-smpl/body_models/cfg_files/fit_smpl_3D.yaml
 echo ${DATA_FOLDER}
 echo ${OUTPUT_FOLDER}
 MODEL_FOLDER=/share/wenzhuoliu/code/smplifyx/models
 VPOSER_FOLDER=/share/wenzhuoliu/code/smplifyx/vposer_v1_0
 conda activate mover
-cd /share/wenzhuoliu/code/mover-lwz-fit3d
+#cd /share/wenzhuoliu/code/mover-lwz-fit3d-smpl
 python main.py \
     --single "False" \
     --dataset "Pose2Room" \
@@ -22,7 +22,7 @@ python main.py \
     --visualize="False" \
     --save_meshes=True \
     --model_folder ${MODEL_FOLDER} \
-    --model_type 'smplx' \
+    --model_type 'smpl' \
     --pre_load="False" \
     --pre_load_pare_pose="False" \
     --vposer_ckpt ${VPOSER_FOLDER} \
@@ -33,4 +33,3 @@ python main.py \
     --start_opt_stage 3 \
     --end_opt_stage 4
 
-cd /share/wenzhuoliu/code/scripts
