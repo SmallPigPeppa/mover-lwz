@@ -16,7 +16,7 @@ use_cuda: True
 float_dtype: "float32"
 use_joints_conf: True
 use_pca: True
-use_hands: True
+use_hands: False
 use_face: False
 use_face_contour: False
 flat_hand_mean: False
