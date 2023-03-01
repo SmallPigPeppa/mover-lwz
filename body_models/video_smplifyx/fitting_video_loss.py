@@ -316,12 +316,20 @@ class SMPLifyLoss3D_withHands(single_view_fitting.SMPLifyLoss):
         total_loss = (joint_loss + pprior_loss + shape_loss + angle_prior_loss \
                 + right_hand_prior_loss + left_hand_prior_loss)
 
-        message = f'skeleton: {ske_loss}, hand: {hand_loss}, \
+        # message = f'skeleton: {ske_loss}, hand: {hand_loss}, \
+        #     joint|weight: {joint_loss}|{self.data_weight.item():.3f},  \
+        #     shape_loss: {shape_loss}|{self.shape_weight}, \
+        #     pprior_loss: {pprior_loss}|{self.body_pose_weight}, \
+        #     angle_prior: {angle_prior_loss}|{self.bending_prior_weight:.3f}, \
+        #     left_hand_prior: {left_hand_prior_loss}|{self.hand_prior_weight:.3f}, \
+        #     total_loss: {total_loss}'
+
+
+        message = f'skeleton: {ske_loss}, \
             joint|weight: {joint_loss}|{self.data_weight.item():.3f},  \
             shape_loss: {shape_loss}|{self.shape_weight}, \
             pprior_loss: {pprior_loss}|{self.body_pose_weight}, \
             angle_prior: {angle_prior_loss}|{self.bending_prior_weight:.3f}, \
-            left_hand_prior: {left_hand_prior_loss}|{self.hand_prior_weight:.3f}, \
             total_loss: {total_loss}'
 
         # Delete gp plane
