@@ -90,7 +90,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         os.makedirs(out_img_folder, exist_ok=True)
 
     use_cuda = args.get('use_cuda', True)
-    # use_cuda=False
+
     if use_cuda and not torch.cuda.is_available():
         print('CUDA is not available, exiting!')
         sys.exit(-1)
