@@ -152,6 +152,7 @@ class FittingMonitor(object):
                 reye_pose = kwargs['reye_pose']
                 expression = kwargs['expression']
 
+                import pdb;pdb.set_trace()
                 # import pdb;pdb.set_trace()
                 model_output = body_model(
                     return_verts=True, body_pose=body_pose, 
