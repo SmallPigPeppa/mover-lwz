@@ -9,7 +9,7 @@ echo ${DATA_FOLDER}
 echo ${OUTPUT_FOLDER}
 MODEL_FOLDER=/share/wenzhuoliu/code/smplifyx/models
 VPOSER_FOLDER=/share/wenzhuoliu/code/smplifyx/vposer_v1_0
-conda activate mover
+#conda activate mover
 
 python main.py \
     --single "False" \
