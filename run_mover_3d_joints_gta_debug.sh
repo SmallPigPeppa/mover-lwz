@@ -10,7 +10,7 @@ echo ${OUTPUT_FOLDER}
 MODEL_FOLDER=/share/wenzhuoliu/code/smplifyx/models
 VPOSER_FOLDER=/share/wenzhuoliu/code/smplifyx/vposer_v1_0
 conda activate mover
-cd /share/wenzhuoliu/code/mover-lwz-fit3d
+
 python main.py \
     --single "False" \
     --dataset "Pose2Room" \
@@ -33,4 +33,3 @@ python main.py \
     --start_opt_stage 3 \
     --end_opt_stage 4
 
-cd /share/wenzhuoliu/code/scripts
