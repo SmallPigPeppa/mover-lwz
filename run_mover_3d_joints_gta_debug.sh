@@ -28,7 +28,7 @@ python main.py \
     --vposer_ckpt ${VPOSER_FOLDER} \
     --part_segm_fn /share/wenzhuoliu/code/smplifyx/smplx_parts_segm.pkl \
     --camera_type "user" \
-    --gender 'male' \
+    --gender 'neutral' \
     --calib_path ${CALIBRATION_FOLDER} \
     --start_opt_stage 3 \
     --end_opt_stage 4
