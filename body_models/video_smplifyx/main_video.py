@@ -90,7 +90,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         os.makedirs(out_img_folder, exist_ok=True)
 
     use_cuda = args.get('use_cuda', True)
-    use_cuda=False
+    # use_cuda=False
     if use_cuda and not torch.cuda.is_available():
         print('CUDA is not available, exiting!')
         sys.exit(-1)
@@ -317,29 +317,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
             right_hand_prior = right_hand_prior.to(device=device)
     else:
         device = torch.device('cpu')
-        for c in cameras:
-            c.to(device=device)
-            if hasattr(c, 'rotation'):
-                c.rotation.requires_grad = False
-        for c in cameras_oriJ3d:
-            c.to(device=device)
-            if hasattr(c, 'rotation'):
-                c.rotation.requires_grad = False
 
-        # cameras = cameras.to(device=device)
-        female_model = female_model.to(device=device)
-        male_model = male_model.to(device=device)
-        if args.get('model_type') != 'smplh':
-            neutral_model = neutral_model.to(device=device)
-        body_pose_prior = body_pose_prior.to(device=device)
-        angle_prior = angle_prior.to(device=device)
-        shape_prior = shape_prior.to(device=device)
-        if use_face:
-            expr_prior = expr_prior.to(device=device)
-            jaw_prior = jaw_prior.to(device=device)
-        if use_hands:
-            left_hand_prior = left_hand_prior.to(device=device)
-            right_hand_prior = right_hand_prior.to(device=device)
 
     ################################ save result
     fn = "."
