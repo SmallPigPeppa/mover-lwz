@@ -1,10 +1,10 @@
 #!/bin/bash
 batch_size=1
 img_list=-1
-DATA_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d/samples_clean_gta/FPS-5-clean-debug"
-OUTPUT_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d/out-data-gta-debug"
-CALIBRATION_FOLDER=/share/wenzhuoliu/code/mover-lwz-fit3d/smplifyx_cam/
-CONFIG_FILE=/share/wenzhuoliu/code/mover/body_models/cfg_files/fit_smplx_3D.yaml
+DATA_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d-smplx/samples_clean_gta/FPS-5-clean-debug"
+OUTPUT_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d-smplx/out-data-gta-debug"
+CALIBRATION_FOLDER=/share/wenzhuoliu/code/mover-lwz-fit3d-smplx/smplifyx_cam/
+CONFIG_FILE=/share/wenzhuoliu/code/mover-lwz-fit3d-smplx/body_models/cfg_files/fit_smplx_3D.yaml
 echo ${DATA_FOLDER}
 echo ${OUTPUT_FOLDER}
 MODEL_FOLDER=/share/wenzhuoliu/code/smplifyx/models
