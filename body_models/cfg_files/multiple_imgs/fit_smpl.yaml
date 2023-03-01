@@ -16,8 +16,8 @@ use_cuda: True
 float_dtype: "float32"
 use_joints_conf: True
 use_pca: True
-use_hands: True
-use_face: True
+use_hands: False
+use_face: False
 flat_hand_mean: False
 # The number of mixture components for the pose prior
 num_gaussians: 8
