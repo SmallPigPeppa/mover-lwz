@@ -104,8 +104,6 @@ class SMPLifyLoss3D(single_view_fitting.SMPLifyLoss):
             joint_diff = (gt_joints[:, :joint_len, :] - body_model_output.joints[:,:joint_len,:]) ** 2
         elif gt_joints.shape[-1] == 4:
             joint_diff = (gt_joints[:, :joint_len, :-1] - body_model_output.joints[:,:joint_len,:]) ** 2
-
-
             joint_diff *= gt_joints[:, :joint_len, -1:]
 
         joint_loss = (torch.sum(joint_diff) * self.data_weight ** 2)
@@ -154,6 +152,7 @@ class SMPLifyLoss3D(single_view_fitting.SMPLifyLoss):
 
         # Calculate the prior over the joint rotations. This a heuristic used
         # to prevent extreme rotation of the elbows and knees
+        print('body_model_output.full_pose:',body_model_output.full_pose.shape)
         body_pose = body_model_output.full_pose[:, 3:66]
         angle_prior_loss = torch.sum(
             self.angle_prior(body_pose)) * self.bending_prior_weight  / batch_size
