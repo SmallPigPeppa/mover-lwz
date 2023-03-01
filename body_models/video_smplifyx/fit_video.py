@@ -1225,19 +1225,20 @@ def fit_multi_view(img,
 
         ###############################
         # Get height of the body
-        batch_size = body_pose.shape[0]
-        tpose_body = body_model(
-            return_verts=True,
-            body_pose=torch.zeros(batch_size, 63).type_as(betas),
-            betas=betas.expand(batch_size, -1),
-        )
-        tpose_vertices = tpose_body.vertices[0].detach().cpu().numpy()
-
-        # write out body height
-        from body_models.smplifyx.utils_mics.misc_utils import get_body_height
-        body_height = get_body_height(tpose_vertices, body_model.faces_tensor.detach().cpu().numpy())
-        with open(f'{result_fn[0][:-4]}_{body_height}.txt', 'w') as fout:
-            fout.write(f'body height: {body_height}')
+        # batch_size = body_pose.shape[0]
+        #
+        # tpose_body = body_model(
+        #     return_verts=True,
+        #     body_pose=torch.zeros(batch_size, 63).type_as(betas),
+        #     betas=betas.expand(batch_size, -1),
+        # )
+        # tpose_vertices = tpose_body.vertices[0].detach().cpu().numpy()
+        #
+        # # write out body height
+        # from body_models.smplifyx.utils_mics.misc_utils import get_body_height
+        # body_height = get_body_height(tpose_vertices, body_model.faces_tensor.detach().cpu().numpy())
+        # with open(f'{result_fn[0][:-4]}_{body_height}.txt', 'w') as fout:
+        #     fout.write(f'body height: {body_height}')
 
         # save each body into obj file, in world coordinates system.
         import trimesh
