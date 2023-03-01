@@ -274,7 +274,7 @@ class SMPLifyLoss3D_withHands(single_view_fitting.SMPLifyLoss):
         # import pdb;pdb.set_trace()
         ske_loss = (torch.sum(joint_diff[:, SKELETON_IDX]) * self.data_weight ** 2)
 
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
         # hand_loss = (torch.sum(joint_diff[:, HAND_IDX]) * self.hand_joints_weights ** 2)
         hand_loss = 0.
         joint_loss = ske_loss + hand_loss
