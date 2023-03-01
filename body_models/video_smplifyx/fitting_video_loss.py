@@ -104,6 +104,8 @@ class SMPLifyLoss3D(single_view_fitting.SMPLifyLoss):
             joint_diff = (gt_joints[:, :joint_len, :] - body_model_output.joints[:,:joint_len,:]) ** 2
         elif gt_joints.shape[-1] == 4:
             joint_diff = (gt_joints[:, :joint_len, :-1] - body_model_output.joints[:,:joint_len,:]) ** 2
+
+
             joint_diff *= gt_joints[:, :joint_len, -1:]
 
         joint_loss = (torch.sum(joint_diff) * self.data_weight ** 2)
