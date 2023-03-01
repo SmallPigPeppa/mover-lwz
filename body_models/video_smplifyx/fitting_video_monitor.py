@@ -105,7 +105,7 @@ class FittingMonitor(object):
         append_wrists = self.model_type == 'smpl' and use_vposer
         prev_loss = None
         for n in range(self.maxiters):
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             loss = optimizer.step(closure)
             # import pdb;pdb.set_trace()
             # logger.info(f"after optimizer roll value: {kwargs['scene_model'].rotate_cam_roll}, ")
