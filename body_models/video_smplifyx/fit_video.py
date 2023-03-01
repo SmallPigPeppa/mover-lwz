@@ -936,7 +936,6 @@ def fit_multi_view(img,
                     body_pose_joints = np.concatenate((initialization['keypoints_3d'][:, :, :-1], \
                                                        initialization['keypoints_3d'][:, :, -1:] * 0.0,
                                                        ), -1)
-                    import pdb;pdb.set_trace()
                     body_pose_joints[:, SKELETON_IDX, -1] += 1.0
                     body_pose_joints[:, LEFT_HAND_IDX, -1] += 1.0
                     body_pose_joints[:, RIGHT_HAND_IDX, -1] += 1.0
@@ -1077,6 +1076,7 @@ def fit_multi_view(img,
                     stage_start = time.time()
 
                 # update multiple smplx_model
+                import pdb;pdb.set_trace()
                 final_loss_val = monitor.run_fitting(
                     body_optimizer,
                     closure, final_params,
