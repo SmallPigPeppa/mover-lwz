@@ -357,7 +357,8 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         body_model = female_model
     elif gender == 'male':
         body_model = male_model
-    args['gender'] = gender
+
+    args['gender'] = 'neutral'
     
     
     curr_result_fn = []
