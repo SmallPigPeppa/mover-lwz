@@ -351,6 +351,8 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         else:
             gender = 'male'
 
+    gender == 'neutral'
+
     if gender == 'neutral':
         body_model = neutral_model
     elif gender == 'female':
@@ -358,7 +360,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     elif gender == 'male':
         body_model = male_model
 
-    args['gender'] = 'neutral'
+    args['gender'] = gender
     
     
     curr_result_fn = []
