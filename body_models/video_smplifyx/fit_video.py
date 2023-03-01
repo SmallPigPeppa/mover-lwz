@@ -1163,7 +1163,7 @@ def fit_multi_view(img,
                                          dtype=body_pose.dtype,
                                          device=body_pose.device)
                 body_pose = torch.cat([body_pose, wrist_pose], dim=1)
-
+            import pdb;pdb.set_trace()
             model_output = body_model(
                 return_verts=True, body_pose=body_pose,
                 betas=betas,
