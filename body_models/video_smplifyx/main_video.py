@@ -429,7 +429,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
             
         return None, None, fitting_body_use_dict
     else:
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
         fitted_body_model, scene_model, fitting_body_use_dict =fit_multi_view(img, keypoints,
                         body_model=body_model,
                         cameras=cameras,
