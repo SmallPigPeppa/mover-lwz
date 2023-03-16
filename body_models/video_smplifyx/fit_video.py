@@ -1076,7 +1076,7 @@ def fit_multi_view(img,
                     stage_start = time.time()
 
                 # update multiple smplx_model
-                import pdb;pdb.set_trace()
+                # import pdb;pdb.set_trace()
                 final_loss_val = monitor.run_fitting(
                     body_optimizer,
                     closure, final_params,
@@ -1163,7 +1163,7 @@ def fit_multi_view(img,
                                          dtype=body_pose.dtype,
                                          device=body_pose.device)
                 body_pose = torch.cat([body_pose, wrist_pose], dim=1)
-            import pdb;pdb.set_trace()
+            # import pdb;pdb.set_trace()
             model_output = body_model(
                 return_verts=True, body_pose=body_pose,
                 betas=betas,
