@@ -18,7 +18,7 @@ echo ${OUTPUT_FOLDER}
 
 #conda activate mover
 #cd /share/wenzhuoliu/code/mover-lwz-fit3d-smpl
-/root/miniconda3/envs/mover/python main.py \
+/root/miniconda3/envs/mover/bin/python main.py \
     --single "False" \
     --dataset "Pose2Room" \
     --config ${CONFIG_FILE} \
