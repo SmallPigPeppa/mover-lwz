@@ -89,6 +89,8 @@ def create_mover_input(data_root,save_root, rec_idx):
     # with h5py.File(os.path.join(data_root, rec_idx, 'mover_input.hdf5'), 'w') as f:
     #     f.create_dataset('skeleton_joints', data=kpts_smplx)
 
+    if not os.path.exists(os.path.join(save_root, rec_idx)):
+        os.makedirs(os.path.join(save_root, rec_idx))
     with h5py.File(os.path.join(save_root, rec_idx, 'mover_input.hdf5'), 'w') as f:
         f.create_dataset('skeleton_joints', data=kpts_smplx)
 
