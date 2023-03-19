@@ -707,9 +707,10 @@ def fit_multi_view(img,
             batch_size=batch_size, visualize=visualize, **kwargs) as monitor:
 
         # Warning: image needs to be original size
-        H, _, _ = torch.tensor(get_image(img[0], width=1920, height=1080), dtype=dtype).shape
+        # H, _, _ = torch.tensor(get_image(img[0], width=1920, height=1080), dtype=dtype).shape
+        H=1080
 
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
 
         data_weight = 1000 / H
 
