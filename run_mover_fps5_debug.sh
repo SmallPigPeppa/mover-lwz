@@ -28,7 +28,7 @@ python main.py \
     --data_folder ${DATA_FOLDER} \
     --output_folder ${OUTPUT_FOLDER} \
     --visualize="False" \
-    --save_meshes=True \
+    --save_meshes=False \
     --model_folder ${MODEL_FOLDER} \
     --model_type 'smpl' \
     --pre_load="False" \
