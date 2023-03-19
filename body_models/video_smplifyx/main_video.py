@@ -207,7 +207,10 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
 
     # img and kpts are np.array
     # save img_fn list not load image array
-    img = data_input['img_path'] 
+    img = data_input['img_path']
+
+    import pdb;pdb.set_trace()
+
     keypoints = torch.from_numpy(data_input['keypoints'])
 
     ################################ fitting settings
