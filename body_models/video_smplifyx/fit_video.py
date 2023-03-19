@@ -709,6 +709,8 @@ def fit_multi_view(img,
         # Warning: image needs to be original size
         H, _, _ = torch.tensor(get_image(img[0], width=1920, height=1080), dtype=dtype).shape
 
+        import pdb;pdb.set_trace()
+
         data_weight = 1000 / H
 
         # Step 1: Initialization
