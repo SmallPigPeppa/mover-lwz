@@ -92,7 +92,8 @@ def create_mover_input(data_root, rec_idx):
 
 if __name__ == "__main__":
 
-    data_root = os.path.join('samples_clean_gta', 'FPS-5')
-    rec_idx = '2020-06-11-10-06-48'
+    # data_root = os.path.join('samples_clean_gta', 'FPS-5')
+    data_root='/mnt/mmtech01/dataset/vision_text_pretrain/gta-im/FPS-5'
+    rec_idx = '2020-06-09-16-09-56'
     create_mover_input(data_root, rec_idx)
 
