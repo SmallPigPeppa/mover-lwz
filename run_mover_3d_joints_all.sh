@@ -1,15 +1,21 @@
-#!/bin/bash
+
 batch_size=1
 img_list=-1
-DATA_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d-smpl/samples_clean_gta/FPS-5-clean-debug"
-OUTPUT_FOLDER="/share/wenzhuoliu/code/mover-lwz-fit3d-smpl-all/out-data-gta"
-CALIBRATION_FOLDER=/share/wenzhuoliu/code/mover-lwz-fit3d-smpl-all/smplifyx_cam/
-CONFIG_FILE=/share/wenzhuoliu/code/mover-lwz-fit3d-smpl-all/body_models/cfg_files/fit_smpl_3D.yaml
+PROJECT_PATH="/mnt/mmtech01/usr/liuwenzhuo/code/mover-lwz-fit3d-smpl-all"
+REC_IDX="2020-06-09-16-09-56"
+
+
+DATA_FOLDER="${PROJECT_PATH}/mover-input/FPS-5/${REC_IDX}"
+OUTPUT_FOLDER="${PROJECT_PATH}/mover-out"
+CALIBRATION_FOLDER="${PROJECT_PATH}/smplifyx_cam/"
+CONFIG_FILE="${PROJECT_PATH}/body_models/cfg_files/fit_smpl_3D.yaml"
+MODEL_FOLDER="${PROJECT_PATH}/models"
+VPOSER_FOLDER="${PROJECT_PATH}/vposer_v1_0"
+PART_SEGM_FN="${PROJECT_PATH}/smplx_parts_segm.pkl"
+
 echo ${DATA_FOLDER}
 echo ${OUTPUT_FOLDER}
-MODEL_FOLDER=/share/wenzhuoliu/code/mover-lwz-fit3d-smpl-all/models
-VPOSER_FOLDER=/share/wenzhuoliu/code/mover-lwz-fit3d-smpl-all/vposer_v1_0
-PART_SEGM_FN=/share/wenzhuoliu/code/mover-lwz-fit3d-smpl-all/smplx_parts_segm.pkl
+
 #conda activate mover
 #cd /share/wenzhuoliu/code/mover-lwz-fit3d-smpl
 python main.py \
