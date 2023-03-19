@@ -8,7 +8,7 @@ import pickle
 import os
 
 
-def create_mover_input(data_root, rec_idx):
+def create_mover_input(data_root,save_root, rec_idx):
     # step0:
     # merge info_frames.pickle info_frames.npz
     # trans world to camera
@@ -86,7 +86,10 @@ def create_mover_input(data_root, rec_idx):
                 kpts_smplx[i][j] = kpts_gta[i][mapping_list2[j]]
 
     # step3: save smplx as hdf5
-    with h5py.File(os.path.join(data_root, rec_idx, 'mover_input.hdf5'), 'w') as f:
+    # with h5py.File(os.path.join(data_root, rec_idx, 'mover_input.hdf5'), 'w') as f:
+    #     f.create_dataset('skeleton_joints', data=kpts_smplx)
+
+    with h5py.File(os.path.join(save_root, rec_idx, 'mover_input.hdf5'), 'w') as f:
         f.create_dataset('skeleton_joints', data=kpts_smplx)
 
 
@@ -94,6 +97,9 @@ if __name__ == "__main__":
 
     # data_root = os.path.join('samples_clean_gta', 'FPS-5')
     data_root='/mnt/mmtech01/dataset/vision_text_pretrain/gta-im/FPS-5'
+    save_root= '/mnt/mmtech01/usr/liuwenzhuo/code/mover-lwz-fit3d-smpl-all/mover-input/FPS-5'
     rec_idx = '2020-06-09-16-09-56'
-    create_mover_input(data_root, rec_idx)
+
+
+    create_mover_input(data_root,save_root, rec_idx)
 
