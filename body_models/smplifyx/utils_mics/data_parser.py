@@ -407,7 +407,7 @@ class OpenPose_Pose2Room(Dataset):
 
         import glob
         img_fn_tmp = glob.glob('/share/wenzhuoliu/code/mover-lwz/input-data/gta-test/images/*.png')
-        img_fn_tmp = glob.glob('/mnt/mmtech01/dataset/vision_text_pretrain/gta-im/FPS-5/FPS-5-2020-06-11-10-06-48/*.png')
+        # img_fn_tmp = glob.glob('/mnt/mmtech01/dataset/vision_text_pretrain/gta-im/FPS-5/FPS-5-2020-06-11-10-06-48/*.png')
         img_fn=[]
         for i in img_fn_tmp:
             # if int(i.split('/')[-1].split('.')[0]) in range(408,955):
