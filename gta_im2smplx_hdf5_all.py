@@ -88,9 +88,6 @@ def create_mover_input(data_root,save_root, rec_idx):
     # step3: save smplx as hdf5
     # with h5py.File(os.path.join(data_root, rec_idx, 'mover_input.hdf5'), 'w') as f:
     #     f.create_dataset('skeleton_joints', data=kpts_smplx)
-
-    if not os.path.exists(os.path.join(save_root, rec_idx)):
-        os.makedirs(os.path.join(save_root, rec_idx))
     with h5py.File(os.path.join(save_root, rec_idx, 'mover_input.hdf5'), 'w') as f:
         f.create_dataset('skeleton_joints', data=kpts_smplx)
 
@@ -98,10 +95,17 @@ def create_mover_input(data_root,save_root, rec_idx):
 if __name__ == "__main__":
 
     # data_root = os.path.join('samples_clean_gta', 'FPS-5')
-    data_root='/mnt/mmtech01/dataset/vision_text_pretrain/gta-im/FPS-5'
-    save_root= '/mnt/mmtech01/usr/liuwenzhuo/code/mover-lwz-fit3d-smpl-all/mover-input/FPS-5'
-    rec_idx = '2020-06-09-16-09-56'
+    data_root = '/mnt/mmtech01/dataset/vision_text_pretrain/gta-im/FPS-5'
+    save_root = '/mnt/mmtech01/usr/liuwenzhuo/code/mover-lwz-fit3d-smpl-all/mover-input/FPS-5'
 
+    # Get all the rec_idx values
+    rec_idx_list = os.listdir(data_root)
 
-    create_mover_input(data_root,save_root, rec_idx)
+    # Process each rec_idx
+    for rec_idx in rec_idx_list:
+        # Create the directory if it doesn't exist
+        if not os.path.exists(os.path.join(save_root, rec_idx)):
+            os.makedirs(os.path.join(save_root, rec_idx))
+        # Call the create_mover_input function
+        create_mover_input(data_root, save_root, rec_idx)
 
