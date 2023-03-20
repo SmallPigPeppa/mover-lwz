@@ -23,7 +23,7 @@ for REC_IDX in $(ls -d ${DATA_FOLDER}*/ | xargs -n 1 basename); do
 
   echo "Processing ${REC_IDX}"
 
-  python main.py \
+  /root/miniconda3/envs/mover/bin/python main.py \
       --single False \
       --dataset Pose2Room \
       --config ${CONFIG_FILE} \
