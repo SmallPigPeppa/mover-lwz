@@ -4,8 +4,8 @@ batch_size=1
 img_list=-1
 PROJECT_PATH="/mnt/mmtech01/usr/liuwenzhuo/code/mover-lwz-fit3d-smpl-all"
 
-DATA_FOLDER="${PROJECT_PATH}/mover-input/FPS-5/"
-OUTPUT_FOLDER="${PROJECT_PATH}/mover-out/FPS-5"
+DATA_FOLDER="${PROJECT_PATH}/mover-input/FPS-30/"
+OUTPUT_FOLDER="${PROJECT_PATH}/mover-out/FPS-30"
 CALIBRATION_FOLDER="${PROJECT_PATH}/smplifyx_cam/"
 CONFIG_FILE="${PROJECT_PATH}/body_models/cfg_files/fit_smpl_3D.yaml"
 MODEL_FOLDER="${PROJECT_PATH}/models"
