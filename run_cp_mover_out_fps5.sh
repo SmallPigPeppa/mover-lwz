@@ -8,8 +8,9 @@ for subdir in "$dirA"/*; do
         subdir_name=$(basename "$subdir")
         src_file="$subdir/results/001_all.pkl"
         dest_dir="$dirB/$subdir_name"
+        dest_file="$dest_dir/info_smpl.pkl"
         if [ -e "$src_file" ] && [ -d "$dest_dir" ]; then
-            cp "$src_file" "$dest_dir"
+            cp "$src_file" "$dest_file"
         fi
     fi
 done
