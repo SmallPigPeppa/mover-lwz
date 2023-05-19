@@ -37,7 +37,7 @@ python main.py \
     --camera_type user \
     --gender neutral \
     --calib_path ${CALIBRATION_FOLDER} \
-    --start_opt_stage 1 \
-    --end_opt_stage 10
+    --start_opt_stage 3 \
+    --end_opt_stage 4
 
 
