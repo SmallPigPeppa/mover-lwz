@@ -159,6 +159,9 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
 
         # update file.
         img_list = [one for one in range(1, new_batch_size + 1)]
+        img_list = [6]
+        new_batch_size = 1
+        args.update({'batch_size': new_batch_size})
 
         # import pdb;pdb.set_trace()
         # update gender 
