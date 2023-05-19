@@ -342,7 +342,6 @@ def fit_multi_view(img,
     # TODO: load pre-optimize stages' results.
     if pre_load:
         if type(pre_smplx_model) == list:
-            import pdb;pdb.set_trace()
             for idx in range(len(pre_smplx_model)):
                 # betas.data[idx:idx+1].copy_(torch.tensor(pre_smplx_model[idx]['betas']))
                 betas.data.copy_(torch.tensor(pre_smplx_model[idx][
