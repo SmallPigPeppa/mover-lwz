@@ -976,7 +976,7 @@ def fit_multi_view(img,
 
             if final_loss_val is None:
                 final_loss_val = -1
-            # fix bug in Visulization 
+            # fix bug in Visulization
             monitor.close_viewer()
             # print("{} -> {}".format(initialization['transl'], body_model.transl))
             if interactive:
@@ -1013,11 +1013,13 @@ def fit_multi_view(img,
         # for idx, one_result_fn in enumerate(result_fn):
         one_result_fn = result_fn[0][:-4] + '_all.pkl'
         with open(one_result_fn, 'wb') as result_file:
-            if len(results) > 1:
-                min_idx = (0 if results[0]['loss'] < results[1]['loss']
-                           else 1)
-            else:
-                min_idx = 0
+
+            min_idx = 0
+            # if len(results) > 1:
+            #     min_idx = (0 if results[0]['loss'] < results[1]['loss']
+            #                else 1)
+            # else:
+            #     min_idx = 0
             if USE_PROX_VPOSER:
                 body_pose = vposer.forward(pose_embedding).view(batch_size, -1) if use_vposer else None
             else:
@@ -1052,6 +1054,7 @@ def fit_multi_view(img,
             results[min_idx]['result']['gender'] = kwargs['gender']
             # results[min_idx]['result']['idx'] = idx
             pickle.dump(results[min_idx]['result'], result_file, protocol=2)
+
 
         vertices_ = model_output.vertices.detach().cpu().numpy()
 
