@@ -338,8 +338,8 @@ def fit_multi_view(img,
     reye_pose = torch.zeros((batch_size, 3), requires_grad=True, device=device)
     expression = torch.zeros((batch_size, 10), requires_grad=True, device=device)
 
-    import pdb;pdb.set_trace()
-    # initialization['keypoints_3d'][:, :, :-1]
+    # import pdb;pdb.set_trace()
+    transl.data = torch.tensor(initialization['transl'][0], dtype=torch.float32, device=device)
     # TODO: load pre-optimize stages' results.
     if pre_load:
         if type(pre_smplx_model) == list:
