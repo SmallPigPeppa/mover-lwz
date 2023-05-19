@@ -44,27 +44,29 @@ torch.backends.cudnn.enabled = False
 import scipy.sparse as sparse
 import json
 import numpy as np
+
+
 def faces_by_vertex_function(f, v, as_sparse_matrix=False):
-        import scipy.sparse as sp
-        if not as_sparse_matrix:
-            faces_by_vertex = [[] for i in range(len(v))]
-            for i, face in enumerate(f):
-                faces_by_vertex[face[0]].append(i)
-                faces_by_vertex[face[1]].append(i)
-                faces_by_vertex[face[2]].append(i)
-        else:
-            row = f.flatten()
-            col = np.array([range(f.shape[0])] * 3).T.flatten()
-            data = np.ones(len(col))
-            faces_by_vertex = sp.csr_matrix((data, (row, col)), shape=(v.shape[0], f.shape[0]))
-        return faces_by_vertex
+    import scipy.sparse as sp
+    if not as_sparse_matrix:
+        faces_by_vertex = [[] for i in range(len(v))]
+        for i, face in enumerate(f):
+            faces_by_vertex[face[0]].append(i)
+            faces_by_vertex[face[1]].append(i)
+            faces_by_vertex[face[2]].append(i)
+    else:
+        row = f.flatten()
+        col = np.array([range(f.shape[0])] * 3).T.flatten()
+        data = np.ones(len(col))
+        faces_by_vertex = sp.csr_matrix((data, (row, col)), shape=(v.shape[0], f.shape[0]))
+    return faces_by_vertex
 
 
 # add scene as constraint, then input multi-frame SMPLX models
-def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=False, posa_body_contact_labels=None, **args):
+def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=False, posa_body_contact_labels=None,
+               **args):
     # posa_body_contact_labels: for offline posa, input batch posa contact labels.
 
-    
     ################################ Store the arguments for the current experiment
     output_folder = args.pop('output_folder')
     output_folder = osp.expandvars(output_folder)
@@ -98,7 +100,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         device = torch.device('cuda')
     else:
         device = torch.device('cpu')
-    
+
     float_dtype = args.get('float_dtype', 'float32')
     if float_dtype == 'float64':
         dtype = torch.float64
@@ -107,10 +109,9 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     else:
         raise ValueError('Unknown float type {}, exiting!'.format(float_dtype))
 
-
     ################################ creat dataloader
     # TODO: get input dataset
-    batch_size = args.get('batch_size',1)
+    batch_size = args.get('batch_size', 1)
     img_list = args.get('img_list', [-1])
     if -1 in img_list:
         # img_list = [one for one in range(1, batch_size+1)]
@@ -132,8 +133,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         ground_contact_value = np.zeros((len(img_list), 4))
     scene_model = scene_prior['scene_model']
     ground_contact_value = torch.from_numpy(ground_contact_value).to(device=device,
-                                                       dtype=dtype)
-
+                                                                     dtype=dtype)
 
     ############################### load dataset.
     dataset_obj = create_dataset(**args)
@@ -149,7 +149,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     start_opt_stage = args.pop('start_opt_stage', 0)
     # transl: bx3; kpt3d: bx25x4
     initialization = VideoInitializer(data_input, result_path=None, **args).get_init_params()
-    
+
     ###################### run on Pose2Room;
     if args.get('dataset') == 'Pose2Room' and not args.get('single'):
         # update batch_size
@@ -158,7 +158,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         args.update({'batch_size': new_batch_size})
 
         # update file.
-        img_list = [one for one in range(1, new_batch_size+1)]
+        img_list = [one for one in range(1, new_batch_size + 1)]
 
         # import pdb;pdb.set_trace()
         # update gender 
@@ -166,10 +166,10 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
             args.update({'gender': 'female'})
         else:
             args.update({'gender': 'male'})
-        
+
         # update save dir
         output_folder = os.path.join(output_folder, \
-                    data_input['fn'][0].split('.')[0])
+                                     data_input['fn'][0].split('.')[0])
         result_folder = args.pop('result_folder', 'results')
         result_folder = osp.join(output_folder, result_folder)
         if not osp.exists(result_folder):
@@ -183,25 +183,24 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         out_img_folder = osp.join(output_folder, 'images')
         if not osp.exists(out_img_folder):
             os.makedirs(out_img_folder, exist_ok=True)
-            
-        
+
     # Create the camera object
     # cam is a list
     xml_folder = args.get('calib_path', None)
-    if xml_folder is not None:    
+    if xml_folder is not None:
         if xml_folder != '':
             cameras = create_multicameras(xml_folder=xml_folder,
-                            dtype=dtype,
-                            **args)
+                                          dtype=dtype,
+                                          **args)
         else:
             raise ValueError('Path must be specified!')
-    
+
     # load original cam for Joint3d
     xml_folder = args.get('calib_path_oriJ3d', None)
     if xml_folder is not None and xml_folder != 'None':
         cameras_oriJ3d = create_multicameras(xml_folder=xml_folder,
-                        dtype=dtype,
-                        **args)
+                                             dtype=dtype,
+                                             **args)
     else:
         cameras_oriJ3d = cameras
 
@@ -219,7 +218,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     input_gender = args.pop('gender', 'neutral')
     gender_lbl_type = args.pop('gender_lbl_type', 'none')
     max_persons = args.pop('max_persons', -1)
-    
+
     joint_mapper = JointMapper(dataset_obj.get_model2data())
 
     if not_running:
@@ -241,11 +240,11 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
                         create_transl=True,
                         dtype=dtype,
                         **args)
-    
+
     print(args.get('model_type'))
     male_model = smplx.create(gender='male', **model_params)
     # SMPL-H has no gender-neutral model
-    
+
     if args.get('model_type') != 'smplh':
         neutral_model = smplx.create(gender='neutral', **model_params)
     female_model = smplx.create(gender='female', **model_params)
@@ -302,7 +301,6 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
             c.to(device=device)
             if hasattr(c, 'rotation'):
                 c.rotation.requires_grad = False
-        
 
         # cameras = cameras.to(device=device)
         female_model = female_model.to(device=device)
@@ -334,7 +332,6 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
     if not osp.exists(curr_img_folder):
         os.makedirs(curr_img_folder)
 
-
     ############################### gender
     if gender_lbl_type != 'none':
         if gender_lbl_type == 'pd' and 'gender_pd' in dataset_obj[0]:
@@ -343,7 +340,7 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
             gender = dataset_obj[0]['gender_gt'][person_id]
     else:
         gender = input_gender
-    
+
     # if process prox dataset!
     if 'PROX_qualitative_all' in output_folder and not not_running:
         female_subjects_ids = [162, 3452, 159, 3403]
@@ -364,22 +361,21 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
         body_model = male_model
 
     args['gender'] = gender
-    
-    
+
     curr_result_fn = []
     curr_mesh_fn = []
     out_img_fn = []
     for img_idx in img_list:
         curr_result_fn.append(osp.join(curr_result_folder,
-                                    '{:03d}.pkl'.format(img_idx)))
+                                       '{:03d}.pkl'.format(img_idx)))
         curr_mesh_fn.append(osp.join(curr_mesh_folder,
-                                '{:03d}.obj'.format(img_idx)))
+                                     '{:03d}.obj'.format(img_idx)))
 
         out_img_fn.append(osp.join(curr_img_folder, '{:03d}.png'.format(img_idx)))
     os.makedirs(curr_result_folder, exist_ok=True)
     os.makedirs(curr_mesh_folder, exist_ok=True)
     os.makedirs(curr_img_folder, exist_ok=True)
-    
+
     # ground_plane_value = scene_prior['ground_plane']
 
     if not_running:
@@ -398,13 +394,14 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
                     data = json.load(f)
                     contact_verts_ids.append(list(set(data["verts_ind"])))
             contact_verts_ids = np.concatenate(contact_verts_ids)
-            
+
             # consumption
-            vertices = body_model(return_verts=True, body_pose= torch.zeros((1, 63), dtype=dtype, device=device)).vertices
+            vertices = body_model(return_verts=True,
+                                  body_pose=torch.zeros((1, 63), dtype=dtype, device=device)).vertices
             # calculate normal map of the contact vertices;
             vertices_np = vertices[0].detach().cpu().numpy().squeeze()
             body_faces_np = body_model.faces_tensor.detach().cpu().numpy().reshape(-1, 3)
-            
+
             # import pdb;pdb.set_trace()
             # from psbody.mesh import Mesh
             # m = Mesh(v=vertices_np, f=body_faces_np) # ! Warning: modified for cluster use.
@@ -425,54 +422,55 @@ def main_video(scene_prior, tb_debug, tb_logger, pre_smplx_model, not_running=Fa
 
             from ..smplifyx import misc_utils
             # fitting_body_use_dict['contact_robustifier'] = misc_utils.GMoF_unscaled(rho=args['rho_contact']) # in PROX
-            fitting_body_use_dict['contact_robustifier'] = misc_utils.GMoF(rho=args['rho_contact']) # in PROX
+            fitting_body_use_dict['contact_robustifier'] = misc_utils.GMoF(rho=args['rho_contact'])  # in PROX
         else:
-            contact_verts_ids=None,
-            ftov=None,
-            
+            contact_verts_ids = None,
+            ftov = None,
+
         return None, None, fitting_body_use_dict
     else:
         # import pdb;pdb.set_trace()
-        fitted_body_model, scene_model, fitting_body_use_dict =fit_multi_view(img, keypoints,
-                        body_model=body_model,
-                        cameras=cameras,
-                        initialization = initialization,
-                        joint_weights=joint_weights,
-                        dtype=dtype,
-                        output_folder=output_folder,
-                        result_folder=curr_result_folder,
-                        out_img_fn=out_img_fn,
-                        result_fn=curr_result_fn,
-                        mesh_fn=curr_mesh_fn,
-                        shape_prior=shape_prior,
-                        expr_prior=expr_prior,
-                        body_pose_prior=body_pose_prior,
-                        left_hand_prior=left_hand_prior,
-                        right_hand_prior=right_hand_prior,
-                        jaw_prior=jaw_prior,
-                        angle_prior=angle_prior,
-                        start_opt_stage=start_opt_stage,
-                        # TODO: ground plane is not fixed should be adaptive from scene model
-                        scene_model=scene_model,
-                        ground_contact_value=ground_contact_value,
-                        ## debug
-                        tb_debug=tb_debug,
-                        tb_logger=tb_logger,
-                        pre_smplx_model=pre_smplx_model, # list of smplx model
-                        ## depth
-                        camera_3d=cameras_oriJ3d, # ! load original for joint 3d.
-                        ## posa input
-                        posa_body_contact_labels=posa_body_contact_labels,
-                        **args)
+        fitted_body_model, scene_model, fitting_body_use_dict = fit_multi_view(img, keypoints,
+                                                                               body_model=body_model,
+                                                                               cameras=cameras,
+                                                                               initialization=initialization,
+                                                                               joint_weights=joint_weights,
+                                                                               dtype=dtype,
+                                                                               output_folder=output_folder,
+                                                                               result_folder=curr_result_folder,
+                                                                               out_img_fn=out_img_fn,
+                                                                               result_fn=curr_result_fn,
+                                                                               mesh_fn=curr_mesh_fn,
+                                                                               shape_prior=shape_prior,
+                                                                               expr_prior=expr_prior,
+                                                                               body_pose_prior=body_pose_prior,
+                                                                               left_hand_prior=left_hand_prior,
+                                                                               right_hand_prior=right_hand_prior,
+                                                                               jaw_prior=jaw_prior,
+                                                                               angle_prior=angle_prior,
+                                                                               start_opt_stage=start_opt_stage,
+                                                                               # TODO: ground plane is not fixed should be adaptive from scene model
+                                                                               scene_model=scene_model,
+                                                                               ground_contact_value=ground_contact_value,
+                                                                               ## debug
+                                                                               tb_debug=tb_debug,
+                                                                               tb_logger=tb_logger,
+                                                                               pre_smplx_model=pre_smplx_model,
+                                                                               # list of smplx model
+                                                                               ## depth
+                                                                               camera_3d=cameras_oriJ3d,
+                                                                               # ! load original for joint 3d.
+                                                                               ## posa input
+                                                                               posa_body_contact_labels=posa_body_contact_labels,
+                                                                               **args)
 
         elapsed = time.time() - start
         time_msg = time.strftime('%H hours, %M minutes, %S seconds',
-                                time.gmtime(elapsed))
+                                 time.gmtime(elapsed))
         print('Processing the data took: {}'.format(time_msg))
-        
-        
 
         return fitted_body_model, scene_model, fitting_body_use_dict
+
 
 from ..smplifyx.utils_mics.cmd_parser import parse_config
 
@@ -488,8 +486,9 @@ if __name__ == "__main__":
         tb_logger = None
     else:
         from tensorboardX import SummaryWriter
+
         save_dir = args.get('save_dir')
         tb_logger = SummaryWriter(save_dir)
 
     main_video(scene_prior, tb_debug=TB_DEBUG, tb_logger=tb_logger, pre_smplx_model=[], \
-                **args)
+               **args)
