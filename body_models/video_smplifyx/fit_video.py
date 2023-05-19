@@ -358,6 +358,8 @@ def fit_multi_view(img,
                 if use_vposer:
                     pose_embedding.data[idx:idx + 1].copy_(torch.tensor(pre_smplx_model[idx]['pose_embedding']))
         elif type(pre_smplx_model) == dict:
+            import pdb;
+            pdb.set_trace()
             assert global_orient.shape[0] == pre_smplx_model['global_orient'].shape[0]
             betas.data.copy_(torch.tensor(
                 pre_smplx_model['betas']))  # add on 06.18: it may leads to unmatching error from previous results.
