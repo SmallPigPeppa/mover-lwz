@@ -1,7 +1,7 @@
 
 batch_size=1
 img_list=-1
-PROJECT_PATH="/mnt/mmtech01/usr/liuwenzhuo/code/mover-lwz-fit3d-smpl-all0-fixbug"
+PROJECT_PATH="/mnt/mmtech01/usr/liuwenzhuo/code/mover-lwz-fit3d-smpl-all-fixbug"
 REC_IDX="2020-06-09-17-14-03"
 
 
