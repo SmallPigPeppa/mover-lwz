@@ -386,7 +386,8 @@ class OpenPose_Pose2Room(Dataset):
 
         skeleton_joints = sample_data['skeleton_joints'][:]
         skeleton_joints_sample6 = sample_data['skeleton_joints'][6]
-        skeleton_joints_debug = np.tile(skeleton_joints_sample6, (skeleton_joints.shape[0],))
+        skeleton_joints_debug = np.tile(skeleton_joints_sample6[np.newaxis, :, :], (skeleton_joints.shape[0], 1, 1))
+
         # face and contour
         # keyp_tuple = read_keypoints_VH(skeleton_joints, use_hands=self.use_hands,
         #                                use_face=self.use_face,
