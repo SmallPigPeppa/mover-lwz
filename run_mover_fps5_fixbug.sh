@@ -38,6 +38,6 @@ python main.py \
     --gender neutral \
     --calib_path ${CALIBRATION_FOLDER} \
     --start_opt_stage 1 \
-    --end_opt_stage 4
+    --end_opt_stage 10
 
 
