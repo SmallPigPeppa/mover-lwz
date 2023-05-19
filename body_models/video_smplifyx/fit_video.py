@@ -823,6 +823,7 @@ def fit_multi_view(img,
             result['body_pose'] = body_pose.detach().cpu().numpy()
             result['pose_embedding'] = pose_embedding.detach().cpu().numpy()
             result['gender'] = kwargs['gender']
+            result['betas'] = betas.detach().cpu().numpy()
             pickle.dump(result,result_file, protocol=2)
 
         vertices_ = model_output.vertices.detach().cpu().numpy()
