@@ -280,7 +280,6 @@ def fit_multi_view(img,
             len(body_pose_prior_weights)), msg
 
     use_vposer = kwargs.get('use_vposer', True)
-    # use_vposer = False
     vposer, pose_embedding = [None, ] * 2
     if use_vposer:
         pose_embedding = torch.zeros([batch_size, 32],
