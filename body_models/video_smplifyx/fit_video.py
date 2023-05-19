@@ -280,7 +280,7 @@ def fit_multi_view(img,
             len(body_pose_prior_weights)), msg
 
     use_vposer = kwargs.get('use_vposer', True)
-    use_vposer = False
+    # use_vposer = False
     vposer, pose_embedding = [None, ] * 2
     if use_vposer:
         pose_embedding = torch.zeros([batch_size, 32],
@@ -1014,11 +1014,13 @@ def fit_multi_view(img,
         # for idx, one_result_fn in enumerate(result_fn):
         one_result_fn = result_fn[0][:-4] + '_all.pkl'
         with open(one_result_fn, 'wb') as result_file:
-            if len(results) > 1:
-                min_idx = (0 if results[0]['loss'] < results[1]['loss']
-                           else 1)
-            else:
-                min_idx = 0
+
+            min_idx = 0
+            # if len(results) > 1:
+            #     min_idx = (0 if results[0]['loss'] < results[1]['loss']
+            #                else 1)
+            # else:
+            #     min_idx = 0
             if USE_PROX_VPOSER:
                 body_pose = vposer.forward(pose_embedding).view(batch_size, -1) if use_vposer else None
             else:
